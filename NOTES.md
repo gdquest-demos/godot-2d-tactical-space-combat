@@ -1,0 +1,1 @@
+- `NavigationPolygonInstance` can't create polygon from outline if it isn't convex

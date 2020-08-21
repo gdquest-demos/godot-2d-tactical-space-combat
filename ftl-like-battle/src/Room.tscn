@@ -1,0 +1,29 @@
+[gd_scene format=2]
+
+[node name="Room" type="Polygon2D"]
+color = Color( 1, 1, 0.921569, 1 )
+polygon = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
+
+[node name="Floor" type="Polygon2D" parent="."]
+color = Color( 1, 1, 0.921569, 1 )
+polygon = PoolVector2Array( 16, 16, 32, 16, 32, 0, 96, 0, 96, 16, 112, 16, 112, 32, 128, 32, 128, 96, 112, 96, 112, 112, 96, 112, 96, 128, 32, 128, 32, 112, 16, 112, 16, 96, 0, 96, 0, 32, 16, 32 )
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="01" type="Polygon2D" parent="Walls"]
+color = Color( 0.196078, 0.160784, 0.278431, 1 )
+polygon = PoolVector2Array( 0, 0, 24, 0, 24, 8, 8, 8, 8, 24, 0, 24 )
+
+[node name="02" type="Polygon2D" parent="Walls"]
+color = Color( 0.196078, 0.160784, 0.278431, 1 )
+polygon = PoolVector2Array( 0, 104, 8, 104, 8, 120, 24, 120, 24, 128, 0, 128 )
+
+[node name="03" type="Polygon2D" parent="Walls"]
+color = Color( 0.196078, 0.160784, 0.278431, 1 )
+polygon = PoolVector2Array( 120, 8, 104, 8, 104, 0, 128, 0, 128, 24, 120, 24 )
+
+[node name="04" type="Polygon2D" parent="Walls"]
+position = Vector2( 64, 0 )
+rotation = 1.5708
+color = Color( 0.196078, 0.160784, 0.278431, 1 )
+polygon = PoolVector2Array( 128, -64.0005, 128, -40.0005, 120, -40.0004, 120, -56.0004, 104, -56.0004, 104, -64.0004 )
