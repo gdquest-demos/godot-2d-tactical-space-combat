@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Reference",
+"class": "FTLLikePathFinder",
+"language": "GDScript",
+"path": "res://FTLLikeCombat/src/Pathfinder.gd"
+}, {
+"base": "Reference",
+"class": "FTLLikeRoom",
+"language": "GDScript",
+"path": "res://FTLLikeCombat/src/Room.gd"
+}, {
+"base": "Reference",
+"class": "FTLLikeUtils",
+"language": "GDScript",
+"path": "res://FTLLikeCombat/src/Utils.gd"
+} ]
+_global_script_class_icons={
+"FTLLikePathFinder": "",
+"FTLLikeRoom": "",
+"FTLLikeUtils": ""
+}
+
+[application]
+
+config/name="GodotKickstarter2020"
+config/icon="res://icon.png"
+
+[display]
+
+window/size/borderless=true
+window/size/always_on_top=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

@@ -1,5 +1,0 @@
-[gd_scene format=2]
-
-[node name="Device" type="Polygon2D"]
-color = Color( 0.196078, 0.160784, 0.278431, 1 )
-polygon = PoolVector2Array( 0, 0, 24, 0, 24, 64, 0, 64 )

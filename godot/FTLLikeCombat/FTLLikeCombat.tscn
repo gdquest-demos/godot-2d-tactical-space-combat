@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://FTLLikeCombat/assets/tile.svg" type="Texture" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://FTLLikeCombat/src/Room.tscn" type="PackedScene" id=3]
+[ext_resource path="res://FTLLikeCombat/FTLLikeCombat.gd" type="Script" id=4]
+
+[sub_resource type="TileSet" id=1]
+0/name = "Tile"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 96, 64 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 64, 64 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 32, 96 )
+
+[sub_resource type="Curve2D" id=5]
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[node name="FTLLikeCombat" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Ship" type="Node2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="Ship"]
+tile_set = SubResource( 1 )
+format = 1
+
+[node name="Room01" parent="Ship" instance=ExtResource( 3 )]
+position = Vector2( 96, 64 )
+
+[node name="CollisionShape2D" parent="Ship/Room01" index="0"]
+shape = SubResource( 2 )
+
+[node name="Room02" parent="Ship" instance=ExtResource( 3 )]
+position = Vector2( 128, 256 )
+
+[node name="CollisionShape2D" parent="Ship/Room02" index="0"]
+shape = SubResource( 3 )
+
+[node name="Room03" parent="Ship" instance=ExtResource( 3 )]
+position = Vector2( 224, 160 )
+
+[node name="CollisionShape2D" parent="Ship/Room03" index="0"]
+shape = SubResource( 4 )
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource( 5 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+cubic_interp = false
+loop = false
+
+[node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D"]
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 2 )
+
+[node name="Position1" type="Position2D" parent="."]
+position = Vector2( 96, 288 )
+
+[node name="Position2" type="Position2D" parent="."]
+position = Vector2( 96, 96 )
+
+[editable path="Ship/Room01"]
+
+[editable path="Ship/Room02"]
+
+[editable path="Ship/Room03"]
