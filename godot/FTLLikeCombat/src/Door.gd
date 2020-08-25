@@ -16,7 +16,7 @@ func _on_Timer_timeout() -> void:
 		frame = 0
 		FTLLikeEvents.emit_signal("door_closed")
 	else:
+		timer.start()
 		is_open = true
 		frame = 1
 		FTLLikeEvents.emit_signal("door_opened")
-		timer.start()

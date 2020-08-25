@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
-"class": "FTLLikePathFinder",
-"language": "GDScript",
-"path": "res://FTLLikeCombat/src/Pathfinder.gd"
-}, {
 "base": "Area2D",
 "class": "FTLLikeRoom",
 "language": "GDScript",
@@ -25,7 +20,6 @@ _global_script_classes=[ {
 "path": "res://FTLLikeCombat/src/Utils.gd"
 } ]
 _global_script_class_icons={
-"FTLLikePathFinder": "",
 "FTLLikeRoom": "",
 "FTLLikeUtils": ""
 }

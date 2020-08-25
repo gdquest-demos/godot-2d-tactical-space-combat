@@ -5,10 +5,8 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
-[node name="Room" type="Area2D" groups=[
-"room",
-]]
-collision_layer = 2
+[node name="Room" type="Area2D"]
+collision_layer = 2147483648
 collision_mask = 0
 script = ExtResource( 1 )
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://FTLLikeCombat/assets/assets.svg" type="Texture" id=1]
+[ext_resource path="res://FTLLikeCombat/src/TileMap.gd" type="Script" id=2]
 [ext_resource path="res://FTLLikeCombat/src/Room.tscn" type="PackedScene" id=3]
 [ext_resource path="res://FTLLikeCombat/FTLLikeCombat.gd" type="Script" id=4]
 [ext_resource path="res://FTLLikeCombat/src/Unit.gd" type="Script" id=5]
@@ -48,12 +49,24 @@ extents = Vector2( 8, 8 )
 [node name="FTLLikeCombat" type="Node2D"]
 script = ExtResource( 4 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+color = Color( 0.152941, 0.152941, 0.211765, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Ship" type="Node2D" parent="."]
 position = Vector2( 256, 128 )
 
 [node name="TileMap" type="TileMap" parent="Ship"]
 tile_set = SubResource( 1 )
 format = 1
+script = ExtResource( 2 )
 
 [node name="Rooms" type="Node2D" parent="Ship"]
 
@@ -338,41 +351,24 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 64, 12, 64, 4 )
 
-[node name="Unit" type="Node2D" parent="Ship"]
+[node name="Unit" type="Path2D" parent="Ship"]
+curve = SubResource( 7 )
 script = ExtResource( 5 )
 
-[node name="Path2D" type="Path2D" parent="Ship/Unit"]
-curve = SubResource( 7 )
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Ship/Unit/Path2D"]
+[node name="PathFollow2D" type="PathFollow2D" parent="Ship/Unit"]
+position = Vector2( 96, 288 )
 cubic_interp = false
+loop = false
 
-[node name="Polygon2D" type="Polygon2D" parent="Ship/Unit/Path2D/PathFollow2D"]
+[node name="Polygon2D" type="Polygon2D" parent="Ship/Unit/PathFollow2D"]
 color = Color( 0.235294, 0.639216, 0.439216, 1 )
 polygon = PoolVector2Array( -8, -16, 8, -16, 8, 16, -8, 16 )
 
-[node name="AreaUnit" type="Area2D" parent="Ship/Unit/Path2D/PathFollow2D"]
+[node name="AreaUnit" type="Area2D" parent="Ship/Unit/PathFollow2D"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ship/Unit/Path2D/PathFollow2D/AreaUnit"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ship/Unit/PathFollow2D/AreaUnit"]
 shape = SubResource( 8 )
-
-[node name="Position1" type="Position2D" parent="Ship"]
-position = Vector2( 96, 288 )
-
-[node name="Position2" type="Position2D" parent="Ship"]
-position = Vector2( 96, 32 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 1024.0
-margin_bottom = 600.0
-color = Color( 0.152941, 0.152941, 0.211765, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-[connection signal="area_entered" from="Ship/Unit/Path2D/PathFollow2D/AreaUnit" to="Ship/Unit" method="_on_AreaUnit_area_entered"]
+[connection signal="area_entered" from="Ship/Unit/PathFollow2D/AreaUnit" to="Ship/Unit" method="_on_AreaUnit_area_entered"]
 
 [editable path="Ship/Rooms/Room01"]
 
