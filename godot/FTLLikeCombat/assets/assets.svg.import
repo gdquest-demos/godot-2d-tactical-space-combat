@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tile.svg-19a9a66f49b903756454469cf4d94ff2.stex"
+path="res://.import/assets.svg-2e6ea97eb4d6f0780251078f14efa871.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://FTLLikeCombat/assets/tile.svg"
-dest_files=[ "res://.import/tile.svg-19a9a66f49b903756454469cf4d94ff2.stex" ]
+source_file="res://FTLLikeCombat/assets/assets.svg"
+dest_files=[ "res://.import/assets.svg-2e6ea97eb4d6f0780251078f14efa871.stex" ]
 
 [params]
 

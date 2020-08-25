@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://FTLLikeCombat/src/Pathfinder.gd"
 }, {
-"base": "Reference",
+"base": "Area2D",
 "class": "FTLLikeRoom",
 "language": "GDScript",
 "path": "res://FTLLikeCombat/src/Room.gd"
@@ -35,9 +35,12 @@ _global_script_class_icons={
 config/name="GodotKickstarter2020"
 config/icon="res://icon.png"
 
+[autoload]
+
+FTLLikeEvents="*res://FTLLikeCombat/src/Events.gd"
+
 [display]
 
-window/size/borderless=true
 window/size/always_on_top=true
 
 [rendering]

@@ -18,6 +18,11 @@ func setup(tilemap: TileMap) -> void:
 	_tilemap_area = _tilemap_size.x * _tilemap_size.y
 
 
+func render() -> void:
+	for offset in self:
+		_tilemap.set_cellv(offset, 0)
+
+
 func _iter_init(_arg) -> bool:
 	_iter_index = 0
 	return _iter_is_running()

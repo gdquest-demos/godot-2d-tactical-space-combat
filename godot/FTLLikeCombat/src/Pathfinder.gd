@@ -1,19 +1,16 @@
 class_name FTLLikePathFinder
 
 
-const NEIGHBORS_STRAIGHT := [
+const NEIGHBORS := [
 	Vector2.UP,
-	Vector2.RIGHT,
-	Vector2.DOWN,
-	Vector2.LEFT,
-]
-const NEIGHBORS_DIAGONAL := [
 	Vector2.RIGHT + Vector2.UP,
+	Vector2.RIGHT,
 	Vector2.RIGHT + Vector2.DOWN,
+	Vector2.DOWN,
 	Vector2.LEFT + Vector2.DOWN,
+	Vector2.LEFT,
 	Vector2.LEFT + Vector2.UP
 ]
-const NEIGHBORS := NEIGHBORS_STRAIGHT + NEIGHBORS_DIAGONAL
 
 var _astar: AStar2D = AStar2D.new()
 
@@ -28,10 +25,10 @@ func setup(tilemap: TileMap) -> void:
 	for point in _tilemap.get_used_cells():
 		var id := FTLLikeUtils.xy_to_index(_tilemap_size.x, point)
 		_astar.add_point(id, point)
-	
-	for point1 in _astar.get_points():
-		for point2 in _get_neighbor_ids(point1):
-			_astar.connect_points(point1, point2)
+
+	for id1 in _astar.get_points():
+		for id2 in _get_neighbors(id1):
+			_astar.connect_points(id1, id2)
 
 
 func find_path(point1: Vector2, point2: Vector2) -> PoolVector2Array:
@@ -40,12 +37,18 @@ func find_path(point1: Vector2, point2: Vector2) -> PoolVector2Array:
 	return _astar.get_point_path(id1, id2)
 
 
-func _get_neighbor_ids(id: int) -> Array:
+func _get_neighbors(id: int) -> Array:
 	var out := []
+
 	var point := FTLLikeUtils.index_to_xy(_tilemap_size.x, id)
 	for offset in NEIGHBORS:
-		offset = point + offset
-		if _tilemap.get_cellv(offset) == TileMap.INVALID_CELL:
-			continue
-		out.push_back(FTLLikeUtils.xy_to_index(_tilemap_size.x, offset))
+		var skip := (
+			_tilemap.get_cellv(point + offset) == TileMap.INVALID_CELL
+			and is_equal_approx(offset.dot(offset), 2)
+			or _tilemap.get_cellv(point + Vector2(offset.x, 0)) == TileMap.INVALID_CELL
+			or _tilemap.get_cellv(point + Vector2(0, offset.y)) == TileMap.INVALID_CELL
+		)
+		if not skip:
+			out.push_back(FTLLikeUtils.xy_to_index(_tilemap_size.x, point + offset))
+
 	return out
