@@ -10,33 +10,37 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Area2D",
-"class": "FTLLikeRoom",
+"class": "TSCRoom",
 "language": "GDScript",
-"path": "res://FTLLikeCombat/src/Room.gd"
+"path": "res://src/Room.gd"
 }, {
 "base": "Reference",
-"class": "FTLLikeUtils",
+"class": "TSCUtils",
 "language": "GDScript",
-"path": "res://FTLLikeCombat/src/Utils.gd"
+"path": "res://src/Utils.gd"
 } ]
 _global_script_class_icons={
-"FTLLikeRoom": "",
-"FTLLikeUtils": ""
+"TSCRoom": "",
+"TSCUtils": ""
 }
 
 [application]
 
-config/name="GodotKickstarter2020"
+config/name="2D Tactical Space Combat"
+run/main_scene="res://TacticalSpaceCombat.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-FTLLikeEvents="*res://FTLLikeCombat/src/Events.gd"
+TSCEvents="*res://src/Events.gd"
 
 [display]
 
 window/size/always_on_top=true
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [rendering]
 
+environment/default_clear_color=Color( 0.152941, 0.152941, 0.211765, 1 )
 environment/default_environment="res://default_env.tres"

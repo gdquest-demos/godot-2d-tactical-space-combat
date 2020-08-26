@@ -1,4 +1,4 @@
-class_name FTLLikeUtils
+class_name TSCUtils
 
 
 static func xy_to_index(width: int, offset: Vector2) -> int:

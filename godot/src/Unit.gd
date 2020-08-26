@@ -7,7 +7,7 @@ onready var path_follow: PathFollow2D = $PathFollow2D
 
 
 func _ready() -> void:
-	FTLLikeEvents.connect("door_opened", self, "_on_Events_door_opened")
+	TSCEvents.connect("door_opened", self, "_on_Events_door_opened")
 	set_process(false)
 
 

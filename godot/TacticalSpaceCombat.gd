@@ -21,4 +21,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		var point2: Vector2 = ship.transform.xform_inv(event.position)
 		var path: PoolVector2Array = tilemap.find_path(point1, point2)
 		unit.walk(path)
-		

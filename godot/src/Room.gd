@@ -1,4 +1,4 @@
-class_name FTLLikeRoom
+class_name TSCRoom
 extends Area2D
 
 
@@ -37,7 +37,7 @@ func _iter_get(_arg) -> Vector2:
 	var tmp_transform := transform
 	tmp_transform.origin -= collision_shape.shape.extents
 	tmp_transform.origin = _tilemap.world_to_map(tmp_transform.origin)
-	var offset := FTLLikeUtils.index_to_xy(_tilemap_size.x, _iter_index)
+	var offset := TSCUtils.index_to_xy(_tilemap_size.x, _iter_index)
 	return tmp_transform.xform(offset)
 
 

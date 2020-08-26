@@ -1,6 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://FTLLikeCombat/src/Room.gd" type="Script" id=1]
+[ext_resource path="res://src/Room.gd" type="Script" id=1]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
