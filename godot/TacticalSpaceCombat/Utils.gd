@@ -1,4 +1,5 @@
-class_name TSCUtils
+class_name Utils
+
 
 
 static func xy_to_index(width: int, offset: Vector2) -> int:

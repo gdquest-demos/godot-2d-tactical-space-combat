@@ -1,19 +1,28 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://src/TileMap.gd" type="Script" id=1]
-[ext_resource path="res://assets/assets.svg" type="Texture" id=2]
-[ext_resource path="res://src/Room.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/Door.tscn" type="PackedScene" id=4]
+[ext_resource path="res://TacticalSpaceCombat/TileMap.gd" type="Script" id=1]
+[ext_resource path="res://TacticalSpaceCombat/assets.svg" type="Texture" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Room.tscn" type="PackedScene" id=3]
+[ext_resource path="res://TacticalSpaceCombat/Door.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat.gd" type="Script" id=5]
-[ext_resource path="res://src/Unit.gd" type="Script" id=6]
+[ext_resource path="res://TacticalSpaceCombat/Unit.tscn" type="PackedScene" id=6]
 
 [sub_resource type="TileSet" id=1]
 0/name = "Tile"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 0, 0, 64, 64 )
-0/tile_mode = 0
+0/region = Rect2( 0, 0, 448, 448 )
+0/tile_mode = 1
+0/autotile/bitmask_mode = 1
+0/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 0, 3 ), 440, Vector2( 0, 4 ), 62, Vector2( 0, 5 ), 48, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 1, 3 ), 248, Vector2( 1, 4 ), 59, Vector2( 1, 5 ), 56, Vector2( 2, 0 ), 216, Vector2( 2, 1 ), 219, Vector2( 2, 2 ), 27, Vector2( 2, 3 ), 434, Vector2( 2, 4 ), 182, Vector2( 2, 5 ), 24, Vector2( 3, 0 ), 176, Vector2( 3, 1 ), 178, Vector2( 3, 2 ), 50, Vector2( 3, 3 ), 218, Vector2( 3, 4 ), 155, Vector2( 3, 5 ), 447, Vector2( 3, 6 ), 510, Vector2( 4, 0 ), 184, Vector2( 4, 1 ), 186, Vector2( 4, 2 ), 58, Vector2( 4, 3 ), 506, Vector2( 4, 4 ), 191, Vector2( 4, 5 ), 255, Vector2( 4, 6 ), 507, Vector2( 5, 0 ), 152, Vector2( 5, 1 ), 154, Vector2( 5, 2 ), 26, Vector2( 5, 3 ), 446, Vector2( 5, 4 ), 443, Vector2( 5, 5 ), 254, Vector2( 6, 0 ), 144, Vector2( 6, 1 ), 146, Vector2( 6, 2 ), 18, Vector2( 6, 3 ), 251, Vector2( 6, 4 ), 254, Vector2( 6, 5 ), 443 ]
+0/autotile/icon_coordinate = Vector2( 1, 1 )
+0/autotile/tile_size = Vector2( 64, 64 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
@@ -39,12 +48,22 @@ extents = Vector2( 64, 64 )
 extents = Vector2( 96, 64 )
 
 [sub_resource type="Curve2D" id=7]
+resource_local_to_scene = true
 _data = {
 "points": PoolVector2Array(  )
 }
 
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 8, 8 )
+[sub_resource type="Curve2D" id=8]
+resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="Curve2D" id=9]
+resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
 
 [node name="TacticalSpaceCombat" type="Node2D"]
 script = ExtResource( 5 )
@@ -62,31 +81,37 @@ script = ExtResource( 1 )
 [node name="Room01" parent="Ship/Rooms" instance=ExtResource( 3 )]
 position = Vector2( 96, 64 )
 
-[node name="CollisionShape2D" parent="Ship/Rooms/Room01" index="0"]
+[node name="CollisionShape2D" parent="Ship/Rooms/Room01" index="1"]
 shape = SubResource( 2 )
 
 [node name="Room02" parent="Ship/Rooms" instance=ExtResource( 3 )]
 position = Vector2( 128, 256 )
 
-[node name="CollisionShape2D" parent="Ship/Rooms/Room02" index="0"]
+[node name="CollisionShape2D" parent="Ship/Rooms/Room02" index="1"]
 shape = SubResource( 3 )
 
 [node name="Room03" parent="Ship/Rooms" instance=ExtResource( 3 )]
 position = Vector2( 224, 160 )
 
-[node name="CollisionShape2D" parent="Ship/Rooms/Room03" index="0"]
+[node name="Type" parent="Ship/Rooms/Room03" index="0"]
+texture = null
+
+[node name="CollisionShape2D" parent="Ship/Rooms/Room03" index="1"]
 shape = SubResource( 4 )
 
 [node name="Room04" parent="Ship/Rooms" instance=ExtResource( 3 )]
 position = Vector2( 320, 64 )
 
-[node name="CollisionShape2D" parent="Ship/Rooms/Room04" index="0"]
+[node name="Type" parent="Ship/Rooms/Room04" index="0"]
+texture = null
+
+[node name="CollisionShape2D" parent="Ship/Rooms/Room04" index="1"]
 shape = SubResource( 5 )
 
 [node name="Room05" parent="Ship/Rooms" instance=ExtResource( 3 )]
 position = Vector2( 416, 192 )
 
-[node name="CollisionShape2D" parent="Ship/Rooms/Room05" index="0"]
+[node name="CollisionShape2D" parent="Ship/Rooms/Room05" index="1"]
 shape = SubResource( 6 )
 
 [node name="Doors" type="Node2D" parent="Ship"]
@@ -106,258 +131,41 @@ rotation = -1.5708
 [node name="Door0405" parent="Ship/Doors" instance=ExtResource( 4 )]
 position = Vector2( 352, 128 )
 
-[node name="Walls" type="Node2D" parent="Ship"]
+[node name="Units" type="Node2D" parent="Ship"]
 
-[node name="Wall01" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 32, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall02" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 96, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall03" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 160, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall04" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 32, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall05" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 96, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall06" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 160, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall07" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 224, 64 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall08" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 224, 256 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall09" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 288, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall10" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 352, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall11" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 288, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall12" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 416, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall13" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 480, 128 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall14" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 480, 256 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall15" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 416, 256 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall16" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 352, 256 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall17" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 160, 320 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall18" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 96, 320 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall19" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 96, 192 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall20" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 160, 192 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall21" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 0, 32 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall22" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 0, 96 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall23" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 192, 32 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall24" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 256, 32 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall25" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 384, 32 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall26" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 384, 96 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall27" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 320, 160 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall28" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 320, 224 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall29" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 512, 160 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall30" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 512, 224 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall31" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 192, 160 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall32" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 256, 160 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall33" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 256, 224 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall34" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 64, 224 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall35" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 64, 288 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Wall36" type="Sprite" parent="Ship/Walls"]
-position = Vector2( 192, 288 )
-rotation = 1.5708
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 64, 12, 64, 4 )
-
-[node name="Unit" type="Path2D" parent="Ship"]
+[node name="Unit1" parent="Ship/Units" instance=ExtResource( 6 )]
 curve = SubResource( 7 )
-script = ExtResource( 6 )
+colors = {
+"default": Color( 0.301961, 0.65098, 1, 1 ),
+"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
+}
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Ship/Unit"]
-position = Vector2( 96, 288 )
-cubic_interp = false
-loop = false
+[node name="PathFollow2D" parent="Ship/Units/Unit1" index="0"]
+position = Vector2( 96, 224 )
 
-[node name="Polygon2D" type="Polygon2D" parent="Ship/Unit/PathFollow2D"]
-color = Color( 0.235294, 0.639216, 0.439216, 1 )
-polygon = PoolVector2Array( -8, -16, 8, -16, 8, 16, -8, 16 )
+[node name="Unit2" parent="Ship/Units" instance=ExtResource( 6 )]
+curve = SubResource( 8 )
+colors = {
+"default": Color( 1, 0.709804, 0.439216, 1 ),
+"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
+}
 
-[node name="AreaUnit" type="Area2D" parent="Ship/Unit/PathFollow2D"]
+[node name="PathFollow2D" parent="Ship/Units/Unit2" index="0"]
+position = Vector2( 288, 32 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ship/Unit/PathFollow2D/AreaUnit"]
-shape = SubResource( 8 )
-[connection signal="area_entered" from="Ship/Unit/PathFollow2D/AreaUnit" to="Ship/Unit" method="_on_AreaUnit_area_entered"]
+[node name="Unit3" parent="Ship/Units" instance=ExtResource( 6 )]
+curve = SubResource( 9 )
+
+[node name="PathFollow2D" parent="Ship/Units/Unit3" index="0"]
+position = Vector2( 224, 96 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Units" type="VBoxContainer" parent="UI"]
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [editable path="Ship/Rooms/Room01"]
 
@@ -368,3 +176,9 @@ shape = SubResource( 8 )
 [editable path="Ship/Rooms/Room04"]
 
 [editable path="Ship/Rooms/Room05"]
+
+[editable path="Ship/Units/Unit1"]
+
+[editable path="Ship/Units/Unit2"]
+
+[editable path="Ship/Units/Unit3"]

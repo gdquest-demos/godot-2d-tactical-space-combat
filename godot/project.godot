@@ -9,19 +9,31 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Area2D",
-"class": "TSCRoom",
+"base": "Sprite",
+"class": "Door",
 "language": "GDScript",
-"path": "res://src/Room.gd"
+"path": "res://TacticalSpaceCombat/Door.gd"
+}, {
+"base": "Area2D",
+"class": "Room",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Room.gd"
+}, {
+"base": "Path2D",
+"class": "Unit",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Unit.gd"
 }, {
 "base": "Reference",
-"class": "TSCUtils",
+"class": "Utils",
 "language": "GDScript",
-"path": "res://src/Utils.gd"
+"path": "res://TacticalSpaceCombat/Utils.gd"
 } ]
 _global_script_class_icons={
-"TSCRoom": "",
-"TSCUtils": ""
+"Door": "",
+"Room": "",
+"Unit": "",
+"Utils": ""
 }
 
 [application]
@@ -32,13 +44,20 @@ config/icon="res://icon.png"
 
 [autoload]
 
-TSCEvents="*res://src/Events.gd"
+Events="*res://TacticalSpaceCombat/Events.gd"
 
 [display]
 
+window/size/borderless=true
+window/size/fullscreen=true
 window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
+
+[layer_names]
+
+2d_physics/layer_1="Ship"
+2d_physics/layer_20="UI"
 
 [rendering]
 

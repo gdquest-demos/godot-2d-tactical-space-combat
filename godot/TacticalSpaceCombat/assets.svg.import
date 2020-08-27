@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/assets.svg-5a9d16e7bb72ca9f904b7eb76bcb76df.stex"
+path="res://.import/assets.svg-83c6ad1672a44d26e45630fea76faea1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/assets.svg"
-dest_files=[ "res://.import/assets.svg-5a9d16e7bb72ca9f904b7eb76bcb76df.stex" ]
+source_file="res://TacticalSpaceCombat/assets.svg"
+dest_files=[ "res://.import/assets.svg-83c6ad1672a44d26e45630fea76faea1.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
