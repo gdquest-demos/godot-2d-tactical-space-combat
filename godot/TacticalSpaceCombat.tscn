@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/TileMap.gd" type="Script" id=1]
 [ext_resource path="res://TacticalSpaceCombat/assets.svg" type="Texture" id=2]
@@ -47,20 +47,20 @@ extents = Vector2( 64, 64 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 96, 64 )
 
-[sub_resource type="Curve2D" id=7]
-resource_local_to_scene = true
-_data = {
-"points": PoolVector2Array(  )
-}
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 96, 64 )
 
 [sub_resource type="Curve2D" id=8]
-resource_local_to_scene = true
 _data = {
 "points": PoolVector2Array(  )
 }
 
 [sub_resource type="Curve2D" id=9]
-resource_local_to_scene = true
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="Curve2D" id=10]
 _data = {
 "points": PoolVector2Array(  )
 }
@@ -69,7 +69,7 @@ _data = {
 script = ExtResource( 5 )
 
 [node name="Ship" type="Node2D" parent="."]
-position = Vector2( 256, 128 )
+position = Vector2( 128, 128 )
 
 [node name="TileMap" type="TileMap" parent="Ship"]
 tile_set = SubResource( 1 )
@@ -114,27 +114,40 @@ position = Vector2( 416, 192 )
 [node name="CollisionShape2D" parent="Ship/Rooms/Room05" index="1"]
 shape = SubResource( 6 )
 
+[node name="Room06" parent="Ship/Rooms" instance=ExtResource( 3 )]
+position = Vector2( 480, 64 )
+
+[node name="CollisionShape2D" parent="Ship/Rooms/Room06" index="1"]
+shape = SubResource( 7 )
+
 [node name="Doors" type="Node2D" parent="Ship"]
 
-[node name="Door0102" parent="Ship/Doors" instance=ExtResource( 4 )]
+[node name="Door0103" parent="Ship/Doors" instance=ExtResource( 4 )]
 position = Vector2( 192, 96 )
-rotation = -1.5708
+rotation = 1.5708
 
 [node name="Door0203" parent="Ship/Doors" instance=ExtResource( 4 )]
 position = Vector2( 192, 224 )
-rotation = -1.5708
+rotation = 1.5708
 
 [node name="Door0304" parent="Ship/Doors" instance=ExtResource( 4 )]
 position = Vector2( 256, 96 )
-rotation = -1.5708
+rotation = 1.5708
 
 [node name="Door0405" parent="Ship/Doors" instance=ExtResource( 4 )]
 position = Vector2( 352, 128 )
 
+[node name="Door0406" parent="Ship/Doors" instance=ExtResource( 4 )]
+position = Vector2( 384, 32 )
+rotation = 1.5708
+
+[node name="Door0506" parent="Ship/Doors" instance=ExtResource( 4 )]
+position = Vector2( 480, 128 )
+
 [node name="Units" type="Node2D" parent="Ship"]
 
 [node name="Unit1" parent="Ship/Units" instance=ExtResource( 6 )]
-curve = SubResource( 7 )
+curve = SubResource( 8 )
 colors = {
 "default": Color( 0.301961, 0.65098, 1, 1 ),
 "selected": Color( 0.235294, 0.639216, 0.439216, 1 )
@@ -144,7 +157,7 @@ colors = {
 position = Vector2( 96, 224 )
 
 [node name="Unit2" parent="Ship/Units" instance=ExtResource( 6 )]
-curve = SubResource( 8 )
+curve = SubResource( 9 )
 colors = {
 "default": Color( 1, 0.709804, 0.439216, 1 ),
 "selected": Color( 0.235294, 0.639216, 0.439216, 1 )
@@ -154,7 +167,11 @@ colors = {
 position = Vector2( 288, 32 )
 
 [node name="Unit3" parent="Ship/Units" instance=ExtResource( 6 )]
-curve = SubResource( 9 )
+curve = SubResource( 10 )
+colors = {
+"default": Color( 0.741176, 0.282353, 0.509804, 1 ),
+"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
+}
 
 [node name="PathFollow2D" parent="Ship/Units/Unit3" index="0"]
 position = Vector2( 224, 96 )
@@ -176,6 +193,8 @@ __meta__ = {
 [editable path="Ship/Rooms/Room04"]
 
 [editable path="Ship/Rooms/Room05"]
+
+[editable path="Ship/Rooms/Room06"]
 
 [editable path="Ship/Units/Unit1"]
 

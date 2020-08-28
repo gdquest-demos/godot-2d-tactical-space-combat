@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Sprite",
+"base": "Area2D",
 "class": "Door",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Door.gd"
@@ -49,7 +49,6 @@ Events="*res://TacticalSpaceCombat/Events.gd"
 [display]
 
 window/size/borderless=true
-window/size/fullscreen=true
 window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"

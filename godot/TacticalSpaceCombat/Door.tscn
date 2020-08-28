@@ -6,24 +6,24 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 16 )
 
-[node name="Door" type="Sprite"]
+[node name="Door" type="Area2D" groups=[
+"door",
+]]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 vframes = 2
 region_enabled = true
 region_rect = Rect2( 0, 384, 64, 12 )
-script = ExtResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="." groups=[
-"door",
-]]
-modulate = Color( 0.709804, 0, 1, 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color( 0.952941, 0.423529, 1, 1 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area" binds= [ true ]]
-[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area" binds= [ false ]]
+[connection signal="area_entered" from="." to="." method="_on_area" binds= [ true ]]
+[connection signal="area_exited" from="." to="." method="_on_area" binds= [ false ]]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
