@@ -2,6 +2,19 @@ class_name Room
 extends Area2D
 
 
+enum Type {EMPTY, DEFAULT, HELM}
+
+const SPRITE := {
+	Type.EMPTY: Vector2.INF,
+	Type.DEFAULT: Vector2(320, 384),
+	Type.HELM: Vector2(352, 384)
+}
+
+export(Type) var type := Type.EMPTY
+
+var is_manned := false setget , get_is_manned
+
+var _units := 0
 var _entrances := {}
 var _tilemap: TileMap = null
 var _size := Vector2.ZERO
@@ -9,6 +22,7 @@ var _area := 0
 var _iter_index := 0
 
 onready var scene_tree: SceneTree = get_tree()
+onready var sprite: Sprite = $Sprite
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var ui_feedback: NinePatchRect = $UI/Feedback
 
@@ -18,6 +32,10 @@ func setup(tilemap: TileMap) -> void:
 	
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
 	_area = _size.x * _size.y
+	
+	sprite.visible = type != Type.EMPTY
+	sprite.region_enabled = sprite.visible
+	sprite.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 	
 	ui_feedback.rect_position = global_position - collision_shape.shape.extents
 	ui_feedback.rect_size = 2 * collision_shape.shape.extents
@@ -32,23 +50,16 @@ func _on_mouse(has_entered: bool) -> void:
 	ui_feedback.visible = has_entered
 
 
-func _on_area_entered(area: Area2D) -> void:
-	if area.is_in_group("door"):
+func _on_area(area: Area2D, has_entered: bool) -> void:
+	if area.is_in_group("unit"):
+		_units += 1 if has_entered else -1
+	elif area.is_in_group("door"):
 		var entrance := (position - area.position)
 		entrance *= Vector2.DOWN.rotated(-area.rotation)
 		entrance = entrance.normalized() * _tilemap.cell_size / 2
 		entrance += area.position
 		entrance = _tilemap.world_to_map(entrance)
 		_entrances[entrance] = null
-
-
-func has_point(point: Vector2) -> bool:
-	var top_left := _tilemap.world_to_map(position - collision_shape.shape.extents)
-	var bottom_right := top_left + _size
-	return (
-		top_left.x <= point.x and top_left.y <= point.y
-		and point.x < bottom_right.x and point.y < bottom_right.y
-	)
 
 
 func _get_entrance(from: Vector2) -> Vector2:
@@ -61,6 +72,15 @@ func _get_entrance(from: Vector2) -> Vector2:
 			distance = length
 			out = entrance
 	return out
+
+
+func has_point(point: Vector2) -> bool:
+	var top_left := _tilemap.world_to_map(position - collision_shape.shape.extents)
+	var bottom_right := top_left + _size
+	return (
+		top_left.x <= point.x and top_left.y <= point.y
+		and point.x < bottom_right.x and point.y < bottom_right.y
+	)
 
 
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
@@ -77,6 +97,10 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 		if not is_inf(out.x):
 			break
 	return out
+
+
+func get_is_manned() -> bool:
+	return _units > 0
 
 
 func _iter_init(_arg) -> bool:

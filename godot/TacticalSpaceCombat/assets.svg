@@ -12,7 +12,7 @@
    viewBox="0 0 448 448"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0 (046ab13d2a, 2020-08-24)"
+   inkscape:version="1.0 (18639f5ded, 2020-08-30)"
    sodipodi:docname="assets.svg">
   <defs
      id="defs2">
@@ -32,21 +32,21 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#cccccc"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="150.25507"
-     inkscape:cy="248.74517"
+     inkscape:zoom="2.8284272"
+     inkscape:cx="293.02099"
+     inkscape:cy="324.6664"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="true"
      units="px"
      inkscape:snap-page="true"
-     inkscape:pagecheckerboard="true"
+     inkscape:pagecheckerboard="false"
      inkscape:window-width="1920"
      inkscape:window-height="1044"
      inkscape:window-x="1920"
@@ -73,7 +73,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1052,9 +1052,13 @@
     <circle
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square"
        id="path1215"
-       cx="112"
+       cx="336"
        cy="464"
        r="16" />
+    <path
+       id="circle1224"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square"
+       d="m 354.01172,450.00142 c -0.9903,0.0219 -1.95702,0.59541 -2.01172,1.65625 0,13.25484 7.16344,24 16,24 8.83656,0 16,-10.74516 16,-24 -0.10939,-2.12169 -3.86384,-2.29703 -4.16797,0 -0.50153,4.45064 -2.07048,7.48742 -4.26758,9.39648 A 8,8 0 0 0 368,455.65767 a 8,8 0 0 0 -7.56445,5.39648 c -2.1971,-1.90906 -3.76605,-4.94584 -4.26758,-9.39648 -0.15207,-1.14851 -1.16595,-1.67817 -2.15625,-1.65625 z" />
   </g>
   <g
      inkscape:groupmode="layer"

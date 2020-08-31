@@ -16,6 +16,7 @@ func _on_area(area: Area2D, has_entered: bool) -> void:
 		if has_entered and _units == 1:
 			timer.start()
 		elif not has_entered and _units == 0:
+			timer.stop()
 			self.is_open = false
 
 
