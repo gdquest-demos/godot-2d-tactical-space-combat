@@ -2,6 +2,8 @@ class_name Door
 extends Area2D
 
 
+var is_open := false setget set_is_open
+
 var _units := 0
 
 onready var sprite: Sprite = $Sprite
@@ -14,9 +16,13 @@ func _on_area(area: Area2D, has_entered: bool) -> void:
 		if has_entered and _units == 1:
 			timer.start()
 		elif not has_entered and _units == 0:
-			sprite.frame = 0
+			self.is_open = false
 
 
-func _on_Timer_timeout() -> void:
-	sprite.frame = 1
-	Events.emit_signal("door_opened")
+func set_is_open(val: bool) -> void:
+	is_open = val
+	if is_open:
+		sprite.frame = 1
+		Events.emit_signal("door_opened")
+	else:
+		sprite.frame = 0

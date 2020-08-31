@@ -27,7 +27,7 @@ func _ready() -> void:
 		
 		var ui_unit := UIUnit.instance()
 		ui_unit.connect("selected", self, "_on_UIUnit_selected")
-		ui_unit.connect("selected", unit, "_on_UIUnit_selected")
+		ui_unit.connect("selected", unit, "set_is_selected", [true])
 		unit.connect("selected", ui_unit, "_on_Unit_selected")
 		ui.get_node("Units").add_child(ui_unit)
 		ui_unit.setup(unit.colors.default)
@@ -45,12 +45,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
 			group = Utils.group_name("selected", "room")
 			for room in scene_tree.get_nodes_in_group(group):
-				var point2: Vector2 = room.get_slot_new(slots, unit)
+				var point2: Vector2 = room.get_slot(slots, unit)
 				if is_inf(point2.x):
 					break
 				
 				var path: Curve2D = tilemap.find_path(point1, point2)
 				unit.walk(path)
-				if path:
-					slots.erase(point1)
-					slots[point2] = unit
+				Utils.erase_val(slots, unit)
+				slots[point2] = unit

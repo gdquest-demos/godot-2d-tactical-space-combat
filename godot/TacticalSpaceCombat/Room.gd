@@ -51,15 +51,6 @@ func has_point(point: Vector2) -> bool:
 	)
 
 
-func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
-	var out := Vector2.INF
-	for offset in self:
-		if not offset in slots or slots[offset] == unit:
-			out = offset
-			break
-	return out
-
-
 func _get_entrance(from: Vector2) -> Vector2:
 	var out := Vector2.INF
 	var distance := INF
@@ -72,7 +63,7 @@ func _get_entrance(from: Vector2) -> Vector2:
 	return out
 
 
-func get_slot_new(slots: Dictionary, unit: Unit) -> Vector2:
+func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var out := Vector2.INF
 	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))
 	for i in range(0, max(_size.x, _size.y)):

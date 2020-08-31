@@ -26,4 +26,4 @@ wait_time = 0.3
 one_shot = true
 [connection signal="area_entered" from="." to="." method="_on_area" binds= [ true ]]
 [connection signal="area_exited" from="." to="." method="_on_area" binds= [ false ]]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="set_is_open" binds= [ true ]]

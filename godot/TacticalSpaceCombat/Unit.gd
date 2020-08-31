@@ -30,12 +30,8 @@ func _on_AreaSelect_mouse(has_entered: bool) -> void:
 
 
 func _on_AreaUnit_area_entered(area: Area2D) -> void:
-	if area.is_in_group("door"):
+	if area.is_in_group("door") and not area.is_open:
 		self.is_walking = false
-
-
-func _on_UIUnit_selected() -> void:
-	self.is_selected = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
