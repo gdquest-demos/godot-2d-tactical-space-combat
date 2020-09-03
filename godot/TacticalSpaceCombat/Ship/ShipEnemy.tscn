@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+resource_local_to_scene = true
+extents = Vector2( 64, 64 )
+
+[sub_resource type="RectangleShape2D" id=2]
+resource_local_to_scene = true
+extents = Vector2( 96, 32 )
+
+[node name="ShipEnemy" instance=ExtResource( 1 )]
+position = Vector2( 64, 192 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="0"]
+layer = -1
+
+[node name="Background" type="ColorRect" parent="CanvasLayer" index="0"]
+margin_right = 448.0
+margin_bottom = 576.0
+mouse_filter = 2
+color = Color( 0.341176, 0.160784, 0.294118, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Room01" parent="Rooms" index="0" instance=ExtResource( 3 )]
+position = Vector2( 64, 64 )
+type = 1
+
+[node name="CollisionShape2D" parent="Rooms/Room01" index="1"]
+shape = SubResource( 1 )
+
+[node name="Room02" parent="Rooms" index="1" instance=ExtResource( 3 )]
+position = Vector2( 224, 96 )
+
+[node name="CollisionShape2D" parent="Rooms/Room02" index="1"]
+shape = SubResource( 2 )
+
+[node name="Door0102" parent="Doors" index="0" instance=ExtResource( 2 )]
+position = Vector2( 128, 96 )
+rotation = 1.57079
+
+[editable path="Rooms/Room01"]
+
+[editable path="Rooms/Room02"]

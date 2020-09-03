@@ -2,12 +2,13 @@ class_name Room
 extends Area2D
 
 
-enum Type {EMPTY, DEFAULT, HELM}
+enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
 	Type.DEFAULT: Vector2(320, 384),
-	Type.HELM: Vector2(352, 384)
+	Type.HELM: Vector2(352, 384),
+	Type.WEAPONS: Vector2(384, 384)
 }
 
 export(Type) var type := Type.EMPTY

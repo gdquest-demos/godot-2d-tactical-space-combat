@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/Room.gd" type="Script" id=1]
-[ext_resource path="res://TacticalSpaceCombat/assets.svg" type="Texture" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=2]
+
+
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -25,7 +27,7 @@ shape = SubResource( 1 )
 
 [node name="Feedback" type="NinePatchRect" parent="UI"]
 visible = false
-modulate = Color( 0.54902, 0.247059, 0.364706, 1 )
+modulate = Color( 1, 0.709804, 0.439216, 1 )
 margin_left = -32.0
 margin_top = -32.0
 margin_right = 32.0

@@ -3,12 +3,12 @@ extends Node2D
 
 const UIUnit := preload("res://TacticalSpaceCombat/UI/Unit.tscn")
 
-onready var ship: Node2D = $Ship
-onready var ui: CanvasLayer = $UI
+onready var ship_player: Node2D = $ShipPlayer
+onready var ui: Control = $UI
 
 
 func _ready() -> void:
-	for unit in ship.units.get_children():
+	for unit in ship_player.units.get_children():
 		var ui_unit := UIUnit.instance()
 		ui_unit.connect("selected", self, "_on_UIUnit_selected")
 		ui_unit.connect("selected", unit, "set_is_selected", [true])
@@ -18,5 +18,5 @@ func _ready() -> void:
 
 
 func _on_UIUnit_selected() -> void:
-	for unit in ship.units.get_children():
+	for unit in ship_player.units.get_children():
 		unit.is_selected = false
