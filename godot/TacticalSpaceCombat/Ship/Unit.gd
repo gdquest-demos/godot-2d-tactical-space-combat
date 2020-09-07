@@ -20,7 +20,6 @@ onready var area_unit: Area2D = $PathFollow2D/AreaUnit
 
 
 func _ready() -> void:
-	Events.connect("door_opened", self, "set_is_walking", [true])
 	self.is_selected = false
 	self.is_walking = false
 

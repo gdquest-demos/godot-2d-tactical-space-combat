@@ -42,15 +42,12 @@ config/name="2D Tactical Space Combat"
 run/main_scene="res://TacticalSpaceCombat.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-Events="*res://TacticalSpaceCombat/Events.gd"
-
 [display]
 
 window/size/width=1280
 window/size/height=720
 window/size/borderless=true
+window/size/fullscreen=true
 window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
@@ -59,6 +56,12 @@ window/stretch/aspect="keep"
 
 2d_physics/layer_1="Ship"
 2d_physics/layer_20="UI"
+
+[physics]
+
+2d/default_gravity=0
+2d/default_linear_damp=0.0
+2d/default_angular_damp=0.0
 
 [rendering]
 

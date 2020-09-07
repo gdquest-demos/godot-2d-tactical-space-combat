@@ -31,13 +31,13 @@ __meta__ = {
 position = Vector2( 64, 64 )
 type = 1
 
-[node name="CollisionShape2D" parent="Rooms/Room01" index="1"]
+[node name="CollisionShape2D" parent="Rooms/Room01" index="2"]
 shape = SubResource( 1 )
 
 [node name="Room02" parent="Rooms" index="1" instance=ExtResource( 3 )]
 position = Vector2( 224, 96 )
 
-[node name="CollisionShape2D" parent="Rooms/Room02" index="1"]
+[node name="CollisionShape2D" parent="Rooms/Room02" index="2"]
 shape = SubResource( 2 )
 
 [node name="Door0102" parent="Doors" index="0" instance=ExtResource( 2 )]

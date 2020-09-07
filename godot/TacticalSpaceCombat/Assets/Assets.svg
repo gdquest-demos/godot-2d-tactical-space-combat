@@ -12,8 +12,8 @@
    viewBox="0 0 448 448"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0 (4fa77f4b65, 2020-09-01)"
-   sodipodi:docname="assets.svg">
+   inkscape:version="1.0 (3c411ce48d, 2020-09-06)"
+   sodipodi:docname="Assets.svg">
   <defs
      id="defs2">
     <filter
@@ -37,9 +37,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284272"
-     inkscape:cx="281.16692"
-     inkscape:cy="368.03894"
+     inkscape:zoom="4.0000001"
+     inkscape:cx="116.62929"
+     inkscape:cy="348.5297"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1059,13 +1059,6 @@
        id="circle1224"
        style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square"
        d="m 354.01172,450.00142 c -0.9903,0.0219 -1.95702,0.59541 -2.01172,1.65625 0,13.25484 7.16344,24 16,24 8.83656,0 16,-10.74516 16,-24 -0.10939,-2.12169 -3.86384,-2.29703 -4.16797,0 -0.50153,4.45064 -2.07048,7.48742 -4.26758,9.39648 A 8,8 0 0 0 368,455.65767 a 8,8 0 0 0 -7.56445,5.39648 c -2.1971,-1.90906 -3.76605,-4.94584 -4.26758,-9.39648 -0.15207,-1.14851 -1.16595,-1.67817 -2.15625,-1.65625 z" />
-    <rect
-       style="fill:#ffb570;stroke-width:6;stroke-linecap:square"
-       id="rect1225"
-       width="69.29248"
-       height="63.426056"
-       x="-146.68225"
-       y="269.70401" />
     <g
        id="g1238"
        transform="translate(-6,2)">
@@ -1079,6 +1072,21 @@
          style="fill:#ffffff;fill-opacity:1;stroke-width:6;stroke-linecap:square"
          d="m 392,463 v 6 6 h 8 v -2 h 16 c 2.216,0 4,-1.784 4,-4 0,-2.216 -1.784,-4 -4,-4 h -16 v -2 z"
          sodipodi:nodetypes="cccccsssccc" />
+    </g>
+    <g
+       id="g1658">
+      <circle
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="circle1654"
+         cx="112"
+         cy="464"
+         r="12" />
+      <circle
+         style="fill:#ffffff;stroke-width:6;stroke-linecap:square"
+         id="path1652"
+         cx="112"
+         cy="464"
+         r="2" />
     </g>
   </g>
   <g

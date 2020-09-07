@@ -1,0 +1,14 @@
+[gd_scene format=2]
+
+[node name="Shield" type="VBoxContainer"]
+margin_right = 32.0
+margin_bottom = 72.0
+
+[node name="Button" type="Button" parent="."]
+margin_top = 40.0
+margin_right = 32.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 10
+text = "S"

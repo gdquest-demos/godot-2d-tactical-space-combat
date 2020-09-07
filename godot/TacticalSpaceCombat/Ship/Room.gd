@@ -2,6 +2,8 @@ class_name Room
 extends Area2D
 
 
+signal targetted
+
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
 const SPRITE := {
@@ -23,9 +25,10 @@ var _area := 0
 var _iter_index := 0
 
 onready var scene_tree: SceneTree = get_tree()
-onready var sprite: Sprite = $Sprite
+onready var sprite_type: Sprite = $SpriteType
+onready var sprite_target: Sprite = $SpriteTarget
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
-onready var ui_feedback: NinePatchRect = $UI/Feedback
+onready var feedback: NinePatchRect = $Feedback
 
 
 func setup(tilemap: TileMap) -> void:
@@ -34,12 +37,23 @@ func setup(tilemap: TileMap) -> void:
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
 	_area = _size.x * _size.y
 	
-	sprite.visible = type != Type.EMPTY
-	sprite.region_enabled = sprite.visible
-	sprite.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
+	sprite_type.visible = type != Type.EMPTY
+	sprite_type.region_enabled = sprite_type.visible
+	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 	
-	ui_feedback.rect_position = global_position - collision_shape.shape.extents
-	ui_feedback.rect_size = 2 * collision_shape.shape.extents
+	feedback.rect_position -= collision_shape.shape.extents
+	feedback.rect_size = 2 * collision_shape.shape.extents
+
+
+func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.pressed and event.button_index == BUTTON_LEFT
+		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
+	):
+		add_to_group(Utils.group_name("target"))
+		sprite_target.visible = true
+		emit_signal("targetted")
 
 
 func _on_mouse(has_entered: bool) -> void:
@@ -48,7 +62,7 @@ func _on_mouse(has_entered: bool) -> void:
 		add_to_group(group) 
 	else:
 		remove_from_group(group)
-	ui_feedback.visible = has_entered
+	feedback.visible = has_entered
 
 
 func _on_area(area: Area2D, has_entered: bool) -> void:

@@ -6,6 +6,7 @@ var slots := {}
 onready var scene_tree: SceneTree = get_tree()
 onready var rooms: Node2D = $Rooms
 onready var doors: Node2D = $Doors
+onready var weapons: Node2D = $Weapons
 onready var units: Node2D = $Units
 onready var tilemap: TileMap = $TileMap
 
@@ -18,6 +19,9 @@ func _ready() -> void:
 	tilemap.setup(rooms, doors)
 	
 	for unit in units.get_children():
+		for door in doors.get_children():
+			door.connect("opened", unit, "set_is_walking", [true])
+		
 		var position_map := tilemap.world_to_map(unit.path_follow.position)
 		slots[position_map] = unit
 
