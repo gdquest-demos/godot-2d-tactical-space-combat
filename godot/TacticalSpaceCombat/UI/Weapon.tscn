@@ -35,4 +35,4 @@ percent_visible = false
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="toggled" from="Button" to="." method="_on_Button_toggled"]
-[connection signal="tween_all_completed" from="Tween" to="." method="set_is_charging" binds= [ false ]]
+[connection signal="tween_all_completed" from="Tween" to="." method="_set_is_charging" binds= [ false ]]

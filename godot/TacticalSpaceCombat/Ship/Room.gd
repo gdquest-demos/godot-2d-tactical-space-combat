@@ -2,7 +2,7 @@ class_name Room
 extends Area2D
 
 
-signal targetted
+signal targeted(is_target, targeted_by, room_global_position)
 
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
@@ -17,6 +17,7 @@ export(Type) var type := Type.EMPTY
 
 var is_manned := false setget , get_is_manned
 
+var _targeted_by := -1
 var _units := 0
 var _entrances := {}
 var _tilemap: TileMap = null
@@ -50,14 +51,16 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 		event is InputEventMouseButton
 		and event.pressed and event.button_index == BUTTON_LEFT
 		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
+		and _targeted_by != -1
 	):
-		add_to_group(Utils.group_name("target"))
 		sprite_target.visible = true
-		emit_signal("targetted")
+		sprite_target.get_child(_targeted_by).visible = true
+		emit_signal("targeted", true, _targeted_by, global_position)
+		_targeted_by = -1
 
 
 func _on_mouse(has_entered: bool) -> void:
-	var group := Utils.group_name("selected", "room")
+	var group := "selected-room"
 	if has_entered or not is_in_group(group):
 		add_to_group(group) 
 	else:
@@ -75,6 +78,20 @@ func _on_area(area: Area2D, has_entered: bool) -> void:
 		entrance += area.position
 		entrance = _tilemap.world_to_map(entrance)
 		_entrances[entrance] = null
+
+
+func _on_UIWeapon_targeting(index: int) -> void:
+	_targeted_by = index
+	
+	sprite_target.visible = false
+	sprite_target.get_child(_targeted_by).visible = false
+	for node in sprite_target.get_children():
+		if node.visible:
+			sprite_target.visible = true
+			break
+	
+	if not sprite_target.visible:
+		emit_signal("targeted", false, _targeted_by, position)
 
 
 func _get_entrance(from: Vector2) -> Vector2:

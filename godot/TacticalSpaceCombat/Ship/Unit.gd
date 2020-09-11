@@ -55,7 +55,7 @@ func walk(path: Curve2D) -> void:
 
 func set_is_selected(value: bool) -> void:
 	var sig := "selected"
-	var group := Utils.group_name(sig, "unit")
+	var group := "%s-unit" % [sig]
 	
 	is_selected = value
 	if is_selected:

@@ -12,10 +12,43 @@
    viewBox="0 0 448 448"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0 (3c411ce48d, 2020-09-06)"
+   inkscape:version="1.0.1 (c497b03c73, 2020-09-10)"
    sodipodi:docname="Assets.svg">
   <defs
      id="defs2">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1672"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1668"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1640"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
@@ -37,9 +70,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.0000001"
-     inkscape:cx="116.62929"
-     inkscape:cy="348.5297"
+     inkscape:zoom="2"
+     inkscape:cx="63.463644"
+     inkscape:cy="324.29826"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -53,9 +86,13 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
-     inkscape:bbox-paths="true"
-     inkscape:bbox-nodes="true"
-     inkscape:snap-nodes="true">
+     inkscape:bbox-paths="false"
+     inkscape:bbox-nodes="false"
+     inkscape:snap-nodes="false"
+     inkscape:snap-bbox-midpoints="false"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-others="false"
+     inkscape:snap-bbox-edge-midpoints="false">
     <inkscape:grid
        type="xygrid"
        id="grid914"
@@ -1076,17 +1113,70 @@
     <g
        id="g1658">
       <circle
-         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="circle1654"
-         cx="112"
-         cy="464"
-         r="12" />
-      <circle
-         style="fill:#ffffff;stroke-width:6;stroke-linecap:square"
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path1652"
          cx="112"
          cy="464"
-         r="2" />
+         r="7" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1.33335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1173)"
+         d="m 104,472 c 5.28229,-5.28229 10.66667,-10.66667 16,-16"
+         id="path1638"
+         inkscape:path-effect="#path-effect1668"
+         inkscape:original-d="m 104,472 c 5.28329,-5.28129 10.66767,-10.66567 16,-16"
+         sodipodi:nodetypes="cc"
+         transform="matrix(1.4999711,0,0,1.4999827,-55.996769,-231.99197)" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:1.33335;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1173)"
+         d="m 103.29336,472 c 5.28229,-5.28229 10.66667,-10.66667 16,-16"
+         id="path1670"
+         inkscape:path-effect="#path-effect1672"
+         inkscape:original-d="m 103.29336,472 c 5.28229,-5.28229 10.66667,-10.66667 16,-16"
+         transform="matrix(-1.4999711,0,0,1.4999827,278.93683,-231.99197)"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <g
+       id="g1739">
+      <g
+         aria-label="1"
+         transform="scale(0.99997284,1.0000272)"
+         id="text1682"
+         style="font-size:10.8989px;line-height:1.25;font-family:Manrope;-inkscape-font-specification:Manrope;fill:#ffffff;fill-opacity:1;stroke-width:1">
+        <path
+           d="m 90.002554,455.98761 h 4.381358 v -0.82832 h -1.602138 v -7.17147 h -0.762923 c -0.435956,0.26157 -0.948205,0.44685 -1.656633,0.57764 v 0.63214 h 1.416857 v 5.96169 h -1.776521 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.8989px;font-family:'Noto Sans CJK JP';-inkscape-font-specification:'Noto Sans CJK JP';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:1"
+           id="path1718" />
+      </g>
+      <g
+         aria-label="2"
+         transform="scale(0.99997284,1.0000272)"
+         id="text1690"
+         style="font-size:10.7092px;line-height:1.25;font-family:Manrope;-inkscape-font-specification:Manrope;fill:#ffffff;fill-opacity:1;stroke-width:0.999993">
+        <path
+           d="m 89.566352,463.9874 h 4.936941 v -0.84603 h -2.173967 c -0.396241,0 -0.878155,0.0428 -1.285104,0.075 1.841982,-1.7456 3.07354,-3.34127 3.07354,-4.90481 0,-1.4029 -0.878154,-2.3239 -2.281059,-2.3239 -0.995956,0 -1.670636,0.4605 -2.313188,1.1566 l 0.567588,0.55688 c 0.428368,-0.51405 0.985246,-0.91029 1.627798,-0.91029 0.974538,0 1.445742,0.65327 1.445742,1.55284 0,1.34936 -1.135175,2.9129 -3.598291,5.06545 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.7092px;font-family:'Noto Sans CJK JP';-inkscape-font-specification:'Noto Sans CJK JP';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:0.999993"
+           id="path1722" />
+      </g>
+      <g
+         aria-label="3"
+         transform="scale(0.99997284,1.0000272)"
+         id="text1694"
+         style="font-size:10.526px;line-height:1.25;font-family:Manrope;-inkscape-font-specification:Manrope;fill:#ffffff;fill-opacity:1;stroke-width:0.999993">
+        <path
+           d="m 91.920762,471.98721 c 1.36838,0 2.47361,-0.82103 2.47361,-2.19993 0,-1.0526 -0.726294,-1.74732 -1.63153,-1.95784 v -0.0421 c 0.810502,-0.30526 1.36838,-0.92629 1.36838,-1.86311 0,-1.22101 -0.94734,-1.93678 -2.242038,-1.93678 -0.89471,0 -1.5789,0.38946 -2.15783,0.92629 l 0.515774,0.61051 c 0.431566,-0.4421 0.978918,-0.74735 1.599952,-0.74735 0.799976,0 1.305224,0.4842 1.305224,1.22102 0,0.83155 -0.547352,1.47364 -2.136778,1.47364 v 0.73682 c 1.778894,0 2.399928,0.62103 2.399928,1.53679 0,0.89471 -0.652612,1.44206 -1.568374,1.44206 -0.873658,0 -1.463114,-0.41051 -1.915732,-0.88418 l -0.484196,0.63156 c 0.505248,0.54735 1.26312,1.0526 2.47361,1.0526 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.526px;font-family:'Noto Sans CJK JP';-inkscape-font-specification:'Noto Sans CJK JP';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:0.999993"
+           id="path1725" />
+      </g>
+      <g
+         aria-label="4"
+         transform="scale(0.99997284,1.0000272)"
+         id="text1698"
+         style="font-size:10.8989px;line-height:1.25;font-family:Manrope;-inkscape-font-specification:Manrope;fill:#ffffff;fill-opacity:1;stroke-width:1">
+        <path
+           d="m 90.296824,476.98977 1.820117,-2.72472 c 0.228877,-0.39236 0.446855,-0.78472 0.643035,-1.17708 h 0.0436 c -0.0218,0.41415 -0.05449,1.05719 -0.05449,1.44955 v 2.45225 z m 2.452253,2.9972 h 0.937305 v -2.20158 h 1.057194 v -0.79562 h -1.057194 v -5.00259 h -1.100789 l -3.324164,5.14428 v 0.65393 h 3.487648 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.8989px;font-family:'Noto Sans CJK JP';-inkscape-font-specification:'Noto Sans CJK JP';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke-width:1"
+           id="path1728" />
+      </g>
     </g>
   </g>
   <g

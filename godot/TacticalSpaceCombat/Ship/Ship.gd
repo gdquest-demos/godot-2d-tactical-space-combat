@@ -28,10 +28,10 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_RIGHT:
-		var group := Utils.group_name("selected", "unit")
+		var group := "selected-unit"
 		for unit in scene_tree.get_nodes_in_group(group):
 			var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
-			group = Utils.group_name("selected", "room")
+			group = "selected-room"
 			for room in scene_tree.get_nodes_in_group(group):
 				var point2: Vector2 = room.get_slot(slots, unit)
 				if is_inf(point2.x):

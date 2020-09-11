@@ -1,8 +1,6 @@
 extends Node2D
 
 
-const Projectile := preload("res://TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
-
 var _rng := RandomNumberGenerator.new()
 
 onready var scene_tree: SceneTree = get_tree()
@@ -21,12 +19,14 @@ func _ready() -> void:
 			ui.systems.add_child(ui.Weapons.instance())
 		
 		var ui_weapon: VBoxContainer = ui.Weapon.instance()
-		weapon.connect("spawn", self, "_on_Weapon_spawn")
+		weapon.connect("projectile_exited", self, "_on_Weapon_projectile_exited")
 		ui_weapon.connect("fired", weapon, "_on_UIWeapon_fired")
 		ui.systems.get_node("Weapons").add_child(ui_weapon)
 		
 		for room in ship_enemy.rooms.get_children():
-			room.connect("targetted", ui_weapon.button, "set_pressed", [false])
+			ui_weapon.connect("targeting", room, "_on_UIWeapon_targeting")
+			room.connect("targeted", weapon, "_on_Room_targeted")
+			room.connect("targeted", ui_weapon, "_on_Room_targeted")
 	
 	for unit in ship_player.units.get_children():
 		var ui_unit: ColorRect = ui.Unit.instance()
@@ -37,15 +37,14 @@ func _ready() -> void:
 		ui_unit.setup(unit.colors.default)
 
 
-func _on_Weapon_spawn() -> void:
+func _on_Weapon_projectile_exited(Projectile: PackedScene, target_global_position: Vector2) -> void:
 	spawner.unit_offset = _rng.randf()
-	for room in scene_tree.get_nodes_in_group("target"):
-		var direction: Vector2 = (room.global_position - spawner.global_position).normalized()
-		var projectile: RigidBody2D = Projectile.instance()
-		projectile.global_position = spawner.global_position
-		projectile.linear_velocity = direction * projectile.linear_velocity.length()
-		projectile.rotation = direction.angle()
-		projectiles.add_child(projectile)
+	var direction: Vector2 = (target_global_position - spawner.global_position).normalized()
+	var projectile: RigidBody2D = Projectile.instance()
+	projectile.global_position = spawner.global_position
+	projectile.linear_velocity = direction * projectile.linear_velocity.length()
+	projectile.rotation = direction.angle()
+	projectiles.add_child(projectile)
 
 
 func _on_UIUnit_selected() -> void:
