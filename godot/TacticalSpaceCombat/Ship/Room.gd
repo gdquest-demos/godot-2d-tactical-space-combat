@@ -2,7 +2,7 @@ class_name Room
 extends Area2D
 
 
-signal targeted(is_target, targeted_by, room_global_position)
+signal targeted(targeted_by, target_global_position)
 
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
@@ -55,7 +55,8 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	):
 		sprite_target.visible = true
 		sprite_target.get_child(_targeted_by).visible = true
-		emit_signal("targeted", true, _targeted_by, global_position)
+		add_to_group("target")
+		emit_signal("targeted", _targeted_by, global_position)
 		_targeted_by = -1
 
 
@@ -80,9 +81,12 @@ func _on_area(area: Area2D, has_entered: bool) -> void:
 		_entrances[entrance] = null
 
 
+# We save index in _targeted_by so that we make the appropriate sprite visible on click, toggled in
+# _on_input_event()
 func _on_UIWeapon_targeting(index: int) -> void:
 	_targeted_by = index
 	
+	# Toggle off the targeting sprite unless we have another target already on
 	sprite_target.visible = false
 	sprite_target.get_child(_targeted_by).visible = false
 	for node in sprite_target.get_children():
@@ -90,8 +94,9 @@ func _on_UIWeapon_targeting(index: int) -> void:
 			sprite_target.visible = true
 			break
 	
-	if not sprite_target.visible:
-		emit_signal("targeted", false, _targeted_by, position)
+	var group := "target"
+	if is_in_group(group):
+		remove_from_group(group)
 
 
 func _get_entrance(from: Vector2) -> Vector2:

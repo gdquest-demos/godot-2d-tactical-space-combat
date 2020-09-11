@@ -5,17 +5,18 @@ signal projectile_exited(Projectile)
 
 const Projectile := preload("res://TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
 
-var _target_position := Vector2.INF
+var _target_global_position := Vector2.INF
 
 
+# Add the projectile to scene tree and after it exits we emit "projectile_exited" so we can trigger
+# a new projectile creation in the enemy viewport.
 func _on_UIWeapon_fired():
 	var projectile := Projectile.instance()
-	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", Projectile, _target_position])
+	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", Projectile, _target_global_position])
 	add_child(projectile)
 
 
-func _on_Room_targeted(is_target: bool, targeted_by: int, room_position: Vector2) -> void:
-	if is_target and targeted_by == get_index():
-		_target_position = room_position
-	elif not is_target:
-		_target_position = Vector2.INF
+# Save room position in case player want to target a new room while projectile already fired
+func _on_Room_targeted(targeted_by: int, target_global_position: Vector2) -> void:
+	if targeted_by == get_index():
+		_target_global_position = target_global_position
