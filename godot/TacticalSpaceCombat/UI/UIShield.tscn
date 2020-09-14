@@ -1,14 +1,8 @@
 [gd_scene format=2]
 
-[node name="Weapons" type="HBoxContainer"]
-show_behind_parent = true
+[node name="UIShield" type="VBoxContainer"]
 margin_right = 32.0
 margin_bottom = 72.0
-rect_min_size = Vector2( 0, 72 )
-custom_constants/separation = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Button" type="Button" parent="."]
 margin_top = 40.0
@@ -17,5 +11,4 @@ margin_bottom = 72.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 10
-disabled = true
-text = "W"
+text = "S"

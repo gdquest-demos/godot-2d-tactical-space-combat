@@ -10,7 +10,7 @@ var charge_time := 2.0
 var _has_target := false
 var _is_charging := false setget _set_is_charging
 
-onready var scene_tree: SceneTree = get_tree()
+onready var scene_tree: SceneTree = 	get_tree()
 onready var progress_bar: ProgressBar = $ProgressBar
 onready var button: Button = $Button
 onready var tween: Tween = $Tween

@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://TacticalSpaceCombat/UI/Weapon.gd" type="Script" id=1]
+[ext_resource path="res://TacticalSpaceCombat/UI/UIWeapon.gd" type="Script" id=1]
 
-[node name="Weapon" type="VBoxContainer"]
+[node name="UIWeapon" type="VBoxContainer"]
 margin_right = 128.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 72 )
