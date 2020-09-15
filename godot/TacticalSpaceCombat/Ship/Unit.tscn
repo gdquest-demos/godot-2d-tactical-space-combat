@@ -3,8 +3,6 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.gd" type="Script" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=2]
 
-
-
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array(  )

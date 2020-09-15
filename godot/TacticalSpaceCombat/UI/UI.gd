@@ -1,9 +1,9 @@
 extends Control
 
+onready var ui_units := $UIUnitsList
+onready var weapons_list := $Systems/UIWeaponsList
 
-const Unit := preload("UIUnit.tscn")
-const Weapons := preload("UIWeaponsList.tscn")
-const Weapon := preload("UIWeapon.tscn")
 
-onready var units := $Units
-onready var systems := $Systems
+func setup(weapons: Array, units: Array) -> void:
+	weapons_list.setup(weapons)
+	ui_units.setup(units)

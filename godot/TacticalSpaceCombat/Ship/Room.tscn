@@ -18,45 +18,10 @@ modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 texture = ExtResource( 2 )
 region_rect = Rect2( 320, 384, 32, 32 )
 
-[node name="SpriteTarget" type="Sprite" parent="."]
-visible = false
-modulate = Color( 0.239216, 0.431373, 0.439216, 1 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 96, 384, 32, 32 )
-
-[node name="1" type="Sprite" parent="SpriteTarget"]
-visible = false
-position = Vector2( 0, -16 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 88, 384, 8, 8 )
-
-[node name="2" type="Sprite" parent="SpriteTarget"]
-visible = false
-position = Vector2( 16, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 88, 392, 8, 8 )
-
-[node name="3" type="Sprite" parent="SpriteTarget"]
-visible = false
-position = Vector2( 0, 16 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 88, 400, 8, 8 )
-
-[node name="4" type="Sprite" parent="SpriteTarget"]
-visible = false
-position = Vector2( -16, 0 )
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 88, 408, 8, 8 )
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="Feedback" type="NinePatchRect" parent="."]
+[node name="Outline" type="NinePatchRect" parent="."]
 visible = false
 modulate = Color( 1, 0.709804, 0.439216, 1 )
 margin_right = 64.0
@@ -72,8 +37,8 @@ patch_margin_bottom = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="area_entered" from="." to="." method="_on_area" binds= [ true ]]
-[connection signal="area_exited" from="." to="." method="_on_area" binds= [ false ]]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse" binds= [ true ]]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse" binds= [ false ]]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

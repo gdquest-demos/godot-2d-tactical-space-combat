@@ -1,6 +1,5 @@
 extends TileMap
 
-
 var _astar: AStar2D = AStar2D.new()
 var _size: Vector2 = Vector2.ZERO
 
@@ -38,8 +37,5 @@ func _get_neighbors(room: Room, point: Vector2) -> Array:
 	for offset in Utils.DIRECTIONS:
 		offset += point
 		if room.has_point(offset):
-			out.push_back({
-				"id": Utils.xy_to_index(_size.x, offset),
-				"point": offset
-			})
+			out.push_back({"id": Utils.xy_to_index(_size.x, offset), "point": offset})
 	return out

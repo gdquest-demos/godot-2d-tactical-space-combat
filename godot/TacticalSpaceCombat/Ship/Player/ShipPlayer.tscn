@@ -32,33 +32,33 @@ extents = Vector2( 64, 64 )
 position = Vector2( 96, 64 )
 type = 1
 
-[node name="CollisionShape2D" parent="Rooms/Room01" index="2"]
+[node name="CollisionShape2D" parent="Rooms/Room01" index="1"]
 shape = SubResource( 1 )
 
 [node name="Room02" parent="Rooms" index="1" instance=ExtResource( 5 )]
 position = Vector2( 128, 256 )
 
-[node name="CollisionShape2D" parent="Rooms/Room02" index="2"]
+[node name="CollisionShape2D" parent="Rooms/Room02" index="1"]
 shape = SubResource( 2 )
 
 [node name="Room03" parent="Rooms" index="2" instance=ExtResource( 5 )]
 position = Vector2( 224, 160 )
 
-[node name="CollisionShape2D" parent="Rooms/Room03" index="2"]
+[node name="CollisionShape2D" parent="Rooms/Room03" index="1"]
 shape = SubResource( 3 )
 
 [node name="Room04" parent="Rooms" index="3" instance=ExtResource( 5 )]
 position = Vector2( 352, 256 )
 type = 3
 
-[node name="CollisionShape2D" parent="Rooms/Room04" index="2"]
+[node name="CollisionShape2D" parent="Rooms/Room04" index="1"]
 shape = SubResource( 4 )
 
 [node name="Room05" parent="Rooms" index="4" instance=ExtResource( 5 )]
 position = Vector2( 384, 128 )
 type = 2
 
-[node name="CollisionShape2D" parent="Rooms/Room05" index="2"]
+[node name="CollisionShape2D" parent="Rooms/Room05" index="1"]
 shape = SubResource( 5 )
 
 [node name="Door0103" parent="Doors" index="0" instance=ExtResource( 2 )]

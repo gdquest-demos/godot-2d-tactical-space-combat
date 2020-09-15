@@ -1,13 +1,10 @@
 class_name Unit
 extends Path2D
 
+signal selected
+signal selection_toggled(is_selected)
 
-signal selected(is_selected)
-
-export var colors := {
-	"default": Color("3d6e70"),
-	"selected": Color("3ca370")
-}
+export var colors := {"default": Color("3d6e70"), "selected": Color("3ca370")}
 
 var speed := 150
 var is_selected: bool setget set_is_selected
@@ -34,7 +31,7 @@ func _on_AreaUnit_area_entered(area: Area2D) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
+	if event.is_action_pressed("left_click"):
 		self.is_selected = _has_mouse_over
 
 
@@ -54,19 +51,17 @@ func walk(path: Curve2D) -> void:
 
 
 func set_is_selected(value: bool) -> void:
-	var sig := "selected"
-	var group := "%s-unit" % [sig]
-	
 	is_selected = value
+
 	if is_selected:
+		emit_signal("selected")
 		area_unit.modulate = colors.selected
-		add_to_group(group)
-		
+		add_to_group("selected-unit")
 	else:
 		area_unit.modulate = colors.default
-		if is_in_group(group):
-			remove_from_group(group)
-	emit_signal(sig, is_selected)
+		if is_in_group("selected-unit"):
+			remove_from_group("selected-unit")
+	emit_signal("selection_toggled", is_selected)
 
 
 func set_is_walking(value: bool) -> void:
