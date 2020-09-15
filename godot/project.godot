@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Room.gd"
 }, {
+"base": "Node2D",
+"class": "ShipUnits",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/ShipUnits.gd"
+}, {
+"base": "ColorRect",
+"class": "UIUnit",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/UI/UIUnit.gd"
+}, {
 "base": "VBoxContainer",
 "class": "UIWeapon",
 "language": "GDScript",
@@ -48,6 +58,8 @@ _global_script_class_icons={
 "Door": "",
 "Projectile": "",
 "Room": "",
+"ShipUnits": "",
+"UIUnit": "",
 "UIWeapon": "",
 "Unit": "",
 "Utils": "",

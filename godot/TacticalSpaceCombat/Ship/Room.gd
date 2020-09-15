@@ -1,8 +1,7 @@
 class_name Room
 extends Area2D
 
-
-enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
+enum Type { EMPTY, DEFAULT, HELM, WEAPONS }
 
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
@@ -11,7 +10,7 @@ const SPRITE := {
 	Type.WEAPONS: Vector2(384, 384)
 }
 
-export(Type) var type := Type.EMPTY
+export (Type) var type := Type.EMPTY
 
 var is_manned := false setget , get_is_manned
 
@@ -30,14 +29,14 @@ onready var _outline: NinePatchRect = $Outline
 
 func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
-	
+
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
 	_area = _size.x * _size.y
-	
+
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_enabled = sprite_type.visible
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
-	
+
 	_outline.rect_position -= collision_shape.shape.extents
 	_outline.rect_size = 2 * collision_shape.shape.extents
 
@@ -67,7 +66,7 @@ func _on_area_exited(area) -> void:
 
 
 func _update_door(area: Area2D) -> void:
-	var entrance := (position - area.position)
+	var entrance := position - area.position
 	entrance *= Vector2.DOWN.rotated(-area.rotation)
 	entrance = entrance.normalized() * _tilemap.cell_size / 2
 	entrance += area.position
@@ -96,8 +95,10 @@ func has_point(point: Vector2) -> bool:
 	var top_left := _tilemap.world_to_map(position - collision_shape.shape.extents)
 	var bottom_right := top_left + _size
 	return (
-		top_left.x <= point.x and top_left.y <= point.y
-		and point.x < bottom_right.x and point.y < bottom_right.y
+		top_left.x <= point.x
+		and top_left.y <= point.y
+		and point.x < bottom_right.x
+		and point.y < bottom_right.y
 	)
 
 
@@ -111,7 +112,7 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 			if has_point(offset) and not (offset in slots and slots[offset] != unit):
 				out = offset
 				break
-		
+
 		if not is_inf(out.x):
 			break
 	return out

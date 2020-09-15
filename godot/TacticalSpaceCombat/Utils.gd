@@ -1,6 +1,5 @@
 class_name Utils
 
-
 const DIRECTIONS := [
 	Vector2.UP,
 	Vector2.RIGHT + Vector2.UP,
@@ -12,19 +11,15 @@ const DIRECTIONS := [
 	Vector2.LEFT + Vector2.UP
 ]
 
-
 static func xy_to_index(width: int, offset: Vector2) -> int:
 	return int(offset.x + width * offset.y)
-
 
 static func index_to_xy(width: int, index: int) -> Vector2:
 	return Vector2(index % width, int(index / width))
 
-
 static func manhattan(point1: Vector2, point2: Vector2) -> float:
 	var diff := (point2 - point1).abs()
 	return diff.x + diff.y
-
 
 static func erase_value(dict: Dictionary, value) -> bool:
 	var out := false
