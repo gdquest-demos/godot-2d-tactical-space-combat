@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Player/ShipPlayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Theme.tres" type="Theme" id=3]
+[ext_resource path="res://TacticalSpaceCombat/UI/UIWeaponsList.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat.gd" type="Script" id=5]
 [ext_resource path="res://TacticalSpaceCombat/UI/UI.gd" type="Script" id=6]
 
@@ -80,3 +81,7 @@ rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 10
 text = "S"
+
+[node name="UIWeaponsList" parent="UI/Systems" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_right = 68.0

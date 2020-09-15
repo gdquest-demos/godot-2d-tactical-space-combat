@@ -29,10 +29,8 @@ margin_top = 64.0
 margin_right = 128.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 8 )
-step = 1.0
+step = 0.0
 rounded = true
 percent_visible = false
-
-[node name="Tween" type="Tween" parent="."]
+[connection signal="gui_input" from="Button" to="." method="_on_Button_gui_input"]
 [connection signal="toggled" from="Button" to="." method="_on_Button_toggled"]
-[connection signal="tween_all_completed" from="Tween" to="." method="_set_is_charging" binds= [ false ]]

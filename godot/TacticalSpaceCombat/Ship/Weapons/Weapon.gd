@@ -1,22 +1,52 @@
+# Base class for all weapons, whether they shoot bullets or lasers.
+# Charges over time. When fully charged, if the weapon has a target, it fires automatically.
+# See [UIWeapon] for logic related to selecting targets.
+class_name Weapon
 extends Position2D
 
+signal projectile_exited_screen(Projectile)
+signal charge_changed(new_value)
 
-signal projectile_exited(Projectile)
+const Projectile := preload("Projectile.tscn")
 
-const Projectile := preload("res://TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
+# Amount charged each second.
+export var charge_rate := 10.0
+export var label := "Rocket launcher"
 
-var _target_global_position := Vector2.INF
+# Current charge level of the weapon. When the value reaches 100, the weapon can fire.
+var charge := 0.0 setget set_charge
+var target: Room = null setget set_target
 
 
-# Add the projectile to scene tree and after it exits we emit "projectile_exited" so we can trigger
-# a new projectile creation in the enemy viewport.
-func _on_UIWeapon_fired():
+func _process(delta: float) -> void:
+	set_charge(charge + charge_rate * delta)
+
+
+func set_charge(value: float) -> void:
+	charge = value
+	emit_signal("charge_changed", charge)
+	if charge >= 100.0:
+		set_process(false)
+		if target:
+			fire()
+
+
+func set_target(value: Room) -> void:
+	target = value
+	if charge > 100.0 and target:
+		fire()
+
+
+func fire() -> void:
+	charge = 0.0
+	# Add the projectile to scene tree and after it exits we emit "projectile_exited_screen" so we can trigger
+	# a new projectile creation in the enemy viewport.
 	var projectile := Projectile.instance()
-	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", Projectile, _target_global_position])
+	projectile.connect(
+		"tree_exited",
+		self,
+		"emit_signal",
+		["projectile_exited_screen", Projectile, target.global_position]
+	)
 	add_child(projectile)
-
-
-# Save room position in case player want to target a new room while projectile already fired
-func _on_Room_targeted(targeted_by: int, target_global_position: Vector2) -> void:
-	if targeted_by == get_index():
-		_target_global_position = target_global_position
+	set_process(true)

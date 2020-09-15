@@ -39,5 +39,5 @@ func _unhandled_input(event: InputEvent) -> void:
 				
 				var path: Curve2D = tilemap.find_path(point1, point2)
 				unit.walk(path)
-				Utils.erase_val(slots, unit)
+				Utils.erase_value(slots, unit)
 				slots[point2] = unit

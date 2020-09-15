@@ -18,7 +18,7 @@ static func xy_to_index(width: int, offset: Vector2) -> int:
 
 
 static func index_to_xy(width: int, index: int) -> Vector2:
-	return Vector2(index % width, index / width)
+	return Vector2(index % width, int(index / width))
 
 
 static func manhattan(point1: Vector2, point2: Vector2) -> float:
@@ -26,9 +26,9 @@ static func manhattan(point1: Vector2, point2: Vector2) -> float:
 	return diff.x + diff.y
 
 
-static func erase_val(dict: Dictionary, val) -> bool:
+static func erase_value(dict: Dictionary, value) -> bool:
 	var out := false
 	for key in dict:
-		if dict[key] == val:
+		if dict[key] == value:
 			out = dict.erase(key)
 	return out

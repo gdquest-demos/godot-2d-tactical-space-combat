@@ -1,4 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/UI/UIWeaponsList.gd" type="Script" id=1]
+[ext_resource path="res://TacticalSpaceCombat/UI/UIWeapon.tscn" type="PackedScene" id=2]
 
 [node name="UIWeaponsList" type="HBoxContainer"]
 show_behind_parent = true
@@ -6,9 +9,11 @@ margin_right = 32.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 72 )
 custom_constants/separation = 4
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+UIWeapon = ExtResource( 2 )
 
 [node name="Button" type="Button" parent="."]
 margin_top = 40.0

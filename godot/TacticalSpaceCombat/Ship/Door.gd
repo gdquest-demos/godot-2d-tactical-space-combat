@@ -1,7 +1,6 @@
 class_name Door
 extends Area2D
 
-
 signal opened
 
 var is_open := false setget set_is_open
@@ -22,8 +21,8 @@ func _on_area(area: Area2D, has_entered: bool) -> void:
 			self.is_open = false
 
 
-func set_is_open(val: bool) -> void:
-	is_open = val
+func set_is_open(value: bool) -> void:
+	is_open = value
 	if is_open:
 		sprite.frame = 1
 		emit_signal("opened")

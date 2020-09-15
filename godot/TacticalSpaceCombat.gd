@@ -14,20 +14,11 @@ onready var ui: Control = $UI
 func _ready() -> void:
 	_rng.randomize()
 	
-	for weapon in ship_player.weapons.get_children():
-		if not ui.systems.has_node("UIWeaponsList"):
-			ui.systems.add_child(ui.Weapons.instance())
-		
-		var ui_weapon: VBoxContainer = ui.Weapon.instance()
+	var weapons: Array = ship_player.weapons.get_children()
+	ui.setup(weapons)
+	for weapon in weapons:
 		weapon.connect("projectile_exited", self, "_on_Weapon_projectile_exited")
-		ui_weapon.connect("fired", weapon, "_on_UIWeapon_fired")
-		ui.systems.get_node("UIWeaponsList").add_child(ui_weapon)
-		
-		for room in ship_enemy.rooms.get_children():
-			ui_weapon.connect("targeting", room, "_on_UIWeapon_targeting")
-			room.connect("targeted", weapon, "_on_Room_targeted")
-			room.connect("targeted", ui_weapon, "_on_Room_targeted")
-	
+
 	for unit in ship_player.units.get_children():
 		var ui_unit: ColorRect = ui.Unit.instance()
 		ui_unit.connect("selected", self, "_on_UIUnit_selected")

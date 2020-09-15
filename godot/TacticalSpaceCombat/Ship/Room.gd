@@ -2,8 +2,6 @@ class_name Room
 extends Area2D
 
 
-signal targeted(targeted_by, target_global_position)
-
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
 const SPRITE := {
@@ -17,7 +15,6 @@ export(Type) var type := Type.EMPTY
 
 var is_manned := false setget , get_is_manned
 
-var _targeted_by := -1
 var _units := 0
 var _entrances := {}
 var _tilemap: TileMap = null
@@ -27,9 +24,8 @@ var _iter_index := 0
 
 onready var scene_tree: SceneTree = get_tree()
 onready var sprite_type: Sprite = $SpriteType
-onready var sprite_target: Sprite = $SpriteTarget
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
-onready var feedback: NinePatchRect = $Feedback
+onready var _outline: NinePatchRect = $Outline
 
 
 func setup(tilemap: TileMap) -> void:
@@ -42,61 +38,46 @@ func setup(tilemap: TileMap) -> void:
 	sprite_type.region_enabled = sprite_type.visible
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 	
-	feedback.rect_position -= collision_shape.shape.extents
-	feedback.rect_size = 2 * collision_shape.shape.extents
+	_outline.rect_position -= collision_shape.shape.extents
+	_outline.rect_size = 2 * collision_shape.shape.extents
 
 
-func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.pressed and event.button_index == BUTTON_LEFT
-		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
-		and _targeted_by != -1
-	):
-		sprite_target.visible = true
-		sprite_target.get_child(_targeted_by).visible = true
-		add_to_group("target")
-		emit_signal("targeted", _targeted_by, global_position)
-		_targeted_by = -1
+func _on_mouse_entered() -> void:
+	add_to_group("selected-room")
+	_outline.show()
 
 
-func _on_mouse(has_entered: bool) -> void:
-	var group := "selected-room"
-	if has_entered or not is_in_group(group):
-		add_to_group(group) 
-	else:
-		remove_from_group(group)
-	feedback.visible = has_entered
+func _on_mouse_exited() -> void:
+	remove_from_group("selected-room")
+	_outline.hide()
 
 
-func _on_area(area: Area2D, has_entered: bool) -> void:
-	if area.is_in_group("unit"):
-		_units += 1 if has_entered else -1
-	elif area.is_in_group("door"):
-		var entrance := (position - area.position)
-		entrance *= Vector2.DOWN.rotated(-area.rotation)
-		entrance = entrance.normalized() * _tilemap.cell_size / 2
-		entrance += area.position
-		entrance = _tilemap.world_to_map(entrance)
-		_entrances[entrance] = null
+func _on_area_entered(area) -> void:
+	if area is Unit:
+		_units += 1
+	elif area is Door:
+		_update_door(area)
 
 
-# We save index in _targeted_by so that we make the appropriate sprite visible on click, toggled in
-# _on_input_event()
-func _on_UIWeapon_targeting(index: int) -> void:
-	_targeted_by = index
-	
-	# Toggle off the targeting sprite unless we have another target already on
-	sprite_target.visible = false
-	sprite_target.get_child(_targeted_by).visible = false
-	for node in sprite_target.get_children():
-		if node.visible:
-			sprite_target.visible = true
-			break
-	
-	var group := "target"
-	if is_in_group(group):
-		remove_from_group(group)
+func _on_area_exited(area) -> void:
+	if area is Unit:
+		_units -= 1
+	elif area is Door:
+		_update_door(area)
+
+
+func _update_door(area: Area2D) -> void:
+	var entrance := (position - area.position)
+	entrance *= Vector2.DOWN.rotated(-area.rotation)
+	entrance = entrance.normalized() * _tilemap.cell_size / 2
+	entrance += area.position
+	entrance = _tilemap.world_to_map(entrance)
+	_entrances[entrance] = null
+
+
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event.is_action_pressed("left_click"):
+		Events.emit_signal("room_clicked", self)
 
 
 func _get_entrance(from: Vector2) -> Vector2:

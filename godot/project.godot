@@ -14,10 +14,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Door.gd"
 }, {
+"base": "RigidBody2D",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/Projectile.gd"
+}, {
 "base": "Area2D",
 "class": "Room",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Room.gd"
+}, {
+"base": "VBoxContainer",
+"class": "UIWeapon",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/UI/UIWeapon.gd"
 }, {
 "base": "Path2D",
 "class": "Unit",
@@ -28,12 +38,20 @@ _global_script_classes=[ {
 "class": "Utils",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Utils.gd"
+}, {
+"base": "Position2D",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/Weapon.gd"
 } ]
 _global_script_class_icons={
 "Door": "",
+"Projectile": "",
 "Room": "",
+"UIWeapon": "",
 "Unit": "",
-"Utils": ""
+"Utils": "",
+"Weapon": ""
 }
 
 [application]
@@ -42,14 +60,24 @@ config/name="2D Tactical Space Combat"
 run/main_scene="res://TacticalSpaceCombat.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Events="*res://TacticalSpaceCombat/Singletons/Events.gd"
+
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/borderless=true
-window/size/always_on_top=true
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[input]
+
+left_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
 
 [layer_names]
 
