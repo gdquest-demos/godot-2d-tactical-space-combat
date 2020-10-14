@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipEnemy.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Player/ShipPlayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/ShipPlayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Theme.tres" type="Theme" id=3]
 [ext_resource path="res://TacticalSpaceCombat.gd" type="Script" id=5]
 [ext_resource path="res://TacticalSpaceCombat/UI/UI.gd" type="Script" id=6]

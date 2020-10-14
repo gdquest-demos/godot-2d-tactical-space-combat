@@ -1,6 +1,4 @@
 extends VBoxContainer
-# The flow needs to be fixed, there's lots of bugs for now.
-# FIXME: automatically recharge after shot.
 
 signal targeting(index)
 signal fired
@@ -23,10 +21,11 @@ func _ready() -> void:
 func _on_Button_toggled(is_pressed: bool) -> void:
 	var cursor := Input.CURSOR_ARROW
 	if is_pressed:
+		_has_target = false
 		cursor = Input.CURSOR_CROSS
 		emit_signal("targeting", get_index() - 1)
 	elif not (is_pressed or _is_charging or scene_tree.get_nodes_in_group("target").empty()):
-		# If the room is targeted after weapon got charged then fire directly.
+		_set_is_charging(true)
 		emit_signal("fired")
 	Input.set_default_cursor_shape(cursor)
 
@@ -47,5 +46,5 @@ func _set_is_charging(val: bool) -> void:
 		)
 		tween.start()
 	elif not _is_charging and _has_target:
-		_has_target = false
+		_set_is_charging(true)
 		emit_signal("fired")

@@ -45,6 +45,7 @@ func _on_Weapon_projectile_exited(Projectile: PackedScene, target_global_positio
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
 	projectiles.add_child(projectile)
+	projectile.setup(_rng, target_global_position)
 
 
 func _on_UIUnit_selected() -> void:

@@ -1,9 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://TacticalSpaceCombat/UI/Unit.gd" type="Script" id=1]
+[ext_resource path="res://TacticalSpaceCombat/UI/UIUnit.gd" type="Script" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=2]
-
-
 
 [sub_resource type="StreamTexture" id=1]
 load_path = "res://.import/assets.svg-5a9d16e7bb72ca9f904b7eb76bcb76df.stex"

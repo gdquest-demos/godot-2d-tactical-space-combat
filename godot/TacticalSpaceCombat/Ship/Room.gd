@@ -60,16 +60,16 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 		_targeted_by = -1
 
 
-func _on_mouse(has_entered: bool) -> void:
+func _on_mouse_entered_exited(has_entered: bool) -> void:
 	var group := "selected-room"
 	if has_entered or not is_in_group(group):
-		add_to_group(group) 
+		add_to_group(group)
 	else:
 		remove_from_group(group)
 	feedback.visible = has_entered
 
 
-func _on_area(area: Area2D, has_entered: bool) -> void:
+func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 	if area.is_in_group("unit"):
 		_units += 1 if has_entered else -1
 	elif area.is_in_group("door"):

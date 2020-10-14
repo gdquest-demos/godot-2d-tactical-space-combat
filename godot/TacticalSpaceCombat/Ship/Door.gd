@@ -12,14 +12,23 @@ onready var sprite: Sprite = $Sprite
 onready var timer: Timer = $Timer
 
 
-func _on_area(area: Area2D, has_entered: bool) -> void:
-	if area.is_in_group("unit"):
-		_units += 1 if has_entered else -1
-		if has_entered and _units == 1:
-			timer.start()
-		elif not has_entered and _units == 0:
-			timer.stop()
-			self.is_open = false
+func _on_area_entered(area: Area2D) -> void:
+	if not area.is_in_group("unit"):
+		return
+	
+	_units += 1
+	if _units == 1:
+		timer.start()
+
+
+func _on_area_exited(area: Area2D) -> void:
+	if not area.is_in_group("unit"):
+		return
+	
+	_units -= 1
+	if _units == 0:
+		timer.stop()
+		self.is_open = false
 
 
 func set_is_open(val: bool) -> void:
