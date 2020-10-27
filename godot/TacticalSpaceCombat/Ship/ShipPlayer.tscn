@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/Weapon.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
@@ -31,6 +32,9 @@ extents = Vector2( 64, 64 )
 [node name="Room01" parent="Rooms" index="0" instance=ExtResource( 5 )]
 position = Vector2( 96, 64 )
 type = 1
+
+[node name="SpriteType" parent="Rooms/Room01" index="0"]
+modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 
 [node name="CollisionShape2D" parent="Rooms/Room01" index="2"]
 shape = SubResource( 1 )
@@ -82,10 +86,27 @@ position = Vector2( 352, 32 )
 [node name="Weapon2" parent="Weapons" index="1" instance=ExtResource( 4 )]
 position = Vector2( 288, 352 )
 
+[node name="Units" parent="." index="4"]
+self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
+script = ExtResource( 3 )
+
 [node name="Unit01" parent="Units" index="0" instance=ExtResource( 8 )]
+colors = {
+"default": Color( 0.239216, 0.431373, 0.439216, 1 ),
+"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
+}
 
 [node name="PathFollow2D" parent="Units/Unit01" index="0"]
 position = Vector2( 96, 288 )
+
+[node name="Unit02" parent="Units" index="1" instance=ExtResource( 8 )]
+colors = {
+"default": Color( 0.239216, 0.431373, 0.439216, 1 ),
+"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
+}
+
+[node name="PathFollow2D" parent="Units/Unit02" index="0"]
+position = Vector2( 160, 224 )
 
 [editable path="Rooms/Room01"]
 
@@ -106,3 +127,5 @@ position = Vector2( 96, 288 )
 [editable path="Doors/Door0506"]
 
 [editable path="Units/Unit01"]
+
+[editable path="Units/Unit02"]

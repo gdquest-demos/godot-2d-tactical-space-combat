@@ -3,8 +3,6 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.gd" type="Script" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=2]
 
-
-
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array(  )
@@ -45,5 +43,3 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AreaSelect"]
 shape = SubResource( 3 )
 [connection signal="area_entered" from="PathFollow2D/AreaUnit" to="." method="_on_AreaUnit_area_entered"]
-[connection signal="mouse_entered" from="PathFollow2D/AreaSelect" to="." method="_on_AreaSelect_mouse" binds= [ true ]]
-[connection signal="mouse_exited" from="PathFollow2D/AreaSelect" to="." method="_on_AreaSelect_mouse" binds= [ false ]]

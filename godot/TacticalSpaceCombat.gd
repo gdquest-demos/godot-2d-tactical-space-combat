@@ -1,6 +1,10 @@
 extends Node2D
 
 
+const UIUnit = preload("res://TacticalSpaceCombat/UI/UIUnit.tscn")
+const UIWeapons = preload("res://TacticalSpaceCombat/UI/UIWeapons.tscn")
+const UIWeapon = preload("res://TacticalSpaceCombat/UI/UIWeapon.tscn")
+
 var _rng := RandomNumberGenerator.new()
 
 onready var scene_tree: SceneTree = get_tree()
@@ -9,32 +13,32 @@ onready var ship_enemy: Node2D = $ViewportContainer/Viewport/ShipEnemy
 onready var spawner: PathFollow2D = $ViewportContainer/Viewport/PathSpawner/Spawner
 onready var projectiles: Node2D = $ViewportContainer/Viewport/Projectiles
 onready var ui: Control = $UI
+onready var ui_units: VBoxContainer = ui.get_node("Units")
+onready var ui_systems: HBoxContainer = ui.get_node("Systems")
 
 
 func _ready() -> void:
+	ship_player.shield.connect("body_entered", self, "_on_ShipShield_body_entered")
+	ship_enemy.shield.connect("body_entered", self, "_on_ShipShield_body_entered")
 	_rng.randomize()
 	
 	for weapon in ship_player.weapons.get_children():
-		if not ui.systems.has_node("Weapons"):
-			ui.systems.add_child(ui.Weapons.instance())
+		if not ui_systems.has_node("Weapons"):
+			ui_systems.add_child(UIWeapons.instance())
 		
-		var ui_weapon: VBoxContainer = ui.Weapon.instance()
+		var ui_weapon: VBoxContainer = UIWeapon.instance()
 		weapon.connect("projectile_exited", self, "_on_Weapon_projectile_exited")
-		ui_weapon.connect("fired", weapon, "_on_UIWeapon_fired")
-		ui.systems.get_node("Weapons").add_child(ui_weapon)
+		ui_systems.get_node("Weapons").add_child(ui_weapon)
+		weapon.setup(ui_weapon)
 		
 		for room in ship_enemy.rooms.get_children():
-			ui_weapon.connect("targeting", room, "_on_UIWeapon_targeting")
+			weapon.connect("targeting", room, "_on_Weapon_targeting")
 			room.connect("targeted", weapon, "_on_Room_targeted")
-			room.connect("targeted", ui_weapon, "_on_Room_targeted")
 	
 	for unit in ship_player.units.get_children():
-		var ui_unit: ColorRect = ui.Unit.instance()
-		ui_unit.connect("selected", self, "_on_UIUnit_selected")
-		ui_unit.connect("selected", unit, "set_is_selected", [true])
-		unit.connect("selected", ui_unit, "_on_Unit_selected")
-		ui.units.add_child(ui_unit)
-		ui_unit.setup(unit.colors.default)
+		var ui_unit: ColorRect = UIUnit.instance()
+		ui_units.add_child(ui_unit)
+		unit.setup(ui_unit)
 
 
 func _on_Weapon_projectile_exited(Projectile: PackedScene, target_global_position: Vector2) -> void:
@@ -48,6 +52,9 @@ func _on_Weapon_projectile_exited(Projectile: PackedScene, target_global_positio
 	projectile.setup(_rng, target_global_position)
 
 
-func _on_UIUnit_selected() -> void:
-	for unit in ship_player.units.get_children():
-		unit.is_selected = false
+func _on_ShipShield_body_entered(body: Node) -> void:
+	if _rng.randf() < 0.8:
+		return
+	
+	print(body.name)
+	body.queue_free()

@@ -1,27 +1,26 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipPlayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Assets/Theme.tres" type="Theme" id=3]
 [ext_resource path="res://TacticalSpaceCombat.gd" type="Script" id=5]
-[ext_resource path="res://TacticalSpaceCombat/UI/UI.gd" type="Script" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 448, 0, 0, 0, 0, 0, 448, 576, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 0, 0 )
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 768, 0, 0, 0, 0, 0, 768, 832, 0, 0, 0, 0, 0, 832, 0, 0, 0, 0, 0, 0 )
 }
 
 [node name="TacticalSpaceCombat" type="Node2D"]
 script = ExtResource( 5 )
 
 [node name="ShipPlayer" parent="." instance=ExtResource( 2 )]
-position = Vector2( 128, 192 )
+position = Vector2( 256, 384 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_left = 768.0
-margin_top = 64.0
-margin_right = 1216.0
-margin_bottom = 640.0
+margin_left = 1024.0
+margin_top = 128.0
+margin_right = 1792.0
+margin_bottom = 960.0
 mouse_filter = 2
 stretch = true
 __meta__ = {
@@ -29,7 +28,7 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 448, 576 )
+size = Vector2( 768, 832 )
 handle_input_locally = false
 render_target_update_mode = 3
 physics_object_picking = true
@@ -48,7 +47,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource( 3 )
-script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -60,9 +58,9 @@ __meta__ = {
 }
 
 [node name="Systems" type="HBoxContainer" parent="UI"]
-margin_top = 648.0
+margin_top = 1008.0
 margin_right = 296.0
-margin_bottom = 720.0
+margin_bottom = 1080.0
 rect_min_size = Vector2( 32, 72 )
 __meta__ = {
 "_edit_use_anchors_": false

@@ -13,14 +13,14 @@ resource_local_to_scene = true
 extents = Vector2( 96, 32 )
 
 [node name="ShipEnemy" instance=ExtResource( 1 )]
-position = Vector2( 64, 192 )
+position = Vector2( 256, 320 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="0"]
 layer = -1
 
 [node name="Background" type="ColorRect" parent="CanvasLayer" index="0"]
-margin_right = 448.0
-margin_bottom = 576.0
+margin_right = 832.0
+margin_bottom = 832.0
 mouse_filter = 2
 color = Color( 0.341176, 0.160784, 0.294118, 1 )
 __meta__ = {
