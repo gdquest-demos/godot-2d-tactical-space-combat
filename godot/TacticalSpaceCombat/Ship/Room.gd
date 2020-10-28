@@ -36,6 +36,7 @@ func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
 	
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
+# warning-ignore:narrowing_conversion
 	_area = _size.x * _size.y
 	
 	sprite_type.visible = type != Type.EMPTY

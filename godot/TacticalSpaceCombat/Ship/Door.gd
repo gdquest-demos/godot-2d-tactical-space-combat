@@ -31,8 +31,8 @@ func _on_area_exited(area: Area2D) -> void:
 		self.is_open = false
 
 
-func set_is_open(val: bool) -> void:
-	is_open = val
+func set_is_open(value: bool) -> void:
+	is_open = value
 	if is_open:
 		sprite.frame = 1
 		emit_signal("opened")

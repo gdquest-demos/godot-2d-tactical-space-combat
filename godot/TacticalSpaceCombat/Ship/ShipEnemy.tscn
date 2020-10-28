@@ -44,6 +44,10 @@ shape = SubResource( 2 )
 position = Vector2( 128, 96 )
 rotation = 1.57079
 
+[node name="Shield" parent="." index="6"]
+collision_layer = 5
+collision_mask = 5
+
 [editable path="Rooms/Room01"]
 
 [editable path="Rooms/Room02"]

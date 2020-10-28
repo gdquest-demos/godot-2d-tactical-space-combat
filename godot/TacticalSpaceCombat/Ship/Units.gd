@@ -9,7 +9,7 @@ var _polygon := DEFAULT_POLYGON
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event is InputEventMouse:
+	if not event is InputEventMouse or Input.get_current_cursor_shape() == Input.CURSOR_CROSS:
 		return
 	
 	var mouse_position: Vector2 = global_transform.inverse().xform(event.position)

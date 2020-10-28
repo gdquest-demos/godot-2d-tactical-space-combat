@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd" type="Script" id=2]
+
+[sub_resource type="SegmentShape2D" id=1]
+b = Vector2( 0, 0 )
+
+[node name="WeaponLaser" type="Sprite"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 248, 48, 32, 32 )
+script = ExtResource( 2 )
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = 1
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 2.0
+default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+z_index = 1
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]

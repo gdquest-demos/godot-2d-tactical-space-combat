@@ -28,12 +28,30 @@ _global_script_classes=[ {
 "class": "Utils",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Utils.gd"
+}, {
+"base": "Sprite",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/Weapon.gd"
+}, {
+"base": "Weapon",
+"class": "WeaponLaser",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd"
+}, {
+"base": "Weapon",
+"class": "WeaponProjectile",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.gd"
 } ]
 _global_script_class_icons={
 "Door": "",
 "Room": "",
 "Unit": "",
-"Utils": ""
+"Utils": "",
+"Weapon": "",
+"WeaponLaser": "",
+"WeaponProjectile": ""
 }
 
 [application]
@@ -48,7 +66,6 @@ window/size/width=1920
 window/size/height=1080
 window/size/borderless=true
 window/size/fullscreen=true
-window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
@@ -67,7 +84,9 @@ right_click={
 
 [layer_names]
 
-2d_physics/layer_1="Ship"
+2d_physics/layer_1="Ships"
+2d_physics/layer_2="ShipPlayer"
+2d_physics/layer_3="ShipEnemy"
 2d_physics/layer_20="UI"
 
 [physics]

@@ -1,9 +1,9 @@
 extends Node2D
 
-
-const UIUnit = preload("res://TacticalSpaceCombat/UI/UIUnit.tscn")
-const UIWeapons = preload("res://TacticalSpaceCombat/UI/UIWeapons.tscn")
-const UIWeapon = preload("res://TacticalSpaceCombat/UI/UIWeapon.tscn")
+const Projectile = preload("TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
+const UIUnit = preload("TacticalSpaceCombat/UI/UIUnit.tscn")
+const UIWeapons = preload("TacticalSpaceCombat/UI/UIWeapons.tscn")
+const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
 
 var _rng := RandomNumberGenerator.new()
 
@@ -18,22 +18,21 @@ onready var ui_systems: HBoxContainer = ui.get_node("Systems")
 
 
 func _ready() -> void:
-	ship_player.shield.connect("body_entered", self, "_on_ShipShield_body_entered")
-	ship_enemy.shield.connect("body_entered", self, "_on_ShipShield_body_entered")
 	_rng.randomize()
 	
 	for weapon in ship_player.weapons.get_children():
+		if weapon is WeaponProjectile:
+			weapon.connect("projectile_exited", self, "_on_Weapon_projectile_exited")
+			for room in ship_enemy.rooms.get_children():
+				weapon.connect("targeting", room, "_on_Weapon_targeting")
+				room.connect("targeted", weapon, "_on_Room_targeted")
+		
 		if not ui_systems.has_node("Weapons"):
 			ui_systems.add_child(UIWeapons.instance())
 		
 		var ui_weapon: VBoxContainer = UIWeapon.instance()
-		weapon.connect("projectile_exited", self, "_on_Weapon_projectile_exited")
 		ui_systems.get_node("Weapons").add_child(ui_weapon)
 		weapon.setup(ui_weapon)
-		
-		for room in ship_enemy.rooms.get_children():
-			weapon.connect("targeting", room, "_on_Weapon_targeting")
-			room.connect("targeted", weapon, "_on_Room_targeted")
 	
 	for unit in ship_player.units.get_children():
 		var ui_unit: ColorRect = UIUnit.instance()
@@ -41,20 +40,13 @@ func _ready() -> void:
 		unit.setup(ui_unit)
 
 
-func _on_Weapon_projectile_exited(Projectile: PackedScene, target_global_position: Vector2) -> void:
+func _on_Weapon_projectile_exited(physics_layer: int, target_global_position: Vector2) -> void:
 	spawner.unit_offset = _rng.randf()
 	var direction: Vector2 = (target_global_position - spawner.global_position).normalized()
 	var projectile: RigidBody2D = Projectile.instance()
+	projectile.collision_layer = physics_layer
 	projectile.global_position = spawner.global_position
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
 	projectiles.add_child(projectile)
 	projectile.setup(_rng, target_global_position)
-
-
-func _on_ShipShield_body_entered(body: Node) -> void:
-	if _rng.randf() < 0.8:
-		return
-	
-	print(body.name)
-	body.queue_free()

@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/Weapon.tscn" type="PackedScene" id=4]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -32,9 +33,6 @@ extents = Vector2( 64, 64 )
 [node name="Room01" parent="Rooms" index="0" instance=ExtResource( 5 )]
 position = Vector2( 96, 64 )
 type = 1
-
-[node name="SpriteType" parent="Rooms/Room01" index="0"]
-modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 
 [node name="CollisionShape2D" parent="Rooms/Room01" index="2"]
 shape = SubResource( 1 )
@@ -80,11 +78,15 @@ rotation = 1.5708
 [node name="Door0506" parent="Doors" index="3" instance=ExtResource( 2 )]
 position = Vector2( 352, 192 )
 
-[node name="Weapon1" parent="Weapons" index="0" instance=ExtResource( 4 )]
+[node name="Weapon1" parent="Weapons" index="0" groups=[
+"player",
+] instance=ExtResource( 4 )]
 position = Vector2( 352, 32 )
 
-[node name="Weapon2" parent="Weapons" index="1" instance=ExtResource( 4 )]
-position = Vector2( 288, 352 )
+[node name="Weapon2" parent="Weapons" index="1" groups=[
+"player",
+] instance=ExtResource( 6 )]
+position = Vector2( 320, 352 )
 
 [node name="Units" parent="." index="4"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
@@ -107,6 +109,10 @@ colors = {
 
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
 position = Vector2( 160, 224 )
+
+[node name="Shield" parent="." index="5"]
+collision_layer = 3
+collision_mask = 3
 
 [editable path="Rooms/Room01"]
 

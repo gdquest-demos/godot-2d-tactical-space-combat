@@ -1,6 +1,14 @@
 class_name Utils
 
 
+enum PhysicsLayers {
+	NONE,
+	SHIPS = 1,
+	SHIP_PLAYER = 1 << 1,
+	SHIP_ENEMY = 1 << 2,
+	UI = 1 << 19
+}
+
 const DIRECTIONS := [
 	Vector2.UP,
 	Vector2.RIGHT + Vector2.UP,
@@ -26,9 +34,9 @@ static func manhattan(point1: Vector2, point2: Vector2) -> float:
 	return diff.x + diff.y
 
 
-static func erase_val(dict: Dictionary, val) -> bool:
+static func erase_val(dict: Dictionary, value) -> bool:
 	var out := false
 	for key in dict:
-		if dict[key] == val:
+		if dict[key] == value:
 			out = dict.erase(key)
 	return out
