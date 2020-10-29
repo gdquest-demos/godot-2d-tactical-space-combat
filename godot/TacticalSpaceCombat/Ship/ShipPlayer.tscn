@@ -78,12 +78,12 @@ rotation = 1.5708
 [node name="Door0506" parent="Doors" index="3" instance=ExtResource( 2 )]
 position = Vector2( 352, 192 )
 
-[node name="Weapon1" parent="Weapons" index="0" groups=[
+[node name="WeaponProjectile" parent="Weapons" index="0" groups=[
 "player",
 ] instance=ExtResource( 4 )]
 position = Vector2( 352, 32 )
 
-[node name="Weapon2" parent="Weapons" index="1" groups=[
+[node name="WeaponLaser" parent="Weapons" index="1" groups=[
 "player",
 ] instance=ExtResource( 6 )]
 position = Vector2( 320, 352 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipPlayer.tscn" type="PackedScene" id=2]
@@ -10,8 +10,13 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 768, 0, 0, 0, 0, 0, 768, 832, 0, 0, 0, 0, 0, 832, 0, 0, 0, 0, 0, 0 )
 }
 
+[sub_resource type="SegmentShape2D" id=2]
+b = Vector2( 0, 0 )
+
 [node name="TacticalSpaceCombat" type="Node2D"]
 script = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="."]
 
 [node name="ShipPlayer" parent="." instance=ExtResource( 2 )]
 position = Vector2( 256, 384 )
@@ -41,6 +46,17 @@ curve = SubResource( 1 )
 [node name="Spawner" type="PathFollow2D" parent="ViewportContainer/Viewport/PathSpawner"]
 
 [node name="Projectiles" type="Node2D" parent="ViewportContainer/Viewport"]
+
+[node name="WeaponLaserPlayer" type="Node2D" parent="ViewportContainer/Viewport"]
+
+[node name="WeaponLaserArea2D" type="Area2D" parent="ViewportContainer/Viewport/WeaponLaserPlayer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D"]
+shape = SubResource( 2 )
+
+[node name="LaserLine2D" type="Line2D" parent="ViewportContainer/Viewport/WeaponLaserPlayer"]
+width = 2.0
+default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
 
 [node name="UI" type="Control" parent="."]
 anchor_right = 1.0

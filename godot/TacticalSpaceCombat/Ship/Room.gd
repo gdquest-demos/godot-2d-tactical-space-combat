@@ -81,7 +81,7 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 		_entrances[entrance] = null
 
 
-func _on_Weapon_targeting(index: int) -> void:
+func _on_WeaponProjectile_targeting(index: int) -> void:
 	_targeted_by = index
 	sprite_target.visible = false
 	sprite_target.get_child(_targeted_by).visible = false
