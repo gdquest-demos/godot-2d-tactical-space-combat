@@ -2,6 +2,8 @@ class_name Weapon
 extends Sprite
 
 
+export var weapon_name := ''
+
 var charge_time := 2.0
 
 var _is_charging := false setget _set_is_charging
@@ -17,6 +19,7 @@ func setup(ui_weapon: VBoxContainer) -> void:
 	_ui_weapon_button = ui_weapon.get_node("Button")
 	_ui_weapon_progress_bar = ui_weapon.get_node("ProgressBar")
 	
+	_ui_weapon_button.text = weapon_name
 	_ui_weapon_button.connect("toggled", self, "_on_UIWeaponButton_toggled")
 	_set_is_charging(true)
 

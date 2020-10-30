@@ -82,11 +82,13 @@ position = Vector2( 352, 192 )
 "player",
 ] instance=ExtResource( 4 )]
 position = Vector2( 352, 32 )
+weapon_name = "Projectile"
 
 [node name="WeaponLaser" parent="Weapons" index="1" groups=[
 "player",
 ] instance=ExtResource( 6 )]
 position = Vector2( 320, 352 )
+weapon_name = "Laser"
 
 [node name="Units" parent="." index="4"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
