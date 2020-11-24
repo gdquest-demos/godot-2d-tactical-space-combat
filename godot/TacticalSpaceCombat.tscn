@@ -81,16 +81,3 @@ rect_min_size = Vector2( 32, 72 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Shield" type="VBoxContainer" parent="UI/Systems"]
-margin_right = 32.0
-margin_bottom = 72.0
-
-[node name="Button" type="Button" parent="UI/Systems/Shield"]
-margin_top = 40.0
-margin_right = 32.0
-margin_bottom = 72.0
-rect_min_size = Vector2( 32, 32 )
-size_flags_horizontal = 0
-size_flags_vertical = 10
-text = "S"

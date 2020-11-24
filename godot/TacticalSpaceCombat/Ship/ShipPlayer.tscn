@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=6]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -27,6 +28,11 @@ extents = Vector2( 96, 64 )
 [sub_resource type="RectangleShape2D" id=5]
 resource_local_to_scene = true
 extents = Vector2( 64, 64 )
+
+[sub_resource type="CapsuleShape2D" id=6]
+resource_local_to_scene = true
+radius = 300.0
+height = 100.0
 
 [node name="ShipPlayer" instance=ExtResource( 1 )]
 
@@ -112,28 +118,21 @@ colors = {
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
 position = Vector2( 160, 224 )
 
-[node name="Shield" parent="." index="5"]
-collision_layer = 3
+[node name="Shield" parent="." index="5" instance=ExtResource( 7 )]
 collision_mask = 3
 
+[node name="CollisionShape2D" parent="Shield" index="0"]
+shape = SubResource( 6 )
+
 [editable path="Rooms/Room01"]
-
 [editable path="Rooms/Room02"]
-
 [editable path="Rooms/Room03"]
-
 [editable path="Rooms/Room04"]
-
 [editable path="Rooms/Room05"]
-
 [editable path="Doors/Door0103"]
-
 [editable path="Doors/Door0203"]
-
 [editable path="Doors/Door0304"]
-
 [editable path="Doors/Door0506"]
-
 [editable path="Units/Unit01"]
-
 [editable path="Units/Unit02"]
+[editable path="Shield"]

@@ -17,6 +17,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_is_pressed = true
 		for index in range(_polygon.size()):
 			_polygon[index] = mouse_position
+	elif _is_pressed and event is InputEventMouseMotion:
+		_polygon[1] = Vector2(mouse_position.x, _polygon[0].y)
+		_polygon[2] = mouse_position
+		_polygon[3] = Vector2(_polygon[0].x, mouse_position.y)
 	elif event.is_action_released("left_click"):
 		_is_pressed = false
 		var query := Physics2DShapeQueryParameters.new()
@@ -30,10 +34,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		for dict in get_world_2d().direct_space_state.intersect_shape(query):
 			dict.collider.owner.is_selected = true
 		_polygon = DEFAULT_POLYGON
-	elif _is_pressed and event is InputEventMouseMotion:
-		_polygon[1] = Vector2(mouse_position.x, _polygon[0].y)
-		_polygon[2] = mouse_position
-		_polygon[3] = Vector2(_polygon[0].x, mouse_position.y)
 	update()
 
 

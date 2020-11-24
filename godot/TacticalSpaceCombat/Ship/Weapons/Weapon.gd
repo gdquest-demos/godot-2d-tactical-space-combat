@@ -31,3 +31,12 @@ func _ready() -> void:
 func _set_is_charging(value: bool) -> void:
 	_is_charging = value
 	tween.stop_all()
+	if _is_charging:
+		tween.interpolate_property(
+			_ui_weapon_progress_bar,
+			"value",
+			_ui_weapon_progress_bar.min_value,
+			_ui_weapon_progress_bar.max_value,
+			charge_time
+		)
+		tween.start()

@@ -15,15 +15,8 @@ points = PoolVector2Array( 0, 0, 0, 0 )
 width = 2.0
 default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
 
-[node name="LaserLine2D" type="Line2D" parent="."]
-visible = false
-points = PoolVector2Array( 0, 0, 1920, 0 )
-width = 2.0
-default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
-
 [node name="Tween" type="Tween" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

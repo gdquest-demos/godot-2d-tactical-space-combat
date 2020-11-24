@@ -24,6 +24,6 @@ shape = SubResource( 1 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
-[connection signal="timeout" from="Timer" to="." method="set_is_open" binds= [ true ]]

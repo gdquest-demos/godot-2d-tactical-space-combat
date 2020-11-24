@@ -2,10 +2,14 @@ class_name Room
 extends Area2D
 
 
-signal targeted(targeted_by, target_global_position)
+# Emitted when room is successfuly selected as target in order for the projectile weapon to know
+# when to start shooting
+signal targeted(target_index, target_global_position)
 
+# Room type which determines boosts if any
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
 
+# Srites that go with room types. They're selected from the sprite atlas based on their region
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
 	Type.DEFAULT: Vector2(320, 384),
@@ -13,11 +17,12 @@ const SPRITE := {
 	Type.WEAPONS: Vector2(384, 384)
 }
 
+# Easy access in the inspector to change room type
 export(Type) var type := Type.EMPTY
 
 var is_manned := false setget , get_is_manned
 
-var _targeted_by := -1
+var _target_index := -1
 var _units := 0
 var _entrances := {}
 var _tilemap: TileMap = null
@@ -36,7 +41,6 @@ func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
 	
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
-# warning-ignore:narrowing_conversion
 	_area = _size.x * _size.y
 	
 	sprite_type.visible = type != Type.EMPTY
@@ -49,31 +53,30 @@ func setup(tilemap: TileMap) -> void:
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
 	if (
-		event is InputEventMouseButton
-		and event.pressed and event.button_index == BUTTON_LEFT
+		event.is_action_pressed("left_click")
 		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
-		and _targeted_by != -1
+		and _target_index != -1
 	):
 		sprite_target.visible = true
-		sprite_target.get_child(_targeted_by).visible = true
-		emit_signal("targeted", _targeted_by, global_position)
-		_targeted_by = -1
+		sprite_target.get_child(_target_index).visible = true
+		emit_signal("targeted", _target_index, global_position)
+		_target_index = -1
 
 
 func _on_mouse_entered_exited(has_entered: bool) -> void:
-	var group := "selected-room"
-	if has_entered or not is_in_group(group):
-		add_to_group(group)
-	else:
-		remove_from_group(group)
 	feedback.visible = has_entered
+	var group := "selected-room"
+	if has_entered:
+		add_to_group(group)
+	elif is_in_group(group):
+		remove_from_group(group)
 
 
 func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 	if area.is_in_group("unit"):
 		_units += 1 if has_entered else -1
-	elif area.is_in_group("door"):
-		var entrance := (position - area.position)
+	elif has_entered and area.is_in_group("door"):
+		var entrance := position - area.position
 		entrance *= Vector2.DOWN.rotated(-area.rotation)
 		entrance = entrance.normalized() * _tilemap.cell_size / 2
 		entrance += area.position
@@ -81,16 +84,21 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 		_entrances[entrance] = null
 
 
+# When targeting is triggered by clicking the UI button we first switch off
+# weapon targeting by turning off the appropriate numbered sprite (child) visibility.
+# If at least one numbered sprite is visible then we also make the parent visible, otherwise
+# it remains invisible
 func _on_WeaponProjectile_targeting(index: int) -> void:
-	_targeted_by = index
+	_target_index = index
 	sprite_target.visible = false
-	sprite_target.get_child(_targeted_by).visible = false
+	sprite_target.get_child(_target_index).visible = false
 	for node in sprite_target.get_children():
 		if node.visible:
 			sprite_target.visible = true
 			break
 
 
+# Returns the closest entrance to the `from` location
 func _get_entrance(from: Vector2) -> Vector2:
 	var out := Vector2.INF
 	var distance := INF
@@ -103,6 +111,7 @@ func _get_entrance(from: Vector2) -> Vector2:
 	return out
 
 
+# Checks if the given point is within the bounds of the room
 func has_point(point: Vector2) -> bool:
 	var top_left := _tilemap.world_to_map(position - collision_shape.shape.extents)
 	var bottom_right := top_left + _size
@@ -112,6 +121,7 @@ func has_point(point: Vector2) -> bool:
 	)
 
 
+# Get available tile position (slot) for unit placement if available
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var out := Vector2.INF
 	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))

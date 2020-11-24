@@ -4,6 +4,7 @@ const Projectile = preload("TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
 const UIUnit = preload("TacticalSpaceCombat/UI/UIUnit.tscn")
 const UIWeapons = preload("TacticalSpaceCombat/UI/UIWeapons.tscn")
 const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
+const UIShield = preload("TacticalSpaceCombat/UI/UIShield.tscn")
 
 var _rng := RandomNumberGenerator.new()
 var _swipe_laser_start := Vector2.ZERO
@@ -26,6 +27,9 @@ onready var ui_systems: HBoxContainer = $UI/Systems
 
 func _ready() -> void:
 	_rng.randomize()
+	
+	if ship_player.has_node("Shield"):
+		ui_systems.add_child(UIShield.instance())
 	
 	for weapon in ship_player.weapons.get_children():
 		if weapon is WeaponProjectile:
@@ -53,6 +57,7 @@ func _ready() -> void:
 		unit.setup(ui_unit)
 
 
+# Spawn a projectile shot by the player into the enemy viewport
 func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_global_position: Vector2) -> void:
 	spawner.unit_offset = _rng.randf()
 	var direction: Vector2 = (target_global_position - spawner.global_position).normalized()

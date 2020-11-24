@@ -1,34 +1,36 @@
 class_name Door
 extends Area2D
 
-
+# Emitted when doors open to trigger units to start moving
 signal opened
 
 var is_open := false setget set_is_open
 
+# Keep track of how many units are currently passing this door
 var _units := 0
 
 onready var sprite: Sprite = $Sprite
 onready var timer: Timer = $Timer
 
 
+func _ready() -> void:
+	timer.connect("timeout", self, "set_is_open", [true])
+
+
+# Starts the timer after which the door will open when the first unit is detected
 func _on_area_entered(area: Area2D) -> void:
-	if not area.is_in_group("unit"):
-		return
-	
-	_units += 1
-	if _units == 1:
-		timer.start()
+	if area.is_in_group("unit"):
+		_units += 1
+		if _units == 1:
+			timer.start()
 
 
+# After units pass the door, it'll close
 func _on_area_exited(area: Area2D) -> void:
-	if not area.is_in_group("unit"):
-		return
-	
-	_units -= 1
-	if _units == 0:
-		timer.stop()
-		self.is_open = false
+	if area.is_in_group("unit"):
+		_units -= 1
+		if _units == 0:
+			self.is_open = false
 
 
 func set_is_open(value: bool) -> void:

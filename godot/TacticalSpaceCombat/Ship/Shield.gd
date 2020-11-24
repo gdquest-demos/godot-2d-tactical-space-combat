@@ -10,6 +10,12 @@ onready var polygon: Polygon2D = $Polygon2D
 onready var timer: Timer = $Timer
 
 
+func setup(rooms: Node2D) -> void:
+	for room in rooms.get_children():
+		position += room.position
+	position /= rooms.get_child_count()
+
+
 func _ready() -> void:
 	polygon.self_modulate.a = 0
 	polygon.polygon = _get_shape_points()

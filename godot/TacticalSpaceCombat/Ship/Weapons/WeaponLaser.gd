@@ -6,17 +6,19 @@ signal fire_started(points, duration)
 signal fire_stopped
 signal targeting(points)
 
+const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
 const TARGETTING_LENGTH := 160
 
 var _targets := {}
 var _is_targeting := false
 
 onready var target_line: Line2D = $TargetLine2D
-onready var laser_line: Line2D = $LaserLine2D
 onready var timer: Timer = $Timer
 
 
 func _ready() -> void:
+	timer.connect("timeout", self, "emit_signal", ["fire_stopped"])
+	timer.connect("timeout", self, "_set_is_charging", [true])
 	target_line.points = [Vector2.INF, Vector2.INF]
 
 
@@ -31,9 +33,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		offset = offset.clamped(TARGETTING_LENGTH)
 		target_line.points[1] = target_line.points[0] + offset
 	elif event.is_action_released("left_click"):
-		_fire(global_transform.xform(target_line.points))
-		target_line.points = [Vector2.INF, Vector2.INF]
 		_ui_weapon_button.pressed = false
+		if not _is_charging:
+			_fire()
 	
 	emit_signal("targeting", global_transform.xform(target_line.points))
 
@@ -42,33 +44,25 @@ func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	_is_targeting = is_pressed
 	var cursor := Input.CURSOR_CROSS if is_pressed else Input.CURSOR_ARROW
 	Input.set_default_cursor_shape(cursor)
+	
+	if _is_targeting:
+		target_line.points = TARGET_LINE_DEFAULT
 
 
 func _on_WeaponLaserPlayerArea_area_entered_exited(area: Area2D, has_entered: bool) -> void:
-	if not area.is_in_group("room"):
-		return
-	
-	if has_entered:
-		_targets[area] = null
-	else:
-		_targets.erase(area)
+	if area.is_in_group("room"):
+		if has_entered:
+			_targets[area] = null
+		else:
+			_targets.erase(area)
 
 
-func _on_Timer_timeout() -> void:
-	laser_line.visible = false
-	emit_signal("fire_stopped")
-
-
-func _fire(target_points: PoolVector2Array) -> void:
-	laser_line.visible = true
+func _fire() -> void:
 	timer.start()
-	emit_signal("fire_started", target_points, timer.wait_time)
+	emit_signal("fire_started", global_transform.xform(target_line.points), timer.wait_time)
 
 
 func _set_is_charging(value: bool) -> void:
 	._set_is_charging(value)
-	if _is_charging:
-		tween.interpolate_property(_ui_weapon_progress_bar, "value", _ui_weapon_progress_bar.min_value, _ui_weapon_progress_bar.max_value, charge_time)
-		tween.start()
-	elif not _is_charging:
-		_set_is_charging(true)
+	if target_line.points[1] != Vector2.INF and not _is_charging:
+		_fire()
