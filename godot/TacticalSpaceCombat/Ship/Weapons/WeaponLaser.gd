@@ -41,10 +41,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
+	._on_UIWeaponButton_toggled(is_pressed)
 	_is_targeting = is_pressed
-	var cursor := Input.CURSOR_CROSS if is_pressed else Input.CURSOR_ARROW
-	Input.set_default_cursor_shape(cursor)
-	
 	if _is_targeting:
 		target_line.points = TARGET_LINE_DEFAULT
 

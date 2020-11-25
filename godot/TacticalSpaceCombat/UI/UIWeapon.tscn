@@ -1,4 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="ButtonGroup" id=1]
+resource_local_to_scene = false
 
 [node name="Weapon" type="VBoxContainer"]
 margin_right = 128.0
@@ -16,6 +19,7 @@ rect_min_size = Vector2( 128, 64 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 toggle_mode = true
+group = SubResource( 1 )
 text = "Weapon01"
 __meta__ = {
 "_edit_use_anchors_": false

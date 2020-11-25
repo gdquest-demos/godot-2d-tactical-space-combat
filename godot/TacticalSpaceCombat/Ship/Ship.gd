@@ -32,14 +32,22 @@ func _ready() -> void:
 	tilemap.setup(rooms, doors)
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("left_click"):
-		for unit in units.get_children():
-			unit.is_selected = false
+func _on_UIDoorsButton_pressed() -> void:
+	var has_opened_doors := false
+	for door in doors.get_children():
+		if door.is_open:
+			has_opened_doors = true
+			break
+	
+	for door in doors.get_children():
+		door.is_open = not has_opened_doors
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("right_click"):
+	if event.is_action_pressed("left_click"):
+		for unit in units.get_children():
+			unit.is_selected = false
+	elif event.is_action_pressed("right_click"):
 		for unit in scene_tree.get_nodes_in_group("selected-unit"):
 			var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
 			for room in scene_tree.get_nodes_in_group("selected-room"):

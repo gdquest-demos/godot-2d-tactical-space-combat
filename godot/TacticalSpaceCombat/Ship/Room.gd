@@ -90,12 +90,13 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 # it remains invisible
 func _on_WeaponProjectile_targeting(index: int) -> void:
 	_target_index = index
-	sprite_target.visible = false
-	sprite_target.get_child(_target_index).visible = false
-	for node in sprite_target.get_children():
-		if node.visible:
-			sprite_target.visible = true
-			break
+	if _target_index != -1:
+		sprite_target.visible = false
+		sprite_target.get_child(_target_index).visible = false
+		for node in sprite_target.get_children():
+			if node.visible:
+				sprite_target.visible = true
+				break
 
 
 # Returns the closest entrance to the `from` location

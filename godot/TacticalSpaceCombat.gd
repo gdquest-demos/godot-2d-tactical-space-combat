@@ -2,9 +2,9 @@ extends Node2D
 
 const Projectile = preload("TacticalSpaceCombat/Ship/Weapons/Projectile.tscn")
 const UIUnit = preload("TacticalSpaceCombat/UI/UIUnit.tscn")
+const UISystem = preload("TacticalSpaceCombat/UI/UISystem.tscn")
 const UIWeapons = preload("TacticalSpaceCombat/UI/UIWeapons.tscn")
 const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
-const UIShield = preload("TacticalSpaceCombat/UI/UIShield.tscn")
 
 var _rng := RandomNumberGenerator.new()
 var _swipe_laser_start := Vector2.ZERO
@@ -23,14 +23,18 @@ onready var weapon_laser_player_line: Line2D = $ViewportContainer/Viewport/Weapo
 onready var ui: Control = $UI
 onready var ui_units: VBoxContainer = $UI/Units
 onready var ui_systems: HBoxContainer = $UI/Systems
+onready var ui_doors: MarginContainer = $UI/Systems/Doors
 
 
 func _ready() -> void:
 	_rng.randomize()
 	
 	if ship_player.has_node("Shield"):
-		ui_systems.add_child(UIShield.instance())
+		var ui_shield := UISystem.instance()
+		ui_shield.get_node("Button").text = "S"
+		ui_systems.add_child(ui_shield)
 	
+	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
 	for weapon in ship_player.weapons.get_children():
 		if weapon is WeaponProjectile:
 			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")

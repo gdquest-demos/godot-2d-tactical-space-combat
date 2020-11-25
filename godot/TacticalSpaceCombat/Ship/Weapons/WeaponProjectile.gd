@@ -12,14 +12,12 @@ var _target_global_position := Vector2.INF
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
-	var cursor := Input.CURSOR_ARROW
+	._on_UIWeaponButton_toggled(is_pressed)
 	if is_pressed:
 		_has_target = false
-		cursor = Input.CURSOR_CROSS
-		emit_signal("targeting", get_index())
 	elif _has_target and not (is_pressed or _is_charging):
 		_fire()
-	Input.set_default_cursor_shape(cursor)
+	emit_signal("targeting", get_index() if is_pressed else -1)
 
 
 func _on_Room_targeted(targeted_by: int, target_global_position: Vector2) -> void:

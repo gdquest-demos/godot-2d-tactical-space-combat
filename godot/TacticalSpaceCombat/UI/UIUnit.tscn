@@ -6,7 +6,6 @@
 margin_right = 64.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
-mouse_filter = 1
 color = Color( 0.494118, 0.494118, 0.560784, 1 )
 __meta__ = {
 "_edit_use_anchors_": false

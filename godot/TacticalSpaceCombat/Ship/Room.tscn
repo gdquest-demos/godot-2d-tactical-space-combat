@@ -20,7 +20,7 @@ region_rect = Rect2( 320, 384, 32, 32 )
 
 [node name="SpriteTarget" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.301961, 0.65098, 1, 1 )
+modulate = Color( 0.294118, 0.356863, 0.670588, 1 )
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 96, 384, 32, 32 )
