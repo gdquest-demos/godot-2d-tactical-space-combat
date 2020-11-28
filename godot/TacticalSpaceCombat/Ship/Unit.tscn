@@ -42,4 +42,5 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AreaSelect"]
 shape = SubResource( 3 )
+
 [connection signal="area_entered" from="PathFollow2D/AreaUnit" to="." method="_on_AreaUnit_area_entered"]

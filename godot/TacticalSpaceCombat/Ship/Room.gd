@@ -20,6 +20,7 @@ const SPRITE := {
 # Easy access in the inspector to change room type
 export(Type) var type := Type.EMPTY
 
+var units := {}
 var is_manned := false setget , get_is_manned
 
 var _target_index := -1
@@ -74,6 +75,10 @@ func _on_mouse_entered_exited(has_entered: bool) -> void:
 
 func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 	if area.is_in_group("unit"):
+		if has_entered:
+			units[area.owner] = null
+		else:
+			units.erase(area.owner)
 		_units += 1 if has_entered else -1
 	elif has_entered and area.is_in_group("door"):
 		var entrance := position - area.position
@@ -140,7 +145,7 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 
 
 func get_is_manned() -> bool:
-	return _units > 0
+	return units.size() > 0
 
 
 func _iter_init(_arg) -> bool:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Fire.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -69,6 +70,12 @@ type = 2
 [node name="CollisionShape2D" parent="Rooms/Room05" index="2"]
 shape = SubResource( 5 )
 
+[node name="Timer" parent="Fires" index="0"]
+wait_time = 2.0
+
+[node name="Fire" parent="Fires" index="1" instance=ExtResource( 9 )]
+position = Vector2( 96, 96 )
+
 [node name="Door0103" parent="Doors" index="0" instance=ExtResource( 2 )]
 position = Vector2( 192, 96 )
 rotation = 1.5708
@@ -96,7 +103,13 @@ weapon_name = "Projectile"
 position = Vector2( 320, 352 )
 weapon_name = "Laser"
 
-[node name="Units" parent="." index="4"]
+[node name="Shield" parent="." index="6" instance=ExtResource( 7 )]
+collision_mask = 3
+
+[node name="CollisionShape2D" parent="Shield" index="0"]
+shape = SubResource( 6 )
+
+[node name="Units" parent="." index="7"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
 script = ExtResource( 3 )
 
@@ -118,12 +131,6 @@ colors = {
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
 position = Vector2( 160, 224 )
 
-[node name="Shield" parent="." index="5" instance=ExtResource( 7 )]
-collision_mask = 3
-
-[node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 6 )
-
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]
 [editable path="Rooms/Room03"]
@@ -133,6 +140,6 @@ shape = SubResource( 6 )
 [editable path="Doors/Door0203"]
 [editable path="Doors/Door0304"]
 [editable path="Doors/Door0506"]
+[editable path="Shield"]
 [editable path="Units/Unit01"]
 [editable path="Units/Unit02"]
-[editable path="Shield"]

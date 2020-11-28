@@ -33,14 +33,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Room01" parent="Rooms" index="0" instance=ExtResource( 3 )]
+[node name="Room01" parent="Rooms" index="1" instance=ExtResource( 3 )]
 position = Vector2( 64, 64 )
 type = 1
 
 [node name="CollisionShape2D" parent="Rooms/Room01" index="2"]
 shape = SubResource( 1 )
 
-[node name="Room02" parent="Rooms" index="1" instance=ExtResource( 3 )]
+[node name="Room02" parent="Rooms" index="2" instance=ExtResource( 3 )]
 position = Vector2( 224, 96 )
 
 [node name="CollisionShape2D" parent="Rooms/Room02" index="2"]

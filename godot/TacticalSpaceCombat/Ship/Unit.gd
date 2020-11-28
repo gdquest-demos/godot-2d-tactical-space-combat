@@ -8,6 +8,9 @@ export var colors := {
 }
 
 var speed := 150
+var strenghts := {
+	"fire": 25
+}
 var is_selected: bool setget set_is_selected
 var is_walking: bool setget set_is_walking
 

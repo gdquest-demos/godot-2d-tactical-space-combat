@@ -8,13 +8,14 @@ var _size: Vector2 = Vector2.ZERO
 func setup(rooms: Node2D, doors: Node2D) -> void:
 	update_bitmask_region()
 	_size = get_used_rect().size
-	for room in rooms.get_children():
-		for point in room:
-			var id := Utils.xy_to_index(_size.x, point)
-			_astar.add_point(id, point)
-			for neighbor in _get_neighbors(room, point):
-				_astar.add_point(neighbor.id, neighbor.point)
-				_astar.connect_points(id, neighbor.id)
+	for node in rooms.get_children():
+		if node is Room:
+			for point in node:
+				var id := Utils.xy_to_index(_size.x, point)
+				_astar.add_point(id, point)
+				for neighbor in _get_neighbors(node, point):
+					_astar.add_point(neighbor.id, neighbor.point)
+					_astar.connect_points(id, neighbor.id)
 	for door in doors.get_children():
 		var offset := cell_size / 2 * Vector2.UP
 		var id1 := Utils.xy_to_index(_size.x, world_to_map(door.transform.xform(offset)))
