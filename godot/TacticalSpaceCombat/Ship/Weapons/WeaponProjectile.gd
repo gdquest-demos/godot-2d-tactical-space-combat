@@ -28,7 +28,11 @@ func _on_Room_targeted(targeted_by: int, target_global_position: Vector2) -> voi
 
 
 func _fire():
-	var physics_layer = Utils.PhysicsLayers.SHIP_ENEMY if is_in_group("player") else Utils.PhysicsLayers.SHIP_PLAYER
+	var physics_layer = (
+		Utils.PhysicsLayers.SHIP_ENEMY
+		if owner.is_in_group("player")
+		else Utils.PhysicsLayers.SHIP_PLAYER
+	)
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.connect(
 		"tree_exited",

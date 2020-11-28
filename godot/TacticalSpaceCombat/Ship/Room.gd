@@ -5,6 +5,7 @@ extends Area2D
 # Emitted when room is successfuly selected as target in order for the projectile weapon to know
 # when to start shooting
 signal targeted(target_index, target_global_position)
+signal modifier_changed(type, value)
 
 # Room type which determines boosts if any
 enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
@@ -21,10 +22,15 @@ const SPRITE := {
 export(Type) var type := Type.EMPTY
 
 var units := {}
-var is_manned := false setget , get_is_manned
 
+var _modifiers := {
+	Type.EMPTY: [0.0, 0.0],
+	Type.DEFAULT: [0.0, 0.0],
+	Type.HELM: [0.0, 0.5],
+	Type.WEAPONS: [1.0, 0.5],
+}
+var _rng := RandomNumberGenerator.new()
 var _target_index := -1
-var _units := 0
 var _entrances := {}
 var _tilemap: TileMap = null
 var _size := Vector2.ZERO
@@ -32,6 +38,7 @@ var _area := 0
 var _iter_index := 0
 
 onready var scene_tree: SceneTree = get_tree()
+onready var hit_area: Area2D = $HitArea2D
 onready var sprite_type: Sprite = $SpriteType
 onready var sprite_target: Sprite = $SpriteTarget
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -50,6 +57,16 @@ func setup(tilemap: TileMap) -> void:
 	
 	feedback.rect_position -= collision_shape.shape.extents
 	feedback.rect_size = 2 * collision_shape.shape.extents
+
+
+func _ready() -> void:
+	_rng.randomize()
+	hit_area.collision_layer = (
+		Utils.PhysicsLayers.SHIP_PLAYER
+		if owner.is_in_group("player")
+		else Utils.PhysicsLayers.SHIP_ENEMY
+	)
+	hit_area.collision_mask = hit_area.collision_layer
 
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
@@ -77,9 +94,10 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 	if area.is_in_group("unit"):
 		if has_entered:
 			units[area.owner] = null
+			emit_signal("modifier_changed", type, _modifiers[type][1])
 		else:
 			units.erase(area.owner)
-		_units += 1 if has_entered else -1
+			emit_signal("modifier_changed", type, _modifiers[type][0])
 	elif has_entered and area.is_in_group("door"):
 		var entrance := position - area.position
 		entrance *= Vector2.DOWN.rotated(-area.rotation)
@@ -102,6 +120,13 @@ func _on_WeaponProjectile_targeting(index: int) -> void:
 			if node.visible:
 				sprite_target.visible = true
 				break
+
+
+func _on_HitArea2D_body_entered(body: Node) -> void:
+	if _rng.randf() >= owner.evasion:
+		body.queue_free()
+		# TODO: start fire by chance
+		print("take damage")
 
 
 # Returns the closest entrance to the `from` location
@@ -142,10 +167,6 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 		if not is_inf(out.x):
 			break
 	return out
-
-
-func get_is_manned() -> bool:
-	return units.size() > 0
 
 
 func _iter_init(_arg) -> bool:

@@ -3,8 +3,9 @@ extends Sprite
 
 
 export var weapon_name := ''
+export var charge_time := 2.0
 
-var charge_time := 2.0
+var modifier := 1.0
 
 var _is_charging := false setget _set_is_charging
 var _ui_weapon: VBoxContainer
@@ -48,6 +49,6 @@ func _set_is_charging(value: bool) -> void:
 			"value",
 			_ui_weapon_progress_bar.min_value,
 			_ui_weapon_progress_bar.max_value,
-			charge_time
+			charge_time * modifier
 		)
 		tween.start()

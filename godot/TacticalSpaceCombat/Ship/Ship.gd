@@ -1,6 +1,8 @@
 extends Node2D
 
 
+var evasion := 0.0
+
 # This dictionary keeps track of the crew locations.
 var _slots := {}
 
@@ -23,26 +25,33 @@ func _ready() -> void:
 		_slots[position_map] = unit
 	
 	for room in rooms.get_children():
-		if room is Room:
-			room.setup(tilemap)
-			for point in room:
-				tilemap.set_cellv(point, 0)
+		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
+		room.setup(tilemap)
+		for point in room:
+			tilemap.set_cellv(point, 0)
 	
 	if has_node("Shield"):
-		$Shield.position = get_mean_position()
+		$Shield.position = _get_mean_position()
 	
 	tilemap.setup(rooms, doors)
 	fires.setup(tilemap)
 
 
+func _on_Room_modifier_changed(type: int, value: float) -> void:
+	match type:
+		Room.Type.HELM:
+			evasion = value
+		Room.Type.WEAPONS:
+			for weapon in weapons.get_children():
+				weapon.modifier = value
+
+
 func _on_ExtinguishTimer_timeout() -> void:
 	for room in rooms.get_children():
-		var fires := get_fires(room)
-		if fires.empty():
-			continue
-		
-		for unit in room.units:
-			fires[0].take_damage(unit.strenghts["fire"])
+		for fire in _get_fires(room):
+			for unit in room.units:
+				fire.take_damage(unit.strenghts["fire"])
+			break
 
 
 func _on_UIDoorsButton_pressed() -> void:
@@ -74,7 +83,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				unit.walk(path)
 
 
-func get_mean_position() -> Vector2:
+func _get_mean_position() -> Vector2:
 	var out := Vector2.ZERO
 	if rooms.get_child_count() > 0:
 		for room in rooms.get_children():
@@ -83,7 +92,7 @@ func get_mean_position() -> Vector2:
 	return out
 
 
-func get_fires(room: Room) -> Array:
+func _get_fires(room: Room) -> Array:
 	var out := []
 	for fire in fires.get_fires():
 		if room.has_point(tilemap.world_to_map(fire.position)):

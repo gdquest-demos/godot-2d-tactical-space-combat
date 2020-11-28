@@ -71,7 +71,6 @@ func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_global_po
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
 	projectiles.add_child(projectile)
-	projectile.setup(_rng, target_global_position)
 
 
 func _on_WeaponLaser_targeting(points: PoolVector2Array) -> void:
