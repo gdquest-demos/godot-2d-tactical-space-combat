@@ -9,7 +9,7 @@ radius = 250.0
 height = 100.0
 
 [node name="Shield" type="Area2D"]
-z_index = 1
+z_index = 2
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

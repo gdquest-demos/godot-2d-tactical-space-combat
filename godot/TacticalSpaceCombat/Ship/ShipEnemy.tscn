@@ -53,14 +53,14 @@ shape = SubResource( 2 )
 position = Vector2( 128, 96 )
 rotation = 1.57079
 
-[node name="Shield" parent="." index="6" instance=ExtResource( 4 )]
+[node name="Unit" parent="Units" index="0" instance=ExtResource( 5 )]
+position = Vector2( 96, 32 )
+
+[node name="Shield" parent="." index="8" instance=ExtResource( 4 )]
 collision_mask = 5
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
 shape = SubResource( 3 )
-
-[node name="Unit" parent="Units" index="0" instance=ExtResource( 5 )]
-position = Vector2( 96, 32 )
 
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]

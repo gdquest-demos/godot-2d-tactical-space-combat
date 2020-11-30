@@ -30,6 +30,7 @@ func _ready() -> void:
 	_rng.randomize()
 	
 	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
+	ship_enemy.has_sensors = ship_player.has_sensors
 	if ship_player.has_sensors:
 		var ui_sensors := UISystem.instance()
 		var button := ui_sensors.get_node("Button")
@@ -78,6 +79,7 @@ func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_global_po
 	projectile.global_position = spawner.global_position
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
+	projectile.z_index = 3
 	projectiles.add_child(projectile)
 
 

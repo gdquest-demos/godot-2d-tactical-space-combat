@@ -134,7 +134,9 @@ func _on_WeaponProjectile_targeting(index: int) -> void:
 
 
 func _draw() -> void:
-	var state: bool = units.empty() and not owner.has_sensors
+	var state: bool = not owner.has_sensors
+	if owner.is_in_group("player"):
+		state = state and units.empty()
 	draw_rect(_fog[state], FOG_COLOR)
 
 

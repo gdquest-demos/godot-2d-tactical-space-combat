@@ -56,6 +56,7 @@ curve = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="LaserLine2D" type="Line2D" parent="ViewportContainer/Viewport/WeaponLaserPlayer"]
+z_index = 3
 width = 2.0
 default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
 

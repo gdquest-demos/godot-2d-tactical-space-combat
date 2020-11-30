@@ -99,13 +99,7 @@ weapon_name = "Projectile"
 position = Vector2( 320, 352 )
 weapon_name = "Laser"
 
-[node name="Shield" parent="." index="6" instance=ExtResource( 7 )]
-collision_mask = 3
-
-[node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 6 )
-
-[node name="Units" parent="." index="7"]
+[node name="Units" parent="." index="6"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
 script = ExtResource( 3 )
 
@@ -127,6 +121,12 @@ colors = {
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
 position = Vector2( 160, 224 )
 
+[node name="Shield" parent="." index="7" instance=ExtResource( 7 )]
+collision_mask = 3
+
+[node name="CollisionShape2D" parent="Shield" index="0"]
+shape = SubResource( 6 )
+
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]
 [editable path="Rooms/Room03"]
@@ -136,6 +136,6 @@ position = Vector2( 160, 224 )
 [editable path="Doors/Door0203"]
 [editable path="Doors/Door0304"]
 [editable path="Doors/Door0506"]
-[editable path="Shield"]
 [editable path="Units/Unit01"]
 [editable path="Units/Unit02"]
+[editable path="Shield"]
