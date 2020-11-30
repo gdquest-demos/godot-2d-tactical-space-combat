@@ -2,6 +2,7 @@ extends Node2D
 
 
 var evasion := 0.0
+var has_sensors := false
 
 # This dictionary keeps track of the crew locations.
 var _slots := {}
@@ -30,14 +31,12 @@ func _ready() -> void:
 	for room in rooms.get_children():
 		room.setup(tilemap)
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
-		room.hit_area.connect(
-			"body_entered",
-			self,
-			"_on_RoomHitArea2D_body_entered",
-			[room.top_left, room.bottom_right]
-		)
+		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room.top_left, room.bottom_right])
 		for point in room:
 			tilemap.set_cellv(point, 0)
+		
+		if room.type == Room.Type.SENSORS:
+			has_sensors = true
 	
 	if has_node("Shield"):
 		$Shield.position = _get_mean_position()

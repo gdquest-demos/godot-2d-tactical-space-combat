@@ -88,11 +88,4 @@ __meta__ = {
 [node name="Button" parent="UI/Systems/Doors" index="0"]
 text = "D"
 
-[node name="VSeparator" type="VSeparator" parent="UI/Systems"]
-margin_left = 36.0
-margin_right = 68.0
-margin_bottom = 72.0
-size_flags_horizontal = 3
-custom_constants/separation = 32
-
 [editable path="UI/Systems/Doors"]

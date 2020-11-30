@@ -38,9 +38,11 @@ height = 100.0
 "player",
 ] instance=ExtResource( 1 )]
 
+[node name="TileMap" parent="." index="1"]
+show_behind_parent = true
+
 [node name="Room01" parent="Rooms" index="0" instance=ExtResource( 5 )]
 position = Vector2( 96, 64 )
-type = 1
 
 [node name="CollisionShape2D" parent="Rooms/Room01" index="3"]
 shape = SubResource( 1 )

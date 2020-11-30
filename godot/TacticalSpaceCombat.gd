@@ -29,12 +29,20 @@ onready var ui_doors: MarginContainer = $UI/Systems/Doors
 func _ready() -> void:
 	_rng.randomize()
 	
+	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
+	if ship_player.has_sensors:
+		var ui_sensors := UISystem.instance()
+		var button := ui_sensors.get_node("Button")
+		button.text = "s"
+		button.disabled = true
+		ui_systems.add_child(ui_sensors)
+	ui_systems.add_child(VSeparator.new())
+	
 	if ship_player.has_node("Shield"):
 		var ui_shield := UISystem.instance()
 		ui_shield.get_node("Button").text = "S"
 		ui_systems.add_child(ui_shield)
 	
-	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
 	for weapon in ship_player.weapons.get_children():
 		if weapon is WeaponProjectile:
 			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")

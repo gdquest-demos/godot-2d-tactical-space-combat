@@ -13,6 +13,7 @@ extents = Vector2( 32, 32 )
 [node name="Room" type="Area2D" groups=[
 "room",
 ]]
+z_index = 1
 script = ExtResource( 1 )
 
 [node name="HitArea2D" type="Area2D" parent="."]

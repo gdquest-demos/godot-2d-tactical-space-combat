@@ -8,15 +8,16 @@ signal targeted(target_index, target_global_position)
 signal modifier_changed(type, value)
 
 # Room type which determines boosts if any
-enum Type {EMPTY, DEFAULT, HELM, WEAPONS}
+enum Type {EMPTY, SENSORS, HELM, WEAPONS}
 
 # Srites that go with room types. They're selected from the sprite atlas based on their region
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
-	Type.DEFAULT: Vector2(320, 384),
+	Type.SENSORS: Vector2(320, 384),
 	Type.HELM: Vector2(352, 384),
 	Type.WEAPONS: Vector2(384, 384)
 }
+const FOG_COLOR := Color("#ffe478")
 
 # Easy access in the inspector to change room type
 export(Type) var type := Type.EMPTY
@@ -28,7 +29,7 @@ var bottom_right := Vector2.ZERO
 var _tilemap: TileMap
 var _modifiers := {
 	Type.EMPTY: [0.0, 0.0],
-	Type.DEFAULT: [0.0, 0.0],
+	Type.SENSORS: [0.0, 0.0],
 	Type.HELM: [0.0, 0.5],
 	Type.WEAPONS: [1.0, 0.5],
 }
@@ -37,6 +38,7 @@ var _entrances := {}
 var _size := Vector2.ZERO
 var _area := 0
 var _iter_index := 0
+var _fog := {}
 
 onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
@@ -64,6 +66,11 @@ func setup(tilemap: TileMap) -> void:
 
 
 func _ready() -> void:
+	_fog = {
+		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
+		false: Rect2()
+	}
+	
 	hit_area.collision_layer = (
 		Utils.PhysicsLayers.SHIP_PLAYER
 		if owner.is_in_group("player")
@@ -101,6 +108,7 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 		else:
 			units.erase(area.owner)
 			emit_signal("modifier_changed", type, _modifiers[type][0])
+		update()
 	elif has_entered and area.is_in_group("door"):
 		var entrance := position - area.position
 		entrance *= Vector2.DOWN.rotated(-area.rotation)
@@ -123,6 +131,11 @@ func _on_WeaponProjectile_targeting(index: int) -> void:
 			if node.visible:
 				sprite_target.visible = true
 				break
+
+
+func _draw() -> void:
+	var state: bool = units.empty() and not owner.has_sensors
+	draw_rect(_fog[state], FOG_COLOR)
 
 
 # Returns the closest entrance to the `from` location
