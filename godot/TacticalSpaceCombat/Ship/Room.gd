@@ -22,17 +22,18 @@ const SPRITE := {
 export(Type) var type := Type.EMPTY
 
 var units := {}
+var top_left := Vector2.ZERO
+var bottom_right := Vector2.ZERO
 
+var _tilemap: TileMap
 var _modifiers := {
 	Type.EMPTY: [0.0, 0.0],
 	Type.DEFAULT: [0.0, 0.0],
 	Type.HELM: [0.0, 0.5],
 	Type.WEAPONS: [1.0, 0.5],
 }
-var _rng := RandomNumberGenerator.new()
 var _target_index := -1
 var _entrances := {}
-var _tilemap: TileMap = null
 var _size := Vector2.ZERO
 var _area := 0
 var _iter_index := 0
@@ -51,6 +52,9 @@ func setup(tilemap: TileMap) -> void:
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
 	_area = _size.x * _size.y
 	
+	top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
+	bottom_right = top_left + _size
+	
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_enabled = sprite_type.visible
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
@@ -60,7 +64,6 @@ func setup(tilemap: TileMap) -> void:
 
 
 func _ready() -> void:
-	_rng.randomize()
 	hit_area.collision_layer = (
 		Utils.PhysicsLayers.SHIP_PLAYER
 		if owner.is_in_group("player")
@@ -122,13 +125,6 @@ func _on_WeaponProjectile_targeting(index: int) -> void:
 				break
 
 
-func _on_HitArea2D_body_entered(body: Node) -> void:
-	if _rng.randf() >= owner.evasion:
-		body.queue_free()
-		# TODO: start fire by chance
-		print("take damage")
-
-
 # Returns the closest entrance to the `from` location
 func _get_entrance(from: Vector2) -> Vector2:
 	var out := Vector2.INF
@@ -144,8 +140,6 @@ func _get_entrance(from: Vector2) -> Vector2:
 
 # Checks if the given point is within the bounds of the room
 func has_point(point: Vector2) -> bool:
-	var top_left := _tilemap.world_to_map(position - collision_shape.shape.extents)
-	var bottom_right := top_left + _size
 	return (
 		top_left.x <= point.x and top_left.y <= point.y
 		and point.x < bottom_right.x and point.y < bottom_right.y
@@ -164,7 +158,7 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 				out = offset
 				break
 		
-		if not is_inf(out.x):
+		if not out == Vector2.INF:
 			break
 	return out
 

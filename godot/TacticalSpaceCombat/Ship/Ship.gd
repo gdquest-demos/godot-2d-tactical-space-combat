@@ -5,6 +5,7 @@ var evasion := 0.0
 
 # This dictionary keeps track of the crew locations.
 var _slots := {}
+var _rng := RandomNumberGenerator.new()
 
 onready var scene_tree: SceneTree = get_tree()
 onready var tilemap: TileMap = $TileMap
@@ -16,6 +17,8 @@ onready var units: Node2D = $Units
 
 
 func _ready() -> void:
+	_rng.randomize()
+	
 	for unit in units.get_children():
 		for door in doors.get_children():
 			door.connect("opened", unit, "set_is_walking", [true])
@@ -25,8 +28,14 @@ func _ready() -> void:
 		_slots[position_map] = unit
 	
 	for room in rooms.get_children():
-		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
 		room.setup(tilemap)
+		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
+		room.hit_area.connect(
+			"body_entered",
+			self,
+			"_on_RoomHitArea2D_body_entered",
+			[room.top_left, room.bottom_right]
+		)
 		for point in room:
 			tilemap.set_cellv(point, 0)
 	
@@ -44,6 +53,17 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 		Room.Type.WEAPONS:
 			for weapon in weapons.get_children():
 				weapon.modifier = value
+
+
+func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom_right: Vector2):
+	if _rng.randf() >= evasion:
+		if _rng.randf() < body.fire_chance:
+			var x := _rng.randi_range(top_left.x, bottom_right.x - 1)
+			var y := _rng.randi_range(top_left.y, bottom_right.y - 1)
+			var offset := tilemap.map_to_world(Vector2(x, y))
+			offset += tilemap.cell_size / 2
+			fires.add_fire(offset)
+		body.queue_free()
 
 
 func _on_ExtinguishTimer_timeout() -> void:

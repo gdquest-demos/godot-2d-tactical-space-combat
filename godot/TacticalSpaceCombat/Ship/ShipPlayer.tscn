@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
@@ -8,7 +8,6 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Fire.tscn" type="PackedScene" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -74,9 +73,6 @@ shape = SubResource( 5 )
 
 [node name="Timer" parent="Fires" index="0"]
 wait_time = 2.0
-
-[node name="Fire" parent="Fires" index="1" instance=ExtResource( 9 )]
-position = Vector2( 96, 96 )
 
 [node name="Door0103" parent="Doors" index="0" instance=ExtResource( 2 )]
 position = Vector2( 192, 96 )

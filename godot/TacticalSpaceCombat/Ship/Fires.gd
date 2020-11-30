@@ -18,21 +18,25 @@ func setup(tilemap: TileMap) -> void:
 
 func _on_Timer_timeout() -> void:
 	for fire in get_fires():
-		var neighbors: Array = fire.get_neightbors()
+		var neighbors: Array = fire.get_neightbor_positions()
 		var index := _rng.randi_range(0, neighbors.size() - 1)
-		if neighbors[index] in _slots:
-			continue
-		
-		var fire_new := Fire.instance()
-		fire_new.position = neighbors[index]
-		fire_new.connect("tree_exited", self, "_on_Fire_tree_exited", [fire_new.position])
-		fire_new.setup(_tilemap)
-		add_child(fire_new)
-		_slots[fire_new.position] = null
+		add_fire(neighbors[index])
 
 
 func _on_Fire_tree_exited(position: Vector2) -> void:
 	_slots.erase(position)
+
+
+func add_fire(offset: Vector2) -> void:
+	if offset in _slots:
+		return
+	
+	var fire := Fire.instance()
+	fire.position = offset
+	fire.connect("tree_exited", self, "_on_Fire_tree_exited", [fire.position])
+	fire.setup(_tilemap)
+	add_child(fire)
+	_slots[fire.position] = null
 
 
 func get_fires() -> Array:

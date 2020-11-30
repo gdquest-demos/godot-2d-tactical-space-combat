@@ -4,16 +4,9 @@ extends Sprite
 var _tilemap: TileMap
 var _hitpoints := 100
 
-onready var area: Area2D = $Area2D
-
 
 func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
-
-
-func _on_Area2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event.is_action_pressed("left_click"):
-		queue_free()
 
 
 func take_damage(value: int) -> void:
@@ -22,7 +15,7 @@ func take_damage(value: int) -> void:
 		queue_free()
 
 
-func get_neightbors() -> Array:
+func get_neightbor_positions() -> Array:
 	var out := []
 	var point1 := _tilemap.world_to_map(position)
 	for offset in Utils.DIRECTIONS:
