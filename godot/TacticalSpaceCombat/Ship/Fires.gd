@@ -27,16 +27,17 @@ func _on_Fire_tree_exited(position: Vector2) -> void:
 	_slots.erase(position)
 
 
-func add_fire(offset: Vector2) -> void:
-	if offset in _slots:
-		return
+func add_fire(offset: Vector2, is_on_map: bool = false) -> void:
+	if is_on_map:
+		offset = _tilemap.map_to_world(offset) + _tilemap.cell_size / 2
 	
-	var fire := Fire.instance()
-	fire.position = offset
-	fire.connect("tree_exited", self, "_on_Fire_tree_exited", [fire.position])
-	fire.setup(_tilemap)
-	add_child(fire)
-	_slots[fire.position] = null
+	if not offset in _slots:
+		var fire := Fire.instance()
+		fire.position = offset
+		fire.connect("tree_exited", self, "_on_Fire_tree_exited", [fire.position])
+		fire.setup(_tilemap)
+		add_child(fire)
+		_slots[fire.position] = null
 
 
 func get_fires() -> Array:

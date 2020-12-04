@@ -4,8 +4,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Fire.gd" type="Script" id=2]
 
 [node name="Fire" type="Sprite"]
-modulate = Color( 1, 0, 0, 1 )
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 80, 80, 32, 32 )
+region_rect = Rect2( 320, 384, 64, 64 )
 script = ExtResource( 2 )

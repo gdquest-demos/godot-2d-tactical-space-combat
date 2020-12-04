@@ -60,6 +60,14 @@ z_index = 3
 width = 2.0
 default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
 
+[node name="UI" type="Control" parent="ViewportContainer/Viewport"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="HitPoints" type="Label" parent="ViewportContainer/Viewport/UI"]
+margin_right = 40.0
+margin_bottom = 14.0
+
 [node name="UI" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -69,7 +77,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HitPoints" type="Label" parent="UI"]
+margin_right = 8.0
+margin_bottom = 22.0
+text = "HP: 100"
+
 [node name="Units" type="VBoxContainer" parent="UI"]
+margin_top = 22.0
+margin_bottom = 22.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -88,5 +103,8 @@ __meta__ = {
 
 [node name="Button" parent="UI/Systems/Doors" index="0"]
 text = "D"
+
+[connection signal="hit_points_changed" from="ShipPlayer" to="." method="_on_Ship_hit_points_changed"]
+[connection signal="hit_points_changed" from="ViewportContainer/Viewport/ShipEnemy" to="." method="_on_Ship_hit_points_changed"]
 
 [editable path="UI/Systems/Doors"]

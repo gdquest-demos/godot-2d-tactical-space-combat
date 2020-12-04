@@ -1,6 +1,10 @@
 extends Node2D
 
 
+signal hit_points_changed(hit_points, is_player)
+
+export(int, 0, 30) var hit_points := 30
+
 var evasion := 0.0
 var has_sensors := false
 
@@ -56,21 +60,26 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 
 func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom_right: Vector2):
 	if _rng.randf() >= evasion:
-		if _rng.randf() < body.fire_chance:
-			var x := _rng.randi_range(top_left.x, bottom_right.x - 1)
-			var y := _rng.randi_range(top_left.y, bottom_right.y - 1)
-			var offset := tilemap.map_to_world(Vector2(x, y))
-			offset += tilemap.cell_size / 2
-			fires.add_fire(offset)
+		if _rng.randf() < body.chances.fire:
+			var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
+			fires.add_fire(offset, true)
+		if _rng.randf() < body.chances.hull_damage:
+			# TODO: finish implementation
+			print("hull_damage")
+		take_damage(body.attack)
 		body.queue_free()
 
 
-func _on_ExtinguishTimer_timeout() -> void:
+func _on_FireTimer_timeout() -> void:
 	for room in rooms.get_children():
 		for fire in _get_fires(room):
 			for unit in room.units:
-				fire.take_damage(unit.strenghts["fire"])
+				fire.take_damage(unit.attack)
 			break
+	
+	for fire in fires.get_fires():
+		if _rng.randf() < fire.chance_attack:
+			take_damage(fire.attack)
 
 
 func _on_UIDoorsButton_pressed() -> void:
@@ -100,6 +109,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				Utils.erase_value(_slots, unit)
 				_slots[point2] = unit
 				unit.walk(path)
+
+
+func take_damage(value: int) -> void:
+	hit_points -= value
+	hit_points = max(0, hit_points)
+	emit_signal("hit_points_changed", hit_points, is_in_group("player"))
 
 
 func _get_mean_position() -> Vector2:

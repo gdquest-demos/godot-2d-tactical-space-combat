@@ -6,6 +6,8 @@ const UISystem = preload("TacticalSpaceCombat/UI/UISystem.tscn")
 const UIWeapons = preload("TacticalSpaceCombat/UI/UIWeapons.tscn")
 const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
 
+const END_SCENE = "TacticalSpaceCombat/End.tscn"
+
 var _rng := RandomNumberGenerator.new()
 var _swipe_laser_start := Vector2.ZERO
 
@@ -21,6 +23,8 @@ onready var weapon_laser_player_area: Area2D = $ViewportContainer/Viewport/Weapo
 onready var weapon_laser_player_shape: SegmentShape2D = $ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D/CollisionShape2D.shape
 onready var weapon_laser_player_line: Line2D = $ViewportContainer/Viewport/WeaponLaserPlayer/LaserLine2D
 onready var ui: Control = $UI
+onready var ui_hit_points_player: Label = $UI/HitPoints
+onready var ui_hit_points_enemy: Label = $ViewportContainer/Viewport/UI/HitPoints
 onready var ui_units: VBoxContainer = $UI/Units
 onready var ui_systems: HBoxContainer = $UI/Systems
 onready var ui_doors: MarginContainer = $UI/Systems/Doors
@@ -68,6 +72,9 @@ func _ready() -> void:
 		var ui_unit: ColorRect = UIUnit.instance()
 		ui_units.add_child(ui_unit)
 		unit.setup(ui_unit)
+	
+	ship_player.emit_signal("hit_points_changed", ship_player.hit_points, true)
+	ship_enemy.emit_signal("hit_points_changed", ship_enemy.hit_points, false)
 
 
 # Spawn a projectile shot by the player into the enemy viewport
@@ -104,3 +111,11 @@ func _on_WeaponLaser_fire_stopped() -> void:
 
 func _swipe_laser(offset: Vector2) -> void:
 	weapon_laser_player_line.points = [_swipe_laser_start, offset]
+
+
+func _on_Ship_hit_points_changed(hit_points: int, is_player: bool) -> void:
+	var label := ui_hit_points_player if is_player else ui_hit_points_enemy
+	label.text = "HP: %d" % hit_points
+	if hit_points == 0:
+		Global.winner_is_player = not is_player
+		scene_tree.change_scene(END_SCENE)

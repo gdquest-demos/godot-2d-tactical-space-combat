@@ -25,7 +25,7 @@ shape = SubResource( 1 )
 visible = false
 modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 texture = ExtResource( 2 )
-region_rect = Rect2( 320, 384, 32, 32 )
+region_rect = Rect2( 128, 384, 32, 32 )
 
 [node name="SpriteTarget" type="Sprite" parent="."]
 visible = false

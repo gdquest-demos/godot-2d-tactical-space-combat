@@ -1,6 +1,9 @@
 extends Sprite
 
 
+export(int, 0, 4) var attack := 1
+export(float, 0.0, 1.0) var chance_attack := 0.1
+
 var _tilemap: TileMap
 var _hitpoints := 100
 

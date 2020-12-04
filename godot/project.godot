@@ -60,6 +60,10 @@ config/name="2D Tactical Space Combat"
 run/main_scene="res://TacticalSpaceCombat.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://Global.gd"
+
 [display]
 
 window/size/width=1920

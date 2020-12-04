@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/Assets/Theme.tres" type="Theme" id=1]
+[ext_resource path="res://TacticalSpaceCombat/End.gd" type="Script" id=2]
+
+[node name="End" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 937.0
+margin_top = 516.0
+margin_right = 982.0
+margin_bottom = 564.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 45.0
+margin_bottom = 22.0
+
+[node name="RetryButton" type="Button" parent="VBoxContainer"]
+margin_top = 26.0
+margin_right = 45.0
+margin_bottom = 48.0
+text = "Retry"
+
+[connection signal="pressed" from="VBoxContainer/RetryButton" to="." method="_on_RetryButton_pressed"]

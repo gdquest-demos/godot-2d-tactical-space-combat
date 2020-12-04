@@ -13,9 +13,9 @@ enum Type {EMPTY, SENSORS, HELM, WEAPONS}
 # Srites that go with room types. They're selected from the sprite atlas based on their region
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
-	Type.SENSORS: Vector2(320, 384),
-	Type.HELM: Vector2(352, 384),
-	Type.WEAPONS: Vector2(384, 384)
+	Type.SENSORS: Vector2(128, 384),
+	Type.HELM: Vector2(160, 384),
+	Type.WEAPONS: Vector2(128, 416)
 }
 const FOG_COLOR := Color("#ffe478")
 

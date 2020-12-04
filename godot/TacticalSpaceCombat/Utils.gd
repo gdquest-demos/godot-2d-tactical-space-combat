@@ -45,3 +45,9 @@ static func erase_value(dict: Dictionary, value) -> bool:
 		if dict[key] == value:
 			out = dict.erase(key)
 	return out
+
+
+static func randvi_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:
+	var x := _rng.randi_range(top_left.x, bottom_right.x)
+	var y := _rng.randi_range(top_left.y, bottom_right.y)
+	return Vector2(x, y)
