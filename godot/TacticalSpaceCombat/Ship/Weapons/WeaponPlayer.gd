@@ -1,4 +1,4 @@
-class_name Weapon
+class_name WeaponPlayer
 extends Sprite
 
 
@@ -42,7 +42,6 @@ func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 
 func _set_is_charging(value: bool) -> void:
 	_is_charging = value
-	tween.stop_all()
 	if _is_charging:
 		tween.interpolate_property(
 			_ui_weapon_progress_bar,

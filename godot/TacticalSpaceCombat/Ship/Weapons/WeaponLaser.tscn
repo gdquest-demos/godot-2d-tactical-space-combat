@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd" type="Script" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectilePlayer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaserPlayer.gd" type="Script" id=2]
 
 [node name="WeaponLaser" instance=ExtResource( 1 )]
 region_rect = Rect2( 96, 416, 32, 32 )

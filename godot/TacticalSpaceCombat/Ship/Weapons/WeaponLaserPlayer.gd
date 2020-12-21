@@ -1,5 +1,5 @@
-class_name WeaponLaser
-extends Weapon
+class_name WeaponLaserPlayer
+extends WeaponPlayer
 
 
 signal fire_started(points, duration)

@@ -12,7 +12,7 @@ modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 collision_layer = 0
 collision_mask = 0
 mode = 2
-linear_velocity = Vector2( 500, 0 )
+linear_velocity = Vector2( 750, 0 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

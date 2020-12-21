@@ -1,3 +1,4 @@
+class_name Ship
 extends Node2D
 
 
@@ -49,6 +50,12 @@ func _ready() -> void:
 	fires.setup(tilemap)
 
 
+func _on_WeaponProjectile_targeting(index: int) -> void:
+	var r = _rng.randi_range(0, rooms.get_child_count() - 1)
+	var room: Room = rooms.get_child(r)
+	room.emit_signal("targeted", index, room.global_position)
+
+
 func _on_Room_modifier_changed(type: int, value: float) -> void:
 	match type:
 		Room.Type.HELM:
@@ -64,9 +71,7 @@ func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom
 			var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
 			fires.add_fire(offset, true)
 		if _rng.randf() < body.chances.hull_damage:
-			# TODO: finish implementation
-			print("hull_damage")
-		take_damage(body.attack)
+			_take_damage(body.attack)
 		body.queue_free()
 
 
@@ -79,7 +84,7 @@ func _on_FireTimer_timeout() -> void:
 	
 	for fire in fires.get_fires():
 		if _rng.randf() < fire.chance_attack:
-			take_damage(fire.attack)
+			_take_damage(fire.attack)
 
 
 func _on_UIDoorsButton_pressed() -> void:
@@ -111,7 +116,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				unit.walk(path)
 
 
-func take_damage(value: int) -> void:
+func _take_damage(value: int) -> void:
 	hit_points -= value
 	hit_points = max(0, hit_points)
 	emit_signal("hit_points_changed", hit_points, is_in_group("player"))

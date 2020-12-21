@@ -21,7 +21,7 @@ modulate = Color( 0.890196, 0.411765, 0.341176, 0.196078 )
 texture = ExtResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 4.0
 autostart = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

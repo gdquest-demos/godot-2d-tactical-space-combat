@@ -17,7 +17,8 @@ onready var ship_player: Node2D = $ShipPlayer
 onready var viewport_container: ViewportContainer = $ViewportContainer
 onready var ship_enemy: Node2D = $ViewportContainer/Viewport/ShipEnemy
 onready var spawner: PathFollow2D = $ViewportContainer/Viewport/PathSpawner/Spawner
-onready var projectiles: Node2D = $ViewportContainer/Viewport/Projectiles
+onready var projectiles_player: Node2D = $ViewportContainer/Viewport/ProjectilesPlayer
+onready var projectiles_enemy: Node2D = $ProjectilesEnemy
 onready var weapon_laser_player: Node2D = $ViewportContainer/Viewport/WeaponLaserPlayer
 onready var weapon_laser_player_area: Area2D = $ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D
 onready var weapon_laser_player_shape: SegmentShape2D = $ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D/CollisionShape2D.shape
@@ -32,6 +33,9 @@ onready var ui_doors: MarginContainer = $UI/Systems/Doors
 
 func _ready() -> void:
 	_rng.randomize()
+	
+	ship_player.connect("hit_points_changed", self, "_on_Ship_hit_points_changed")
+	ship_enemy.connect("hit_points_changed", self, "_on_Ship_hit_points_changed")
 	
 	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
 	ship_enemy.has_sensors = ship_player.has_sensors
@@ -49,12 +53,12 @@ func _ready() -> void:
 		ui_systems.add_child(ui_shield)
 	
 	for weapon in ship_player.weapons.get_children():
-		if weapon is WeaponProjectile:
+		if weapon is WeaponProjectilePlayer:
 			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")
 			for room in ship_enemy.rooms.get_children():
 				weapon.connect("targeting", room, "_on_WeaponProjectile_targeting")
 				room.connect("targeted", weapon, "_on_Room_targeted")
-		elif weapon is WeaponLaser:
+		elif weapon is WeaponLaserPlayer:
 			weapon.connect("targeting", self, "_on_WeaponLaser_targeting")
 			weapon.connect("fire_started", self, "_on_WeaponLaser_fire_started")
 			weapon.connect("fire_stopped", self, "_on_WeaponLaser_fire_stopped")
@@ -73,20 +77,36 @@ func _ready() -> void:
 		ui_units.add_child(ui_unit)
 		unit.setup(ui_unit)
 	
+	for weapon in ship_enemy.weapons.get_children():
+		if weapon is WeaponProjectileEnemy:
+			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")
+			weapon.connect("targeting", ship_player, "_on_WeaponProjectile_targeting")
+			for room in ship_player.rooms.get_children():
+				room.connect("targeted", weapon, "_on_Room_targeted")
+	
 	ship_player.emit_signal("hit_points_changed", ship_player.hit_points, true)
 	ship_enemy.emit_signal("hit_points_changed", ship_enemy.hit_points, false)
 
 
 # Spawn a projectile shot by the player into the enemy viewport
 func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_global_position: Vector2) -> void:
-	spawner.unit_offset = _rng.randf()
-	var direction: Vector2 = (target_global_position - spawner.global_position).normalized()
+	var projectiles: Node2D = null
+	var spawn_global_position := Vector2.INF
+	if physics_layer == Utils.PhysicsLayers.SHIP_ENEMY:
+		projectiles = projectiles_player
+		spawner.unit_offset = _rng.randf()
+		spawn_global_position = spawner.global_position
+	else:
+		projectiles = projectiles_enemy
+		spawn_global_position = scene_tree.root.size
+		spawn_global_position.y /= 2
+	
+	var direction: Vector2 = (target_global_position - spawn_global_position).normalized()
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.collision_layer = physics_layer
-	projectile.global_position = spawner.global_position
+	projectile.global_position = spawn_global_position
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
-	projectile.z_index = 3
 	projectiles.add_child(projectile)
 
 
