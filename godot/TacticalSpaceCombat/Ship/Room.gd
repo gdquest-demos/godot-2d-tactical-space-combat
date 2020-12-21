@@ -103,10 +103,10 @@ func _on_mouse_entered_exited(has_entered: bool) -> void:
 func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 	if area.is_in_group("unit"):
 		if has_entered:
-			units[area] = null
+			units[area.owner] = null
 			emit_signal("modifier_changed", type, _modifiers[type][1])
 		else:
-			units.erase(area)
+			units.erase(area.owner)
 			if units.empty():
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()

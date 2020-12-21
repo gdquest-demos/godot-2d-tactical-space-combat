@@ -45,7 +45,7 @@ script = ExtResource( 6 )
 [node name="Fires" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
-[node name="Timer" type="Timer" parent="Fires"]
+[node name="SpreadTimer" type="Timer" parent="Fires"]
 wait_time = 4.0
 autostart = true
 
@@ -56,4 +56,4 @@ autostart = true
 [node name="Units" type="Node2D" parent="."]
 
 [connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
-[connection signal="timeout" from="Fires/Timer" to="Fires" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Fires/SpreadTimer" to="Fires" method="_on_Timer_timeout"]

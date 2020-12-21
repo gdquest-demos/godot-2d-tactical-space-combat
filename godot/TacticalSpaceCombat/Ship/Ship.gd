@@ -36,7 +36,10 @@ func _ready() -> void:
 	for room in rooms.get_children():
 		room.setup(tilemap)
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
-		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room.top_left, room.bottom_right])
+		room.hit_area.connect(
+			"body_entered", self, "_on_RoomHitArea2D_body_entered",
+			[room.top_left, room.bottom_right]
+		)
 		for point in room:
 			tilemap.set_cellv(point, 0)
 		
