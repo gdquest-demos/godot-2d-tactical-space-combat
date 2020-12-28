@@ -1,11 +1,15 @@
-class_name WeaponProjectileEnemy
+class_name WeaponEnemyProjectile
 extends WeaponEnemy
 
 
-signal projectile_exited(target_global_position)
+signal projectile_exited(physics_layer, target_global_position, params)
 signal targeting(index)
 
 const Projectile := preload("Projectile.tscn")
+
+export(float, 0, 1) var chance_fire := 0.1
+export(float, 0, 1) var chance_hull_damage := 0.5
+export(int, 0, 5) var attack := 2
 
 var _target_global_position := Vector2.INF
 
@@ -21,11 +25,16 @@ func _on_Room_targeted(targeted_by: int, target_global_position: Vector2) -> voi
 
 
 func _fire():
+	var params := {
+		"chance_fire": chance_fire,
+		"chance_hull_damage": chance_hull_damage,
+		"attack": attack
+	}
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.linear_velocity = projectile.linear_velocity.rotated(rotation)
 	projectile.connect(
 		"tree_exited", self, "emit_signal",
-		["projectile_exited", Utils.PhysicsLayers.SHIP_PLAYER, _target_global_position]
+		["projectile_exited", Utils.Layers.SHIP_PLAYER, _target_global_position, params]
 	)
 	add_child(projectile)
 	_set_is_charging(true)

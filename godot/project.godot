@@ -39,25 +39,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemy.gd"
 }, {
-"base": "WeaponPlayer",
-"class": "WeaponLaserPlayer",
+"base": "WeaponEnemy",
+"class": "WeaponEnemyLaser",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaserPlayer.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemyLaser.gd"
+}, {
+"base": "WeaponEnemy",
+"class": "WeaponEnemyProjectile",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemyProjectile.gd"
 }, {
 "base": "Sprite",
 "class": "WeaponPlayer",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayer.gd"
 }, {
-"base": "WeaponEnemy",
-"class": "WeaponProjectileEnemy",
+"base": "WeaponPlayer",
+"class": "WeaponPlayerLaser",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectileEnemy.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayerLaser.gd"
 }, {
 "base": "WeaponPlayer",
-"class": "WeaponProjectilePlayer",
+"class": "WeaponPlayerProjectile",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectilePlayer.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayerProjectile.gd"
 } ]
 _global_script_class_icons={
 "Door": "",
@@ -66,10 +71,11 @@ _global_script_class_icons={
 "Unit": "",
 "Utils": "",
 "WeaponEnemy": "",
-"WeaponLaserPlayer": "",
+"WeaponEnemyLaser": "",
+"WeaponEnemyProjectile": "",
 "WeaponPlayer": "",
-"WeaponProjectileEnemy": "",
-"WeaponProjectilePlayer": ""
+"WeaponPlayerLaser": "",
+"WeaponPlayerProjectile": ""
 }
 
 [application]

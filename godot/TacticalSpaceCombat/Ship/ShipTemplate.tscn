@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Fires.gd" type="Script" id=3]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/Laser.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/TileMap.gd" type="Script" id=6]
 
 [sub_resource type="TileSet" id=1]
@@ -54,6 +55,8 @@ autostart = true
 [node name="Weapons" type="Node2D" parent="."]
 
 [node name="Units" type="Node2D" parent="."]
+
+[node name="Laser" parent="." instance=ExtResource( 4 )]
 
 [connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
 [connection signal="timeout" from="Fires/SpreadTimer" to="Fires" method="_on_Timer_timeout"]

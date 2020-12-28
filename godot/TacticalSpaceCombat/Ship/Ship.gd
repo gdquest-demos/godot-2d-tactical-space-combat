@@ -3,6 +3,7 @@ extends Node2D
 
 
 signal hit_points_changed(hit_points, is_player)
+signal targeted(msg)
 
 export(int, 0, 30) var hit_points := 30
 
@@ -13,6 +14,8 @@ var has_sensors := false
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
 
+var _shield: Area2D = null
+
 onready var scene_tree: SceneTree = get_tree()
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
@@ -20,6 +23,10 @@ onready var fires: Node2D = $Fires
 onready var doors: Node2D = $Doors
 onready var weapons: Node2D = $Weapons
 onready var units: Node2D = $Units
+onready var laser: Node2D = $Laser
+onready var laser_area: Area2D = $Laser/Area2D
+onready var laser_line: Line2D = $Laser/Line2D
+onready var laser_target_line: Line2D = $Laser/TargetLine2D
 
 
 func _ready() -> void:
@@ -35,6 +42,7 @@ func _ready() -> void:
 	
 	for room in rooms.get_children():
 		room.setup(tilemap)
+		room.connect("area_entered", self, "_on_RoomArea2D_area_entered")
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
 		room.hit_area.connect(
 			"body_entered", self, "_on_RoomHitArea2D_body_entered",
@@ -47,16 +55,31 @@ func _ready() -> void:
 			has_sensors = true
 	
 	if has_node("Shield"):
-		$Shield.position = _get_mean_position()
+		_shield = $Shield
+		_shield.position = _get_mean_position()
 	
 	tilemap.setup(rooms, doors)
 	fires.setup(tilemap)
 
 
 func _on_WeaponProjectile_targeting(index: int) -> void:
-	var r = _rng.randi_range(0, rooms.get_child_count() - 1)
+	var r := _rng.randi_range(0, rooms.get_child_count() - 1)
 	var room: Room = rooms.get_child(r)
 	room.emit_signal("targeted", index, room.global_position)
+
+
+func _on_WeaponLaser_targeting() -> void:
+	var r1 := _rng.randi_range(0, rooms.get_child_count() - 1)
+	var rs_remaining := []
+	for room_index in range(rooms.get_child_count()):
+		if room_index != r1:
+			rs_remaining.push_back(room_index)
+	var index = _rng.randi_range(0, rs_remaining.size() - 1)
+	var r2 = rs_remaining[index]
+	
+	var point1: Vector2 = rooms.get_child(r1).get_random_vector()
+	var point2: Vector2 = rooms.get_child(r2).get_random_vector()
+	emit_signal("targeted", {"start": point1, "direction": (point2 - point1).normalized()})
 
 
 func _on_Room_modifier_changed(type: int, value: float) -> void:
@@ -68,14 +91,23 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 				weapon.modifier = value
 
 
-func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom_right: Vector2):
+func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom_right: Vector2) -> void:
 	if _rng.randf() >= evasion:
-		if _rng.randf() < body.chances.fire:
+		if _rng.randf() < body.params.chance_fire:
 			var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
 			fires.add_fire(offset, true)
-		if _rng.randf() < body.chances.hull_damage:
-			_take_damage(body.attack)
+		if _rng.randf() < body.params.chance_hull_damage:
+			# TODO break oxigen
+			pass
+		_take_damage(body.params.attack)
 		body.queue_free()
+
+
+func _on_RoomArea2D_area_entered(area: Area2D) -> void:
+	if ((_shield != null and _shield.hit_points == 0 and area.is_in_group("laser"))
+		or (_shield == null and area.is_in_group("laser"))
+	):
+		_take_damage(area.params.attack)
 
 
 func _on_FireTimer_timeout() -> void:

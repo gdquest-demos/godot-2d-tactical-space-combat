@@ -9,7 +9,8 @@ const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
 const END_SCENE = "TacticalSpaceCombat/End.tscn"
 
 var _rng := RandomNumberGenerator.new()
-var _swipe_laser_start := Vector2.ZERO
+var _swipe_laser_player_start := Vector2.ZERO
+var _swipe_laser_enemy_start := Vector2.ZERO
 
 onready var scene_tree: SceneTree = get_tree()
 onready var tween: Tween = $Tween
@@ -19,10 +20,6 @@ onready var ship_enemy: Node2D = $ViewportContainer/Viewport/ShipEnemy
 onready var spawner: PathFollow2D = $ViewportContainer/Viewport/PathSpawner/Spawner
 onready var projectiles_player: Node2D = $ViewportContainer/Viewport/ProjectilesPlayer
 onready var projectiles_enemy: Node2D = $ProjectilesEnemy
-onready var weapon_laser_player: Node2D = $ViewportContainer/Viewport/WeaponLaserPlayer
-onready var weapon_laser_player_area: Area2D = $ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D
-onready var weapon_laser_player_shape: SegmentShape2D = $ViewportContainer/Viewport/WeaponLaserPlayer/WeaponLaserArea2D/CollisionShape2D.shape
-onready var weapon_laser_player_line: Line2D = $ViewportContainer/Viewport/WeaponLaserPlayer/LaserLine2D
 onready var ui: Control = $UI
 onready var ui_hit_points_player: Label = $UI/HitPoints
 onready var ui_hit_points_enemy: Label = $ViewportContainer/Viewport/UI/HitPoints
@@ -53,17 +50,15 @@ func _ready() -> void:
 		ui_systems.add_child(ui_shield)
 	
 	for weapon in ship_player.weapons.get_children():
-		if weapon is WeaponProjectilePlayer:
-			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")
+		if weapon is WeaponPlayerProjectile:
+			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited", [true])
 			for room in ship_enemy.rooms.get_children():
 				weapon.connect("targeting", room, "_on_WeaponProjectile_targeting")
 				room.connect("targeted", weapon, "_on_Room_targeted")
-		elif weapon is WeaponLaserPlayer:
+		elif weapon is WeaponPlayerLaser:
 			weapon.connect("targeting", self, "_on_WeaponLaser_targeting")
-			weapon.connect("fire_started", self, "_on_WeaponLaser_fire_started")
-			weapon.connect("fire_stopped", self, "_on_WeaponLaser_fire_stopped")
-			weapon_laser_player_area.connect("area_entered", weapon, "_on_WeaponLaserPlayerArea_area_entered_exited", [true])
-			weapon_laser_player_area.connect("area_exited", weapon, "_on_WeaponLaserPlayerArea_area_entered_exited", [false])
+			weapon.connect("fire_started", self, "_on_WeaponLaser_fire_started", [true])
+			weapon.connect("fire_stopped", self, "_on_WeaponLaser_fire_stopped", [true])
 		
 		if not ui_systems.has_node("Weapons"):
 			ui_systems.add_child(UIWeapons.instance())
@@ -78,59 +73,98 @@ func _ready() -> void:
 		unit.setup(ui_unit)
 	
 	for weapon in ship_enemy.weapons.get_children():
-		if weapon is WeaponProjectileEnemy:
-			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited")
+		if weapon is WeaponEnemyProjectile:
+			weapon.connect("projectile_exited", self, "_on_WeaponProjectile_projectile_exited", [false])
 			weapon.connect("targeting", ship_player, "_on_WeaponProjectile_targeting")
 			for room in ship_player.rooms.get_children():
 				room.connect("targeted", weapon, "_on_Room_targeted")
+		elif weapon is WeaponEnemyLaser:
+			weapon.connect("targeting", ship_player, "_on_WeaponLaser_targeting")
+			weapon.connect("fire_started", self, "_on_WeaponLaser_fire_started", [false])
+			weapon.connect("fire_stopped", self, "_on_WeaponLaser_fire_stopped", [false])
+			ship_player.connect("targeted", weapon, "_on_Ship_targeted")
 	
 	ship_player.emit_signal("hit_points_changed", ship_player.hit_points, true)
 	ship_enemy.emit_signal("hit_points_changed", ship_enemy.hit_points, false)
 
 
-# Spawn a projectile shot by the player into the enemy viewport
-func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_global_position: Vector2) -> void:
+func _on_WeaponProjectile_projectile_exited(
+		physics_layer: int,
+		target_global_position: Vector2,
+		params: Dictionary,
+		is_player: bool) -> void:
 	var projectiles: Node2D = null
-	var spawn_global_position := Vector2.INF
-	if physics_layer == Utils.PhysicsLayers.SHIP_ENEMY:
+	var spawn_position := Vector2.INF
+	if is_player:
 		projectiles = projectiles_player
 		spawner.unit_offset = _rng.randf()
-		spawn_global_position = spawner.global_position
+		spawn_position = spawner.position
 	else:
 		projectiles = projectiles_enemy
-		spawn_global_position = scene_tree.root.size
-		spawn_global_position.y /= 2
+		spawn_position = scene_tree.root.size
+		spawn_position.y /= 2
 	
-	var direction: Vector2 = (target_global_position - spawn_global_position).normalized()
+	var direction: Vector2 = (target_global_position - spawn_position).normalized()
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.collision_layer = physics_layer
-	projectile.global_position = spawn_global_position
+	projectile.position = spawn_position
 	projectile.linear_velocity = direction * projectile.linear_velocity.length()
 	projectile.rotation = direction.angle()
+	projectile.params = params
 	projectiles.add_child(projectile)
 
 
 func _on_WeaponLaser_targeting(points: PoolVector2Array) -> void:
 	points = viewport_container.get_global_transform().xform_inv(points)
-	weapon_laser_player_shape.a = points[0]
-	weapon_laser_player_shape.b = points[1]
+	points = ship_enemy.get_global_transform().xform_inv(points)
+	ship_enemy.laser_target_line.points = points
 
 
-func _on_WeaponLaser_fire_started(points: PoolVector2Array, duration: float) -> void:
-	points = viewport_container.get_global_transform().xform_inv(points)
-	spawner.unit_offset = _rng.randf()
-	_swipe_laser_start = spawner.global_position
-	tween.interpolate_method(self, "_swipe_laser", points[0], points[1], duration)
+func _on_WeaponLaser_fire_started(
+		points: PoolVector2Array,
+		duration: float,
+		params: Dictionary,
+		is_player: bool) -> void:
+	var method := "_swipe_laser"
+	if is_player:
+		method += "_player"
+		ship_enemy.laser_area.set_deferred("monitorable", true)
+		ship_enemy.laser_area.params = params
+		points = viewport_container.get_global_transform().xform_inv(points)
+		points = ship_enemy.get_global_transform().xform_inv(points)
+		spawner.unit_offset = _rng.randf()
+		_swipe_laser_player_start = ship_enemy.transform.xform_inv(spawner.position)
+	else:
+		method += "_enemy"
+		ship_player.laser_area.set_deferred("monitorable", true)
+		ship_player.laser_area.params = params
+		_swipe_laser_enemy_start = scene_tree.root.size
+		_swipe_laser_enemy_start.y /= 2
+	tween.interpolate_method(self, method, points[0], points[1], duration)
 	tween.start()
 
 
-func _on_WeaponLaser_fire_stopped() -> void:
-	weapon_laser_player_line.points = []
-	tween.stop_all()
+func _on_WeaponLaser_fire_stopped(is_player: bool) -> void:
+	if is_player:
+		tween.remove(self, "_swipe_laser_player")
+		ship_enemy.laser_area.set_deferred("monitorable", false)
+		ship_enemy.laser_area.position = Vector2.ZERO
+		ship_enemy.laser_line.points = []
+	else:
+		tween.remove(self, "_swipe_laser_enemy")
+		ship_player.laser_area.set_deferred("monitorable", false)
+		ship_player.laser_area.position = Vector2.ZERO
+		ship_player.laser_line.points = []
 
 
-func _swipe_laser(offset: Vector2) -> void:
-	weapon_laser_player_line.points = [_swipe_laser_start, offset]
+func _swipe_laser_player(offset: Vector2) -> void:
+	ship_enemy.laser_area.position = offset
+	ship_enemy.laser_line.points = [_swipe_laser_player_start, offset]
+
+
+func _swipe_laser_enemy(offset: Vector2) -> void:
+	ship_player.laser_area.position = offset
+	ship_player.laser_line.points = [_swipe_laser_enemy_start, offset]
 
 
 func _on_Ship_hit_points_changed(hit_points: int, is_player: bool) -> void:

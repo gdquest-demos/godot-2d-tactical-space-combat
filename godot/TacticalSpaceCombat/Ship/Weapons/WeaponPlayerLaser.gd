@@ -1,25 +1,27 @@
-class_name WeaponLaserPlayer
+class_name WeaponPlayerLaser
 extends WeaponPlayer
 
 
-signal fire_started(points, duration)
+signal fire_started(points, duration, params)
 signal fire_stopped
 signal targeting(points)
 
 const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
 const TARGETTING_LENGTH := 160
 
-var _targets := {}
-var _is_targeting := false
+export(int, 0, 5) var attack := 1
 
-onready var target_line: Line2D = $TargetLine2D
+var _is_targeting := false
+var _points := TARGET_LINE_DEFAULT
+
 onready var timer: Timer = $Timer
+onready var line: Line2D = $Line2D
 
 
 func _ready() -> void:
 	timer.connect("timeout", self, "emit_signal", ["fire_stopped"])
 	timer.connect("timeout", self, "_set_is_charging", [true])
-	target_line.points = [Vector2.INF, Vector2.INF]
+	timer.connect("timeout", line, "set_visible", [false])
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -27,40 +29,35 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("left_click"):
-		target_line.points[0] = global_transform.xform_inv(event.position)
-	elif target_line.points[0] != Vector2.INF and event is InputEventMouseMotion:
-		var offset: Vector2 = global_transform.xform_inv(event.position) - target_line.points[0]
+		_points[0] = event.position
+	elif _points[0] != Vector2.INF and event is InputEventMouseMotion:
+		var offset: Vector2 = event.position - _points[0]
 		offset = offset.clamped(TARGETTING_LENGTH)
-		target_line.points[1] = target_line.points[0] + offset
+		_points[1] = _points[0] + offset
 	elif event.is_action_released("left_click"):
 		_ui_weapon_button.pressed = false
 		if not _is_charging:
 			_fire()
 	
-	emit_signal("targeting", global_transform.xform(target_line.points))
+	if _points[1] != Vector2.INF:
+		emit_signal("targeting", _points)
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	._on_UIWeaponButton_toggled(is_pressed)
 	_is_targeting = is_pressed
 	if _is_targeting:
-		target_line.points = TARGET_LINE_DEFAULT
-
-
-func _on_WeaponLaserPlayerArea_area_entered_exited(area: Area2D, has_entered: bool) -> void:
-	if area.is_in_group("room"):
-		if has_entered:
-			_targets[area] = null
-		else:
-			_targets.erase(area)
+		_points = TARGET_LINE_DEFAULT
+		emit_signal("targeting", _points)
 
 
 func _fire() -> void:
+	line.visible = true
 	timer.start()
-	emit_signal("fire_started", global_transform.xform(target_line.points), timer.wait_time)
+	emit_signal("fire_started", _points, timer.wait_time, {"attack": attack})
 
 
 func _set_is_charging(value: bool) -> void:
 	._set_is_charging(value)
-	if target_line.points[1] != Vector2.INF and not _is_charging:
+	if not (_is_targeting or _is_charging) and _points[1] != Vector2.INF:
 		_fire()

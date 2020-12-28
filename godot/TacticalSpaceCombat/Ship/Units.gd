@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const COLLISION_LAYER := 1 << 19
+const COLLISION_LAYER := Utils.Layers.UI
 const DEFAULT_POLYGON := PoolVector2Array([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
 
 var _is_pressed := false

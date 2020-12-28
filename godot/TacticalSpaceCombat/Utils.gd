@@ -9,7 +9,7 @@ class_name Utils
 # 1 << 2 equals 4
 #
 # Thus `1 << x` is the same as `2 to the power of x`
-enum PhysicsLayers {
+enum Layers {
 	NONE,
 	SHIPS = 1,
 	SHIP_PLAYER = 1 << 1,
@@ -45,6 +45,12 @@ static func erase_value(dict: Dictionary, value) -> bool:
 		if dict[key] == value:
 			out = dict.erase(key)
 	return out
+
+
+static func randvf_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:
+	var x: float = lerp(top_left.x, bottom_right.x, _rng.randf())
+	var y: float = lerp(top_left.y, bottom_right.y, _rng.randf())
+	return Vector2(x, y)
 
 
 static func randvi_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:

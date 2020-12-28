@@ -2,7 +2,6 @@ class_name WeaponEnemy
 extends Sprite
 
 
-export var weapon_name := ''
 export var charge_time := 2.0
 
 var modifier := 1.0

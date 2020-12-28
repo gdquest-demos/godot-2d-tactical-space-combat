@@ -39,6 +39,7 @@ var _size := Vector2.ZERO
 var _area := 0
 var _iter_index := 0
 var _fog := {}
+var _rng := RandomNumberGenerator.new()
 
 onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
@@ -66,16 +67,13 @@ func setup(tilemap: TileMap) -> void:
 
 
 func _ready() -> void:
+	_rng.randomize()
 	_fog = {
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
 		false: Rect2()
 	}
 	
-	hit_area.collision_layer = (
-		Utils.PhysicsLayers.SHIP_PLAYER
-		if owner.is_in_group("player")
-		else Utils.PhysicsLayers.SHIP_ENEMY
-	)
+	hit_area.collision_layer = Utils.Layers.SHIP_PLAYER if owner.is_in_group("player") else Utils.Layers.SHIP_ENEMY
 	hit_area.collision_mask = hit_area.collision_layer
 
 
@@ -110,7 +108,7 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 			if units.empty():
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()
-	elif has_entered and area.is_in_group("door"):
+	elif area.is_in_group("door") and has_entered:
 		var entrance := position - area.position
 		entrance *= Vector2.DOWN.rotated(-area.rotation)
 		entrance = entrance.normalized() * _tilemap.cell_size / 2
@@ -177,6 +175,12 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 		if not out == Vector2.INF:
 			break
 	return out
+
+
+func get_random_vector() -> Vector2:
+	var top_left_world := _tilemap.map_to_world(top_left)
+	var bottom_right_world := _tilemap.map_to_world(bottom_right)
+	return Utils.randvf_range(_rng, top_left_world, bottom_right_world)
 
 
 func _iter_init(_arg) -> bool:

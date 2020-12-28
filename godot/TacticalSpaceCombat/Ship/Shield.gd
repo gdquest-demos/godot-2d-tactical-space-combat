@@ -3,7 +3,7 @@ extends Area2D
 
 export var hit_points_max := 4
 
-var _hit_points := 0 setget _set_hit_points
+var hit_points := 0 setget set_hit_points
 
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var polygon: Polygon2D = $Polygon2D
@@ -16,15 +16,15 @@ func _ready() -> void:
 
 
 func _on_Timer_timeout() -> void:
-	_set_hit_points(_hit_points + 1)
+	self.hit_points += 1
 
 
 func _on_body_entered(body: Node) -> void:
-	if _hit_points == 0:
+	if hit_points == 0:
 		return
 	
 	body.queue_free()
-	_set_hit_points(_hit_points - 1)
+	self.hit_points -= 1
 
 
 func _get_shape_points() -> PoolVector2Array:
@@ -39,11 +39,11 @@ func _get_shape_points() -> PoolVector2Array:
 	return collision_shape.transform.xform(out)
 
 
-func _set_hit_points(value: int) -> void:
+func set_hit_points(value: int) -> void:
 	if value == hit_points_max:
 		timer.stop()
 	else:
-		_hit_points = clamp(value, 0, hit_points_max)
+		hit_points = clamp(value, 0, hit_points_max)
 		timer.start()
 	
-	polygon.self_modulate.a = _hit_points / float(hit_points_max)
+	polygon.self_modulate.a = hit_points / float(hit_points_max)
