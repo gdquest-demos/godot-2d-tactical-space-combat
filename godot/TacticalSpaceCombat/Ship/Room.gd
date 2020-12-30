@@ -72,9 +72,11 @@ func _ready() -> void:
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
 		false: Rect2()
 	}
-	
-	hit_area.collision_layer = Utils.Layers.SHIP_PLAYER if owner.is_in_group("player") else Utils.Layers.SHIP_ENEMY
-	hit_area.collision_mask = hit_area.collision_layer
+	hit_area.collision_mask = (
+		Utils.Layers.SHIP_PLAYER
+		if owner.is_in_group("player")
+		else Utils.Layers.SHIP_ENEMY
+	)
 
 
 func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
@@ -85,7 +87,7 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	):
 		sprite_target.visible = true
 		sprite_target.get_child(_target_index).visible = true
-		emit_signal("targeted", _target_index, global_position)
+		emit_signal("targeted", _target_index, position)
 		_target_index = -1
 
 

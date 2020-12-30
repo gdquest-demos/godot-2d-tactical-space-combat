@@ -5,6 +5,8 @@ extends Node2D
 signal hit_points_changed(hit_points, is_player)
 signal targeted(msg)
 
+const Projectile = preload("Weapons/Projectile.tscn")
+
 export(int, 0, 30) var hit_points := 30
 
 var evasion := 0.0
@@ -23,6 +25,8 @@ onready var fires: Node2D = $Fires
 onready var doors: Node2D = $Doors
 onready var weapons: Node2D = $Weapons
 onready var units: Node2D = $Units
+onready var spawner: Path2D = $Spawner
+onready var projectiles: Node2D = $Projectiles
 onready var laser: Node2D = $Laser
 onready var laser_area: Area2D = $Laser/Area2D
 onready var laser_line: Line2D = $Laser/Line2D
@@ -65,7 +69,19 @@ func _ready() -> void:
 func _on_WeaponProjectile_targeting(index: int) -> void:
 	var r := _rng.randi_range(0, rooms.get_child_count() - 1)
 	var room: Room = rooms.get_child(r)
-	room.emit_signal("targeted", index, room.global_position)
+	room.emit_signal("targeted", index, room.position)
+
+
+func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_position: Vector2, params: Dictionary) -> void:
+	var spawn_position: Vector2 = spawner.interpolate(_rng.randf())
+	var direction: Vector2 = (target_position - spawn_position).normalized()
+	var projectile: RigidBody2D = Projectile.instance()
+	projectile.collision_layer = physics_layer
+	projectile.position = spawn_position
+	projectile.linear_velocity = direction * projectile.linear_velocity.length()
+	projectile.rotation = direction.angle()
+	projectile.params = params
+	projectiles.add_child(projectile)
 
 
 func _on_WeaponLaser_targeting() -> void:
