@@ -35,34 +35,29 @@ _global_script_classes=[ {
 "path": "res://TacticalSpaceCombat/Utils.gd"
 }, {
 "base": "Sprite",
-"class": "WeaponEnemy",
+"class": "Weapon",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemy.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/Weapon.gd"
 }, {
-"base": "WeaponEnemy",
-"class": "WeaponEnemyLaser",
+"base": "Weapon",
+"class": "WeaponLaser",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemyLaser.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd"
 }, {
-"base": "WeaponEnemy",
-"class": "WeaponEnemyProjectile",
+"base": "WeaponLaser",
+"class": "WeaponLaserEnemy",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponEnemyProjectile.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaserEnemy.gd"
 }, {
-"base": "Sprite",
-"class": "WeaponPlayer",
+"base": "WeaponLaser",
+"class": "WeaponLaserPlayer",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayer.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaserPlayer.gd"
 }, {
-"base": "WeaponPlayer",
-"class": "WeaponPlayerLaser",
+"base": "Weapon",
+"class": "WeaponProjectile",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayerLaser.gd"
-}, {
-"base": "WeaponPlayer",
-"class": "WeaponPlayerProjectile",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponPlayerProjectile.gd"
+"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.gd"
 } ]
 _global_script_class_icons={
 "Door": "",
@@ -70,12 +65,11 @@ _global_script_class_icons={
 "Ship": "",
 "Unit": "",
 "Utils": "",
-"WeaponEnemy": "",
-"WeaponEnemyLaser": "",
-"WeaponEnemyProjectile": "",
-"WeaponPlayer": "",
-"WeaponPlayerLaser": "",
-"WeaponPlayerProjectile": ""
+"Weapon": "",
+"WeaponLaser": "",
+"WeaponLaserEnemy": "",
+"WeaponLaserPlayer": "",
+"WeaponProjectile": ""
 }
 
 [application]

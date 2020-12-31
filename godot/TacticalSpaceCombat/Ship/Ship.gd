@@ -2,6 +2,7 @@ class_name Ship
 extends Node2D
 
 
+signal attached_shield
 signal hit_points_changed(hit_points, is_player)
 signal targeted(msg)
 
@@ -50,7 +51,7 @@ func _ready() -> void:
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
 		room.hit_area.connect(
 			"body_entered", self, "_on_RoomHitArea2D_body_entered",
-			[room.top_left, room.bottom_right]
+			[room.position, room.top_left, room.bottom_right]
 		)
 		for point in room:
 			tilemap.set_cellv(point, 0)
@@ -72,9 +73,9 @@ func _on_WeaponProjectile_targeting(index: int) -> void:
 	room.emit_signal("targeted", index, room.position)
 
 
-func _on_WeaponProjectile_projectile_exited(physics_layer: int, target_position: Vector2, params: Dictionary) -> void:
+func _on_WeaponProjectile_projectile_exited(physics_layer: int, params: Dictionary) -> void:
 	var spawn_position: Vector2 = spawner.interpolate(_rng.randf())
-	var direction: Vector2 = (target_position - spawn_position).normalized()
+	var direction: Vector2 = (params.target_position - spawn_position).normalized()
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.collision_layer = physics_layer
 	projectile.position = spawn_position
@@ -107,16 +108,25 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 				weapon.modifier = value
 
 
-func _on_RoomHitArea2D_body_entered(body: RigidBody2D, top_left: Vector2, bottom_right: Vector2) -> void:
-	if _rng.randf() >= evasion:
-		if _rng.randf() < body.params.chance_fire:
-			var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
-			fires.add_fire(offset, true)
-		if _rng.randf() < body.params.chance_hull_damage:
-			# TODO break oxigen
-			pass
-		_take_damage(body.params.attack)
-		body.queue_free()
+func _on_RoomHitArea2D_body_entered(
+		body: RigidBody2D,
+		room_position: Vector2,
+		room_top_left: Vector2,
+		room_bottom_right: Vector2
+	) -> void:
+	if not room_position.is_equal_approx(body.params.target_position) or _rng.randf() < evasion:
+		return
+	
+	if _rng.randf() < body.params.chance_fire:
+		var offset := Utils.randvi_range(_rng, room_top_left, room_bottom_right - Vector2.ONE)
+		fires.add_fire(offset, true)
+	
+	if _rng.randf() < body.params.chance_hull_damage:
+		# TODO break oxigen
+		pass
+	
+	_take_damage(body.params.attack)
+	body.queue_free()
 
 
 func _on_RoomArea2D_area_entered(area: Area2D) -> void:

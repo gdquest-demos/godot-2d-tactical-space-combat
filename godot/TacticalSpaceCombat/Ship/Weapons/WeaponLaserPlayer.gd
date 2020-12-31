@@ -1,18 +1,10 @@
-class_name WeaponPlayer
-extends Sprite
+class_name WeaponLaserPlayer
+extends WeaponLaser
 
 
-export var weapon_name := ''
-export var charge_time := 2.0
-
-var modifier := 1.0
-
-var _is_charging := false setget _set_is_charging
 var _ui_weapon: VBoxContainer
 var _ui_weapon_button: Button
 var _ui_weapon_progress_bar: ProgressBar
-
-onready var tween: Tween = $Tween
 
 
 func setup(ui_weapon: VBoxContainer) -> void:
@@ -27,8 +19,23 @@ func setup(ui_weapon: VBoxContainer) -> void:
 	_set_is_charging(true)
 
 
-func _ready() -> void:
-	tween.connect("tween_all_completed", self, "_set_is_charging", [false])
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventMouse and _is_targeting):
+		return
+	
+	if event.is_action_pressed("left_click"):
+		_points[0] = event.position
+	elif _points[0] != Vector2.INF and event is InputEventMouseMotion:
+		var offset: Vector2 = event.position - _points[0]
+		offset = offset.clamped(TARGETTING_LENGTH)
+		_points[1] = _points[0] + offset
+	elif event.is_action_released("left_click"):
+		_ui_weapon_button.pressed = false
+		if not _is_charging:
+			_fire()
+	
+	if _points[1] != Vector2.INF:
+		emit_signal("targeting", _points)
 
 
 func _on_UIWeaponButton_gui_input(event: InputEvent) -> void:
@@ -38,16 +45,7 @@ func _on_UIWeaponButton_gui_input(event: InputEvent) -> void:
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_CROSS if is_pressed else Input.CURSOR_ARROW)
-
-
-func _set_is_charging(value: bool) -> void:
-	_is_charging = value
-	if _is_charging:
-		tween.interpolate_property(
-			_ui_weapon_progress_bar,
-			"value",
-			_ui_weapon_progress_bar.min_value,
-			_ui_weapon_progress_bar.max_value,
-			charge_time * modifier
-		)
-		tween.start()
+	_is_targeting = is_pressed
+	if _is_targeting:
+		_points = TARGET_LINE_DEFAULT
+		emit_signal("targeting", _points)

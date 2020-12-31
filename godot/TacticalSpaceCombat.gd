@@ -44,13 +44,14 @@ func _ready() -> void:
 		ui_systems.add_child(ui_sensors)
 	ui_systems.add_child(VSeparator.new())
 	
+	ship_player.connect("attached_shield", self, "_on_ShipPlayer_attached_shield")
 	if ship_player.has_node("Shield"):
 		var ui_shield := UISystem.instance()
 		ui_shield.get_node("Button").text = "S"
 		ui_systems.add_child(ui_shield)
 	
 	for weapon in ship_player.weapons.get_children():
-		if weapon is WeaponPlayerProjectile:
+		if weapon is WeaponProjectile:
 			weapon.connect("projectile_exited", ship_enemy, "_on_WeaponProjectile_projectile_exited")
 			for room in ship_enemy.rooms.get_children():
 				weapon.connect("targeting", room, "_on_WeaponProjectile_targeting")
@@ -73,7 +74,7 @@ func _ready() -> void:
 		unit.setup(ui_unit)
 	
 	for weapon in ship_enemy.weapons.get_children():
-		if weapon is WeaponEnemyProjectile:
+		if weapon is WeaponProjectile:
 			weapon.connect("projectile_exited", ship_player, "_on_WeaponProjectile_projectile_exited")
 			weapon.connect("targeting", ship_player, "_on_WeaponProjectile_targeting")
 			for room in ship_player.rooms.get_children():
