@@ -13,3 +13,7 @@ func _ready() -> void:
 
 func _on_RetryButton_pressed() -> void:
 	scene_tree.change_scene(MAIN_SCENE)
+
+
+func _on_QuitButton_pressed() -> void:
+	scene_tree.quit()

@@ -16,7 +16,6 @@ func _ready() -> void:
 
 
 func _on_Ship_targeted(msg: Dictionary) -> void:
-	print(owner.name)
 	match msg:
 		{"index": var index, "target_position": var target_position}:
 			if index == get_index():

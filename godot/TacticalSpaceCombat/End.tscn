@@ -14,9 +14,9 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 937.0
-margin_top = 516.0
+margin_top = 503.0
 margin_right = 982.0
-margin_bottom = 564.0
+margin_bottom = 577.0
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 margin_right = 45.0
@@ -28,4 +28,11 @@ margin_right = 45.0
 margin_bottom = 48.0
 text = "Retry"
 
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+margin_top = 52.0
+margin_right = 45.0
+margin_bottom = 74.0
+text = "Quit"
+
 [connection signal="pressed" from="VBoxContainer/RetryButton" to="." method="_on_RetryButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
