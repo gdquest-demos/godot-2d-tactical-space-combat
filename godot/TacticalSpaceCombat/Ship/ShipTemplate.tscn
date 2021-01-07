@@ -74,5 +74,7 @@ script = ExtResource( 7 )
 
 [node name="Lasers" type="Node2D" parent="."]
 
+[node name="Walls" type="Node2D" parent="."]
+
 [connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
 [connection signal="timeout" from="Fires/SpreadTimer" to="Fires" method="_on_Timer_timeout"]

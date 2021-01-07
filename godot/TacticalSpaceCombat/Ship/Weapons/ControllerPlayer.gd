@@ -19,7 +19,7 @@ func setup(ui_weapon: VBoxContainer) -> void:
 	_ui_weapon_button.text = weapon.weapon_name
 
 
-func _on_WeaponTween_tween_step(object: Object, key: NodePath, ellapsed: float, value: float) -> void:
+func _on_WeaponTween_tween_step(_o: Object, _k: NodePath, _e: float, value: float) -> void:
 	_ui_weapon_progress_bar.value = value
 
 

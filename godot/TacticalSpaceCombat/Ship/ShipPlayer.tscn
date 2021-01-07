@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Ship.gd" type="Script" id=9]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Wall.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -105,7 +106,8 @@ script = ExtResource( 11 )
 
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
 weapon_name = "Projectile"
-chance_fire = 1.0
+charge_time = 4.0
+chance_fire = 0.2
 
 [node name="ControllerLaser1" parent="Weapons" index="1" instance=ExtResource( 6 )]
 position = Vector2( 480, 256 )
@@ -113,6 +115,8 @@ script = ExtResource( 10 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser1" index="0"]
 weapon_name = "Laser1"
+charge_time = 6.0
+attack = 1
 
 [node name="ControllerLaser2" parent="Weapons" index="2" instance=ExtResource( 6 )]
 position = Vector2( 352, 352 )
@@ -120,6 +124,7 @@ script = ExtResource( 10 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser2" index="0"]
 weapon_name = "Laser2"
+charge_time = 10.0
 
 [node name="Units" parent="." index="6"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
@@ -151,6 +156,9 @@ shape = SubResource( 6 )
 
 [node name="Spawner" parent="." index="8"]
 curve = SubResource( 7 )
+
+[node name="Wall" parent="Walls" index="0" instance=ExtResource( 12 )]
+position = Vector2( 412, 192 )
 
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]
