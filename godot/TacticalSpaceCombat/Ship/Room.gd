@@ -4,7 +4,7 @@ extends Area2D
 
 # Emitted when room is successfuly selected as target in order for the projectile weapon to know
 # when to start shooting
-signal targeted(target_index, target_global_position)
+signal targeted(msg)
 signal modifier_changed(type, value)
 
 # Room type which determines boosts if any
@@ -87,7 +87,7 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	):
 		sprite_target.visible = true
 		sprite_target.get_child(_target_index).visible = true
-		emit_signal("targeted", _target_index, position)
+		emit_signal("targeted", {"index": _target_index, "target_position": position})
 		_target_index = -1
 
 
@@ -123,15 +123,17 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 # weapon targeting by turning off the appropriate numbered sprite (child) visibility.
 # If at least one numbered sprite is visible then we also make the parent visible, otherwise
 # it remains invisible
-func _on_WeaponProjectile_targeting(index: int) -> void:
-	_target_index = index
-	if _target_index != -1:
-		sprite_target.visible = false
-		sprite_target.get_child(_target_index).visible = false
-		for node in sprite_target.get_children():
-			if node.visible:
-				sprite_target.visible = true
-				break
+func _on_Controller_targeting(msg: Dictionary) -> void:
+	match msg:
+		{"index": var index}:
+			_target_index = index
+			if _target_index != -1:
+				sprite_target.visible = false
+				sprite_target.get_child(_target_index).visible = false
+				for node in sprite_target.get_children():
+					if node.visible:
+						sprite_target.visible = true
+						break
 
 
 func _draw() -> void:

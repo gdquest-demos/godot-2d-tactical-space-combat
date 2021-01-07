@@ -45,5 +45,4 @@ func set_hit_points(value: int) -> void:
 	else:
 		hit_points = clamp(value, 0, hit_points_max)
 		timer.start()
-	
 	polygon.self_modulate.a = hit_points / float(hit_points_max)

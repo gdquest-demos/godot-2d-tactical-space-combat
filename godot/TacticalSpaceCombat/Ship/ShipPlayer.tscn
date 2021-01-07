@@ -1,14 +1,16 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=4]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerProjectile.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=5]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=6]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Ship.gd" type="Script" id=9]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -97,12 +99,27 @@ rotation = 1.5708
 [node name="Door0506" parent="Doors" index="3" instance=ExtResource( 2 )]
 position = Vector2( 352, 192 )
 
-[node name="WeaponProjectile" parent="Weapons" index="0" instance=ExtResource( 4 )]
-position = Vector2( 352, 32 )
+[node name="ControllerProjectile" parent="Weapons" index="0" instance=ExtResource( 4 )]
+position = Vector2( 384, 32 )
+script = ExtResource( 11 )
 
-[node name="WeaponLaser" parent="Weapons" index="1" instance=ExtResource( 6 )]
-position = Vector2( 320, 352 )
-script = null
+[node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
+weapon_name = "Projectile"
+chance_fire = 1.0
+
+[node name="ControllerLaser1" parent="Weapons" index="1" instance=ExtResource( 6 )]
+position = Vector2( 480, 256 )
+script = ExtResource( 10 )
+
+[node name="Weapon" parent="Weapons/ControllerLaser1" index="0"]
+weapon_name = "Laser1"
+
+[node name="ControllerLaser2" parent="Weapons" index="2" instance=ExtResource( 6 )]
+position = Vector2( 352, 352 )
+script = ExtResource( 10 )
+
+[node name="Weapon" parent="Weapons/ControllerLaser2" index="0"]
+weapon_name = "Laser2"
 
 [node name="Units" parent="." index="6"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
@@ -144,6 +161,9 @@ curve = SubResource( 7 )
 [editable path="Doors/Door0203"]
 [editable path="Doors/Door0304"]
 [editable path="Doors/Door0506"]
+[editable path="Weapons/ControllerProjectile"]
+[editable path="Weapons/ControllerLaser1"]
+[editable path="Weapons/ControllerLaser2"]
 [editable path="Units/Unit01"]
 [editable path="Units/Unit02"]
 [editable path="Shield"]

@@ -2,11 +2,9 @@ class_name Ship
 extends Node2D
 
 
-signal attached_shield
-signal hit_points_changed(hit_points, is_player)
-signal targeted(msg)
+const LaserTracker = preload("LaserTracker.tscn")
 
-const Projectile = preload("Weapons/Projectile.tscn")
+signal hit_points_changed(hit_points, is_player)
 
 export(int, 0, 30) var hit_points := 30
 
@@ -16,7 +14,6 @@ var has_sensors := false
 # This dictionary keeps track of the crew locations.
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
-
 var _shield: Area2D = null
 
 onready var scene_tree: SceneTree = get_tree()
@@ -28,10 +25,7 @@ onready var weapons: Node2D = $Weapons
 onready var units: Node2D = $Units
 onready var spawner: Path2D = $Spawner
 onready var projectiles: Node2D = $Projectiles
-onready var laser: Node2D = $Laser
-onready var laser_area: Area2D = $Laser/Area2D
-onready var laser_line: Line2D = $Laser/Line2D
-onready var laser_target_line: Line2D = $Laser/TargetLine2D
+onready var lasers: Node2D = $Lasers
 
 
 func _ready() -> void:
@@ -67,45 +61,13 @@ func _ready() -> void:
 	fires.setup(tilemap)
 
 
-func _on_WeaponProjectile_targeting(index: int) -> void:
-	var r := _rng.randi_range(0, rooms.get_child_count() - 1)
-	var room: Room = rooms.get_child(r)
-	room.emit_signal("targeted", index, room.position)
-
-
-func _on_WeaponProjectile_projectile_exited(physics_layer: int, params: Dictionary) -> void:
-	var spawn_position: Vector2 = spawner.interpolate(_rng.randf())
-	var direction: Vector2 = (params.target_position - spawn_position).normalized()
-	var projectile: RigidBody2D = Projectile.instance()
-	projectile.collision_layer = physics_layer
-	projectile.position = spawn_position
-	projectile.linear_velocity = direction * projectile.linear_velocity.length()
-	projectile.rotation = direction.angle()
-	projectile.params = params
-	projectiles.add_child(projectile)
-
-
-func _on_WeaponLaser_targeting() -> void:
-	var r1 := _rng.randi_range(0, rooms.get_child_count() - 1)
-	var rs_remaining := []
-	for room_index in range(rooms.get_child_count()):
-		if room_index != r1:
-			rs_remaining.push_back(room_index)
-	var index = _rng.randi_range(0, rs_remaining.size() - 1)
-	var r2 = rs_remaining[index]
-	
-	var point1: Vector2 = rooms.get_child(r1).get_random_vector()
-	var point2: Vector2 = rooms.get_child(r2).get_random_vector()
-	emit_signal("targeted", {"start": point1, "direction": (point2 - point1).normalized()})
-
-
 func _on_Room_modifier_changed(type: int, value: float) -> void:
 	match type:
 		Room.Type.HELM:
 			evasion = value
 		Room.Type.WEAPONS:
 			for weapon in weapons.get_children():
-				weapon.modifier = value
+				weapon.weapon.modifier = value
 
 
 func _on_RoomHitArea2D_body_entered(
@@ -121,8 +83,8 @@ func _on_RoomHitArea2D_body_entered(
 		var offset := Utils.randvi_range(_rng, room_top_left, room_bottom_right - Vector2.ONE)
 		fires.add_fire(offset, true)
 	
-	if _rng.randf() < body.params.chance_hull_damage:
-		# TODO break oxigen
+	if _rng.randf() < body.params.chance_hull_breach:
+		# TODO oxigen
 		pass
 	
 	_take_damage(body.params.attack)
@@ -133,6 +95,7 @@ func _on_RoomArea2D_area_entered(area: Area2D) -> void:
 	if ((_shield != null and _shield.hit_points == 0 and area.is_in_group("laser"))
 		or (_shield == null and area.is_in_group("laser"))
 	):
+		# TODO: chance for fire/oxygen
 		_take_damage(area.params.attack)
 
 
@@ -175,6 +138,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				Utils.erase_value(_slots, unit)
 				_slots[point2] = unit
 				unit.walk(path)
+
+
+func add_laser_tracker() -> Node:
+	var laser_tracker := LaserTracker.instance()
+	lasers.add_child(laser_tracker)
+	laser_tracker.setup(rooms, spawner)
+	return laser_tracker
 
 
 func _take_damage(value: int) -> void:
