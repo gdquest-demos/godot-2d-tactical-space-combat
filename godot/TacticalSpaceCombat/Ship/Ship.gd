@@ -14,6 +14,7 @@ var has_sensors := false
 # This dictionary keeps track of the crew locations.
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
+var _viewport_transform := Transform2D.IDENTITY
 var _shield: Area2D = null
 
 onready var scene_tree: SceneTree = get_tree()
@@ -26,6 +27,10 @@ onready var units: Node2D = $Units
 onready var spawner: Path2D = $Spawner
 onready var projectiles: Node2D = $Projectiles
 onready var lasers: Node2D = $Lasers
+
+
+func setup(viewport_transform: Transform2D) -> void:
+	_viewport_transform = viewport_transform.translated(position)
 
 
 func _ready() -> void:
@@ -110,7 +115,7 @@ func _on_RoomHitArea2D_body_entered(
 
 
 func _on_RoomArea2D_area_entered(area: Area2D) -> void:
-	if ((_shield != null and _shield.hit_points == 0 and area.is_in_group("laser"))
+	if ((_shield != null and not _shield.is_on and area.is_in_group("laser"))
 		or (_shield == null and area.is_in_group("laser"))
 	):
 		# TODO: chance for fire/oxygen
@@ -143,7 +148,7 @@ func _on_UIDoorsButton_pressed() -> void:
 func add_laser_tracker() -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(rooms, spawner)
+	laser_tracker.setup(_viewport_transform, rooms, spawner, _shield)
 	return laser_tracker
 
 

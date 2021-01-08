@@ -18,9 +18,10 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
-z_index = 3
+modulate = Color( 2.5, 1.5, 1.5, 1 )
 width = 2.0
 default_color = Color( 0.690196, 0.188235, 0.360784, 1 )
+antialiased = true
 
 [node name="TargetLine2D" type="Line2D" parent="."]
 z_index = 3

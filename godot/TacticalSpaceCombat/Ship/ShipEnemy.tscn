@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
@@ -7,8 +7,6 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAIProjectile.gd" type="Script" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Ship.gd" type="Script" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerProjectile.tscn" type="PackedScene" id=7]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerLaser.tscn" type="PackedScene" id=8]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAILaser.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -18,16 +16,16 @@ extents = Vector2( 64, 64 )
 resource_local_to_scene = true
 extents = Vector2( 96, 32 )
 
-[sub_resource type="CapsuleShape2D" id=3]
-resource_local_to_scene = true
-radius = 250.0
-height = 100.0
-
 [sub_resource type="Curve2D" id=4]
 resource_local_to_scene = true
 _data = {
 "points": PoolVector2Array(  )
 }
+
+[sub_resource type="CapsuleShape2D" id=3]
+resource_local_to_scene = true
+radius = 250.0
+height = 100.0
 
 [node name="ShipEnemy" groups=[
 "enemy",
@@ -64,35 +62,24 @@ shape = SubResource( 2 )
 position = Vector2( 128, 96 )
 rotation = 1.57079
 
-[node name="ControllerLaser" parent="Weapons" index="0" instance=ExtResource( 8 )]
+[node name="ControllerProjectile" parent="Weapons" index="0" instance=ExtResource( 7 )]
 position = Vector2( 32, -32 )
-rotation = 3.14159
-script = ExtResource( 9 )
-
-[node name="Weapon" parent="Weapons/ControllerLaser" index="0"]
-charge_time = 5.0
-attack = 1
-
-[node name="ControllerProjectile" parent="Weapons" index="1" instance=ExtResource( 7 )]
-position = Vector2( 96, 160 )
 rotation = 3.14159
 script = ExtResource( 5 )
 
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
-charge_time = 3.5
-chance_fire = 0.8
+chance_fire = 1.0
 
-[node name="Shield" parent="." index="8" instance=ExtResource( 4 )]
+[node name="Spawner" parent="." index="8"]
+curve = SubResource( 4 )
+
+[node name="Shield" parent="." index="12" instance=ExtResource( 4 )]
 collision_mask = 4
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
 shape = SubResource( 3 )
 
-[node name="Spawner" parent="." index="9"]
-curve = SubResource( 4 )
-
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]
-[editable path="Weapons/ControllerLaser"]
 [editable path="Weapons/ControllerProjectile"]
 [editable path="Shield"]

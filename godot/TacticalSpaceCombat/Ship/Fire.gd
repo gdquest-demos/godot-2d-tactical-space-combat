@@ -5,7 +5,9 @@ export(int, 0, 4) var attack := 1
 export(float, 0.0, 1.0) var chance_attack := 0.1
 
 var _tilemap: TileMap
-var _hitpoints := 100
+var _hitpoints := 100 setget _set_hitpoints
+
+onready var animation_tree: AnimationTree = $AnimationTree
 
 
 func setup(tilemap: TileMap) -> void:
@@ -13,9 +15,7 @@ func setup(tilemap: TileMap) -> void:
 
 
 func take_damage(value: int) -> void:
-	_hitpoints -= value
-	if _hitpoints <= 0:
-		queue_free()
+	_set_hitpoints(_hitpoints - value)
 
 
 func get_neightbor_positions() -> Array:
@@ -30,3 +30,11 @@ func get_neightbor_positions() -> Array:
 		if curve.get_point_count() == 1:
 			out.append_array(curve.get_baked_points())
 	return out
+
+
+func _set_hitpoints(value: int) -> void:
+	_hitpoints = value
+	animation_tree.set("parameters/conditions/high_to_medium", _hitpoints <= 70)
+	animation_tree.set("parameters/conditions/medium_to_low", _hitpoints <= 30)
+	if _hitpoints <= 0:
+		queue_free()

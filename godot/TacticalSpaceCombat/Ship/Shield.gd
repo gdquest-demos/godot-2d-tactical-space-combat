@@ -4,6 +4,7 @@ extends Area2D
 export var hit_points_max := 4
 
 var hit_points := 0 setget set_hit_points
+var is_on := false setget , get_is_on
 
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var polygon: Polygon2D = $Polygon2D
@@ -20,11 +21,9 @@ func _on_Timer_timeout() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if hit_points == 0:
-		return
-	
-	body.queue_free()
-	self.hit_points -= 1
+	if self.is_on:
+		self.hit_points -= 1
+		body.animation_player.play("shockwave")
 
 
 func _get_shape_points() -> PoolVector2Array:
@@ -37,6 +36,10 @@ func _get_shape_points() -> PoolVector2Array:
 		if i == 6 or i == 18:
 			out.push_back(shape.radius * Vector2(sin(weight * i), cos(weight * i)) - offset)
 	return collision_shape.transform.xform(out)
+
+
+func get_is_on() -> bool:
+	return hit_points > 0
 
 
 func set_hit_points(value: int) -> void:

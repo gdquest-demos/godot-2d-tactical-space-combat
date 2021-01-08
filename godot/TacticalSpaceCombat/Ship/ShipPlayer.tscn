@@ -33,16 +33,16 @@ extents = Vector2( 96, 64 )
 resource_local_to_scene = true
 extents = Vector2( 64, 64 )
 
-[sub_resource type="CapsuleShape2D" id=6]
-resource_local_to_scene = true
-radius = 300.0
-height = 100.0
-
-[sub_resource type="Curve2D" id=7]
+[sub_resource type="Curve2D" id=6]
 resource_local_to_scene = true
 _data = {
 "points": PoolVector2Array(  )
 }
+
+[sub_resource type="CapsuleShape2D" id=7]
+resource_local_to_scene = true
+radius = 300.0
+height = 100.0
 
 [node name="ShipPlayer" groups=[
 "player",
@@ -115,7 +115,7 @@ script = ExtResource( 10 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser1" index="0"]
 weapon_name = "Laser1"
-charge_time = 6.0
+charge_time = 1.0
 attack = 1
 
 [node name="ControllerLaser2" parent="Weapons" index="2" instance=ExtResource( 6 )]
@@ -148,17 +148,17 @@ colors = {
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
 position = Vector2( 160, 224 )
 
-[node name="Shield" parent="." index="7" instance=ExtResource( 7 )]
-collision_mask = 2
-
-[node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 6 )
-
-[node name="Spawner" parent="." index="8"]
-curve = SubResource( 7 )
+[node name="Spawner" parent="." index="7"]
+curve = SubResource( 6 )
 
 [node name="Wall" parent="Walls" index="0" instance=ExtResource( 12 )]
 position = Vector2( 412, 192 )
+
+[node name="Shield" parent="." index="11" instance=ExtResource( 7 )]
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="Shield" index="0"]
+shape = SubResource( 7 )
 
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]

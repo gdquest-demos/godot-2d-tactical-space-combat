@@ -135,7 +135,7 @@ tracks/3/path = NodePath("Sprite:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
-tracks/3/enabled = false
+tracks/3/enabled = true
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
@@ -163,6 +163,7 @@ linear_velocity = Vector2( 750, 0 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 texture = ExtResource( 1 )
 region_enabled = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipPlayer.tscn" type="PackedScene" id=2]
@@ -6,10 +6,15 @@
 [ext_resource path="res://TacticalSpaceCombat/UI/UISystem.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat.gd" type="Script" id=5]
 
+[sub_resource type="Environment" id=1]
+background_mode = 4
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/5 = false
+
 [node name="TacticalSpaceCombat" type="Node2D"]
 script = ExtResource( 5 )
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
 
 [node name="ShipPlayer" parent="." instance=ExtResource( 2 )]
 position = Vector2( 256, 384 )
@@ -79,5 +84,8 @@ __meta__ = {
 
 [node name="Button" parent="UI/Systems/Doors" index="0"]
 text = "D"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
 
 [editable path="UI/Systems/Doors"]

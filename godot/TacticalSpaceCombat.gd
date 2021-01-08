@@ -14,7 +14,6 @@ onready var scene_tree: SceneTree = get_tree()
 onready var ship_player: Node2D = $ShipPlayer
 onready var viewport_container: ViewportContainer = $ViewportContainer
 onready var ship_enemy: Node2D = $ViewportContainer/Viewport/ShipEnemy
-onready var remote_transform: RemoteTransform2D = $RemoteTransform2D
 onready var ui: Control = $UI
 onready var ui_hit_points_player: Label = $UI/HitPoints
 onready var ui_hit_points_enemy: Label = $ViewportContainer/Viewport/UI/HitPoints
@@ -26,6 +25,7 @@ onready var ui_doors: MarginContainer = $UI/Systems/Doors
 func _ready() -> void:
 	_rng.randomize()
 	
+	ship_enemy.setup(viewport_container.get_transform())
 	ship_player.connect("hit_points_changed", self, "_on_Ship_hit_points_changed")
 	ship_enemy.connect("hit_points_changed", self, "_on_Ship_hit_points_changed")
 	
@@ -81,9 +81,6 @@ func _ready() -> void:
 	
 	ship_player.emit_signal("hit_points_changed", ship_player.hit_points, true)
 	ship_enemy.emit_signal("hit_points_changed", ship_enemy.hit_points, false)
-	
-	remote_transform.remote_path = ship_enemy.lasers.get_path()
-	remote_transform.position = -viewport_container.rect_position
 
 
 func _on_Ship_hit_points_changed(hit_points: int, is_player: bool) -> void:
