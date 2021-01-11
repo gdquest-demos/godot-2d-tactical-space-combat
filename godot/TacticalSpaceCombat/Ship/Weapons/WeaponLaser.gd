@@ -2,15 +2,12 @@ class_name WeaponLaser
 extends Weapon
 
 
-signal fire_started(points, duration, params)
+signal fire_started(duration, params)
 signal fire_stopped
-
-const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
 
 export(int, 0, 250) var targeting_length := 140
 
-var is_targeting := false
-var points := TARGET_LINE_DEFAULT
+var targeted := false
 
 onready var timer: Timer = $Timer
 onready var line: Line2D = $Line2D
@@ -30,10 +27,10 @@ func fire() -> void:
 	}
 	timer.start()
 	line.visible = true
-	emit_signal("fire_started", points, timer.wait_time, params)
+	emit_signal("fire_started", timer.wait_time, params)
 
 
 func set_is_charging(value: bool) -> void:
 	.set_is_charging(value)
-	if not (is_targeting or is_charging or points[1] == Vector2.INF):
+	if not is_charging and targeted:
 		fire()

@@ -22,16 +22,23 @@ float donought(float l) {
 
 void fragment() {
 	vec2 uv = UV - vec2(0.5);
-	float l = length(uv);
-	vec2 disp = normalize(uv) * force * donought(l);
-	COLOR = texture(SCREEN_TEXTURE, SCREEN_UV - disp);
+	float lr = length(uv) + 5e-2;
+	float lg = length(uv);
+	float lb = length(uv) - 5e-2;
+	vec2 dispr = normalize(uv) * force * donought(lr);
+	vec2 dispg = normalize(uv) * force * donought(lg);
+	vec2 dispb = normalize(uv) * force * donought(lb);
+	float r = texture(SCREEN_TEXTURE, SCREEN_UV - dispr).r;
+	float g = texture(SCREEN_TEXTURE, SCREEN_UV - dispg).g;
+	float b = texture(SCREEN_TEXTURE, SCREEN_UV - dispb).b;
+	COLOR.rgb = vec3(r, g, b);
 }"
 
 [sub_resource type="ShaderMaterial" id=3]
 resource_local_to_scene = true
 shader = SubResource( 2 )
-shader_param/force = 0.1
-shader_param/size = 0.0
+shader_param/force = 0.0
+shader_param/size = 1.0
 
 [sub_resource type="Animation" id=4]
 resource_name = "BASE"
@@ -86,8 +93,8 @@ tracks/3/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "shockwave"
-length = 0.3
+resource_name = "feedback"
+length = 0.4
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -108,7 +115,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, -0.5 ),
 "update": 0,
 "values": [ 0.0, 1.0 ]
@@ -189,6 +196,6 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "BASE"
 anims/BASE = SubResource( 4 )
-anims/shockwave = SubResource( 5 )
+anims/feedback = SubResource( 5 )
 
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="queue_free"]

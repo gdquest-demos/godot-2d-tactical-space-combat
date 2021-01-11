@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Hazard",
+"class": "Breach",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Hazards/Breach.gd"
+}, {
 "base": "Node2D",
 "class": "Controller",
 "language": "GDScript",
@@ -43,6 +48,16 @@ _global_script_classes=[ {
 "class": "Door",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Door.gd"
+}, {
+"base": "Hazard",
+"class": "Fire",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Hazards/Fire.gd"
+}, {
+"base": "Sprite",
+"class": "Hazard",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Hazards/Hazard.gd"
 }, {
 "base": "Area2D",
 "class": "Room",
@@ -85,6 +100,7 @@ _global_script_classes=[ {
 "path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.gd"
 } ]
 _global_script_class_icons={
+"Breach": "",
 "Controller": "",
 "ControllerAILaser": "",
 "ControllerAIProjectile": "",
@@ -92,6 +108,8 @@ _global_script_class_icons={
 "ControllerPlayerLaser": "",
 "ControllerPlayerProjectile": "",
 "Door": "",
+"Fire": "",
+"Hazard": "",
 "Room": "",
 "Rooms": "",
 "Ship": "",
@@ -138,7 +156,7 @@ right_click={
 
 2d_physics/layer_1="Ships"
 2d_physics/layer_2="ShipPlayer"
-2d_physics/layer_3="ShipEnemy"
+2d_physics/layer_3="ShipAI"
 2d_physics/layer_20="UI"
 
 [physics]

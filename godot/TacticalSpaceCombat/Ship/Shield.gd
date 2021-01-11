@@ -1,10 +1,11 @@
 extends Area2D
 
 
-export var hit_points_max := 4
+signal hitpoints_changed(hitpoints)
 
-var hit_points := 0 setget set_hit_points
-var is_on := false setget , get_is_on
+export var hitpoints_max := 4
+
+var hitpoints := 0 setget set_hitpoints
 
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var polygon: Polygon2D = $Polygon2D
@@ -17,13 +18,13 @@ func _ready() -> void:
 
 
 func _on_Timer_timeout() -> void:
-	self.hit_points += 1
+	self.hitpoints += 1
 
 
 func _on_body_entered(body: Node) -> void:
-	if self.is_on:
-		self.hit_points -= 1
-		body.animation_player.play("shockwave")
+	if hitpoints > 0:
+		self.hitpoints -= 1
+		body.animation_player.play("feedback")
 
 
 func _get_shape_points() -> PoolVector2Array:
@@ -38,14 +39,11 @@ func _get_shape_points() -> PoolVector2Array:
 	return collision_shape.transform.xform(out)
 
 
-func get_is_on() -> bool:
-	return hit_points > 0
-
-
-func set_hit_points(value: int) -> void:
-	if value == hit_points_max:
+func set_hitpoints(value: int) -> void:
+	if value == hitpoints_max:
 		timer.stop()
 	else:
-		hit_points = clamp(value, 0, hit_points_max)
+		hitpoints = clamp(value, 0, hitpoints_max)
 		timer.start()
-	polygon.self_modulate.a = hit_points / float(hit_points_max)
+	polygon.self_modulate.a = hitpoints / float(hitpoints_max)
+	emit_signal("hitpoints_changed", hitpoints)

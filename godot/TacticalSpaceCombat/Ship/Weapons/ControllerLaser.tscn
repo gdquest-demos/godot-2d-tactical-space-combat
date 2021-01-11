@@ -20,7 +20,7 @@ one_shot = true
 
 [node name="Line2D" type="Line2D" parent="Weapon"]
 visible = false
-modulate = Color( 2.5, 1.5, 1.5, 1 )
+modulate = Color( 2, 2, 2, 1 )
 show_behind_parent = true
 points = PoolVector2Array( 0, 0, 1920, 0 )
 width = 2.0

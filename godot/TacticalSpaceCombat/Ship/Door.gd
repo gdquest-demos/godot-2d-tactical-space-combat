@@ -1,10 +1,12 @@
 class_name Door
 extends Area2D
 
+
 # Emitted when doors open to trigger units to start moving
 signal opened
 
 var is_open := false setget set_is_open
+var rooms := []
 
 # Keep track of how many units are currently passing this door
 var _units := 0
@@ -23,6 +25,8 @@ func _on_area_entered(area: Area2D) -> void:
 		_units += 1
 		if _units == 1:
 			timer.start()
+	elif area.is_in_group("room"):
+		rooms.push_back(area)
 
 
 # After units pass the door, it'll close

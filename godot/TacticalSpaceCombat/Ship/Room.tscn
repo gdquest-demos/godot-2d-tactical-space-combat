@@ -12,7 +12,6 @@ extents = Vector2( 32, 32 )
 [node name="Room" type="Area2D" groups=[
 "room",
 ]]
-z_index = 1
 script = ExtResource( 1 )
 
 [node name="HitArea2D" type="Area2D" parent="."]
@@ -64,6 +63,15 @@ texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 88, 408, 8, 8 )
 
+[node name="O2ColorRect" type="ColorRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+color = Color( 0.690196, 0.188235, 0.360784, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
 
@@ -75,7 +83,7 @@ margin_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource( 2 )
-region_rect = Rect2( 0, 416, 64, 32 )
+region_rect = Rect2( 0, 416, 32, 32 )
 patch_margin_left = 8
 patch_margin_top = 8
 patch_margin_right = 8

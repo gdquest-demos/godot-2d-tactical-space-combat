@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Hazards/Breach.gd" type="Script" id=2]
+
+[node name="Breach" type="Sprite"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 384, 384, 64, 64 )
+script = ExtResource( 2 )
+attack = 10

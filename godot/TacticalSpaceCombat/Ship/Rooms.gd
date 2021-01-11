@@ -28,7 +28,7 @@ func get_laser_points(targeting_length: float) -> Array:
 	var index = _rng.randi_range(0, rs_remaining.size() - 1)
 	var r2 = rs_remaining[index]
 
-	var point1: Vector2 = get_child(r1).get_random_vector()
-	var point2: Vector2 = get_child(r2).get_random_vector()
+	var point1: Vector2 = get_child(r1).randv()
+	var point2: Vector2 = get_child(r2).randv()
 	point2 = point1 + (point2 - point1).clamped(targeting_length)
 	return [point1, point2]

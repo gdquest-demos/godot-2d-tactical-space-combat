@@ -17,7 +17,7 @@ const SPRITE := {
 	Type.HELM: Vector2(160, 384),
 	Type.WEAPONS: Vector2(128, 416)
 }
-const FOG_COLOR := Color("#ffe478")
+const FOG_COLOR := Color("ffe478")
 
 # Easy access in the inspector to change room type
 export(Type) var type := Type.EMPTY
@@ -25,8 +25,8 @@ export(Type) var type := Type.EMPTY
 var units := {}
 var top_left := Vector2.ZERO
 var bottom_right := Vector2.ZERO
+var o2 := 100 setget set_o2
 
-var _tilemap: TileMap
 var _modifiers := {
 	Type.EMPTY: [0.0, 0.0],
 	Type.SENSORS: [0.0, 0.0],
@@ -40,6 +40,7 @@ var _area := 0
 var _iter_index := 0
 var _fog := {}
 var _rng := RandomNumberGenerator.new()
+var _tilemap: TileMap = null
 
 onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
@@ -47,6 +48,7 @@ onready var sprite_type: Sprite = $SpriteType
 onready var sprite_target: Sprite = $SpriteTarget
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var feedback: NinePatchRect = $Feedback
+onready var o2_color_rect: ColorRect = $O2ColorRect
 
 
 func setup(tilemap: TileMap) -> void:
@@ -64,6 +66,8 @@ func setup(tilemap: TileMap) -> void:
 	
 	feedback.rect_position -= collision_shape.shape.extents
 	feedback.rect_size = 2 * collision_shape.shape.extents
+	o2_color_rect.rect_position = feedback.rect_position
+	o2_color_rect.rect_size = feedback.rect_size
 
 
 func _ready() -> void:
@@ -75,7 +79,7 @@ func _ready() -> void:
 	hit_area.collision_mask = (
 		Utils.Layers.SHIP_PLAYER
 		if owner.is_in_group("player")
-		else Utils.Layers.SHIP_ENEMY
+		else Utils.Layers.SHIP_AI
 	)
 
 
@@ -164,6 +168,18 @@ func has_point(point: Vector2) -> bool:
 	)
 
 
+func randv() -> Vector2:
+	var top_left_world := _tilemap.map_to_world(top_left)
+	var bottom_right_world := _tilemap.map_to_world(bottom_right)
+	return Utils.randvf_range(_rng, top_left_world, bottom_right_world)
+
+
+func randvi() -> Vector2:
+	var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
+	offset = _tilemap.map_to_world(offset) + _tilemap.cell_size / 2
+	return offset
+
+
 # Get available tile position (slot) for unit placement if available
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var out := Vector2.INF
@@ -181,10 +197,9 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	return out
 
 
-func get_random_vector() -> Vector2:
-	var top_left_world := _tilemap.map_to_world(top_left)
-	var bottom_right_world := _tilemap.map_to_world(bottom_right)
-	return Utils.randvf_range(_rng, top_left_world, bottom_right_world)
+func set_o2(value: int) -> void:
+	o2 = clamp(value, 0, 100)
+	o2_color_rect.color.a = lerp(0.5, 0, o2 / 100.0)
 
 
 func _iter_init(_arg) -> bool:

@@ -13,7 +13,7 @@ enum Layers {
 	NONE,
 	SHIPS = 1,
 	SHIP_PLAYER = 1 << 1,
-	SHIP_ENEMY = 1 << 2,
+	SHIP_AI = 1 << 2,
 	UI = 1 << 19
 }
 

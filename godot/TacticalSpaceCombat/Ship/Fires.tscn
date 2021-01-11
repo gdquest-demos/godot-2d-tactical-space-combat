@@ -1,6 +1,0 @@
-[gd_scene format=2]
-
-[node name="Fires" type="Node2D"]
-
-[node name="Timer" type="Timer" parent="."]
-autostart = true

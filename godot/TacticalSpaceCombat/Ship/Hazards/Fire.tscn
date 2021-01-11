@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Fire.gd" type="Script" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Hazards/Fire.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
 resource_name = "BASE"
@@ -99,7 +99,7 @@ graph_offset = Vector2( 3, -12 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
 [node name="Fire" type="Sprite"]
-scale = Vector2( 0.988679, 0.988679 )
+scale = Vector2( 0.832764, 0.832764 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 320, 384, 64, 64 )

@@ -2,35 +2,34 @@ class_name Ship
 extends Node2D
 
 
+signal hitpoints_changed(hitpoints, is_player)
+
+const BreachS = preload("Hazards/Breach.tscn")
+const FireS = preload("Hazards/Fire.tscn")
 const LaserTracker = preload("LaserTracker.tscn")
 
-signal hit_points_changed(hit_points, is_player)
+export(int, 0, 30) var hitpoints := 30
 
-export(int, 0, 30) var hit_points := 30
-
-var evasion := 0.0
 var has_sensors := false
 
 # This dictionary keeps track of the crew locations.
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
-var _viewport_transform := Transform2D.IDENTITY
 var _shield: Area2D = null
+var _evasion := 0.0
+var _shield_is_on := false
 
 onready var scene_tree: SceneTree = get_tree()
+onready var hazards_timer: Timer = $HazardsTimer
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
-onready var fires: Node2D = $Fires
+onready var hazards: Node2D = $Hazards
 onready var doors: Node2D = $Doors
 onready var weapons: Node2D = $Weapons
 onready var units: Node2D = $Units
 onready var spawner: Path2D = $Spawner
 onready var projectiles: Node2D = $Projectiles
 onready var lasers: Node2D = $Lasers
-
-
-func setup(viewport_transform: Transform2D) -> void:
-	_viewport_transform = viewport_transform.translated(position)
 
 
 func _ready() -> void:
@@ -46,12 +45,10 @@ func _ready() -> void:
 	
 	for room in rooms.get_children():
 		room.setup(tilemap)
-		room.connect("area_entered", self, "_on_RoomArea2D_area_entered")
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
-		room.hit_area.connect(
-			"body_entered", self, "_on_RoomHitArea2D_body_entered",
-			[room.position, room.top_left, room.bottom_right]
-		)
+		room.connect("area_entered", self, "_on_RoomArea2D_area_entered", [room])
+		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room])
+		
 		for point in room:
 			tilemap.set_cellv(point, 0)
 		
@@ -61,9 +58,8 @@ func _ready() -> void:
 	if has_node("Shield"):
 		_shield = $Shield
 		_shield.position = _get_mean_position()
-	
+		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
 	tilemap.setup(rooms, doors)
-	fires.setup(tilemap)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -87,51 +83,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_Room_modifier_changed(type: int, value: float) -> void:
 	match type:
 		Room.Type.HELM:
-			evasion = value
+			_evasion = value
 		Room.Type.WEAPONS:
 			for weapon in weapons.get_children():
 				weapon.weapon.modifier = value
-
-
-func _on_RoomHitArea2D_body_entered(
-		body: RigidBody2D,
-		room_position: Vector2,
-		room_top_left: Vector2,
-		room_bottom_right: Vector2
-	) -> void:
-	if not room_position.is_equal_approx(body.params.target_position) or _rng.randf() < evasion:
-		return
-	
-	if _rng.randf() < body.params.chance_fire:
-		var offset := Utils.randvi_range(_rng, room_top_left, room_bottom_right - Vector2.ONE)
-		fires.add_fire(offset, true)
-	
-	if _rng.randf() < body.params.chance_hull_breach:
-		# TODO oxigen
-		pass
-	
-	_take_damage(body.params.attack)
-	body.animation_player.play("shockwave")
-
-
-func _on_RoomArea2D_area_entered(area: Area2D) -> void:
-	if ((_shield != null and not _shield.is_on and area.is_in_group("laser"))
-		or (_shield == null and area.is_in_group("laser"))
-	):
-		# TODO: chance for fire/oxygen
-		_take_damage(area.params.attack)
-
-
-func _on_FireTimer_timeout() -> void:
-	for room in rooms.get_children():
-		for fire in _get_fires(room):
-			for unit in room.units:
-				fire.take_damage(unit.attack)
-			break
-	
-	for fire in fires.get_fires():
-		if _rng.randf() < fire.chance_attack:
-			_take_damage(fire.attack)
 
 
 func _on_UIDoorsButton_pressed() -> void:
@@ -145,17 +100,105 @@ func _on_UIDoorsButton_pressed() -> void:
 		door.is_open = not has_opened_doors
 
 
-func add_laser_tracker() -> Node:
+func _on_Shield_hitpoints_changed(hitpoints: int) -> void:
+	_shield_is_on = hitpoints > 0
+
+
+func _on_RoomArea2D_area_entered(area: Area2D, room: Room) -> void:
+	if area.is_in_group("laser") and not _shield_is_on:
+		_handle_attack(area.params, room)
+
+
+func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: Room) -> void:
+	if not room.position.is_equal_approx(body.params.target_position) or _rng.randf() < _evasion:
+		return
+	
+	body.animation_player.play("feedback")
+	_handle_attack(body.params, room)
+
+
+func _on_HazardsTimer_timeout() -> void:
+	for hazard in hazards.get_children():
+		if hazard is Fire and _rng.randf() < hazard.chance_attack:
+			_take_damage(hazard.attack)
+		elif hazard is Breach:
+			for room in rooms.get_children():
+				if room.has_point(tilemap.world_to_map(hazard.position)):
+					room.o2 -= hazard.attack
+	
+	var o2s := {}
+	var ns := {}
+	for door in doors.get_children():
+		if not door.is_open:
+			continue
+
+		var o2_mean := 0
+		for room in door.rooms:
+			o2_mean += room.o2
+			ns[room] = ns.get(room, 0) + 1
+		o2_mean /= door.rooms.size()
+		
+		for room in door.rooms:
+			o2s[room] = o2s.get(room, 0) + o2_mean
+	
+	for room in rooms.get_children():
+		if room in o2s:
+			o2s[room] /= ns[room]
+			room.o2 = lerp(room.o2, o2s[room], 0.5)
+		
+		for hazard in hazards.get_children():
+			if room.has_point(tilemap.world_to_map(hazard.position)):
+				for unit in room.units:
+					hazard.take_damage(unit.attack)
+				break
+		room.o2 += 2
+
+
+func _on_FireSpreadTimer_timeout() -> void:
+	for hazard in hazards.get_children():
+		if hazard is Breach:
+			continue
+		
+		var neighbors: Array = _get_neightbor_positions(hazard.position)
+		var index := _rng.randi_range(0, neighbors.size() - 1)
+		hazards.add(FireS, neighbors[index])
+
+
+func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(_viewport_transform, rooms, spawner, _shield)
+	laser_tracker.setup(rooms, spawner, _shield, color)
 	return laser_tracker
 
 
+func _handle_attack(params: Dictionary, room: Room) -> void:
+	if _rng.randf() < params.chance_fire:
+		hazards.add(FireS, room.randvi())
+	
+	if _rng.randf() < params.chance_hull_breach:
+		hazards.add(BreachS, room.randvi())
+	
+	_take_damage(params.attack)
+
+
 func _take_damage(value: int) -> void:
-	hit_points -= value
-	hit_points = max(0, hit_points)
-	emit_signal("hit_points_changed", hit_points, is_in_group("player"))
+	hitpoints -= value
+	hitpoints = max(0, hitpoints)
+	emit_signal("hitpoints_changed", hitpoints, is_in_group("player"))
+
+
+func _get_neightbor_positions(at: Vector2) -> Array:
+	var out := []
+	var point1 := tilemap.world_to_map(at)
+	for offset in Utils.DIRECTIONS:
+		var point2: Vector2 = point1 + offset
+		if point2.x < 0 or point2.y < 0:
+			continue
+		
+		var curve: Curve2D = tilemap.find_path(point1, point2)
+		if curve.get_point_count() == 1:
+			out.append_array(curve.get_baked_points())
+	return out
 
 
 func _get_mean_position() -> Vector2:
@@ -164,12 +207,4 @@ func _get_mean_position() -> Vector2:
 		for room in rooms.get_children():
 			out += room.position
 		out /= rooms.get_child_count()
-	return out
-
-
-func _get_fires(room: Room) -> Array:
-	var out := []
-	for fire in fires.get_fires():
-		if room.has_point(tilemap.world_to_map(fire.position)):
-			out.append(fire)
 	return out

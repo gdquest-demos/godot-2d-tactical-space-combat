@@ -28,5 +28,5 @@ func fire() -> void:
 
 func set_is_charging(value: bool) -> void:
 	.set_is_charging(value)
-	if not (is_charging or target_position == Vector2.INF):
+	if not is_charging and target_position != Vector2.INF:
 		fire()
