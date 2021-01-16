@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Units/Unit.gd" type="Script" id=2]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.239216, 0.431373, 0.439216, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.152941, 0.152941, 0.211765, 1 )
+
+[node name="Unit" type="Path2D"]
+curve = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+cubic_interp = false
+loop = false
+
+[node name="AreaUnit" type="Area2D" parent="PathFollow2D" groups=[
+"unit",
+]]
+
+[node name="Sprite" type="Sprite" parent="PathFollow2D/AreaUnit"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 64, 384, 24, 32 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AreaUnit"]
+modulate = Color( 0.709804, 0, 1, 1 )
+shape = SubResource( 2 )
+
+[node name="HitpointsPathFollow2D" type="PathFollow2D" parent="."]
+rotate = false
+cubic_interp = false
+loop = false
+
+[node name="Hitpoints" type="ProgressBar" parent="HitpointsPathFollow2D"]
+margin_left = -16.0
+margin_top = -20.0
+margin_right = 16.0
+margin_bottom = -16.0
+rect_min_size = Vector2( 32, 4 )
+mouse_filter = 2
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+max_value = 10.0
+step = 1.0
+value = 10.0
+rounded = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="area_entered" from="PathFollow2D/AreaUnit" to="." method="_on_AreaUnit_area_entered"]

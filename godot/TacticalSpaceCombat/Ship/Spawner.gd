@@ -9,7 +9,7 @@ func _ready() -> void:
 		curve.clear_points()
 		var viewport_size := get_viewport_rect().size
 		for point_mask in POINTS_MASK:
-			var point: Vector2 = owner.transform.xform_inv(point_mask * viewport_size)
+			var point: Vector2 = global_transform.xform_inv(point_mask * viewport_size)
 			curve.add_point(point)
 
 

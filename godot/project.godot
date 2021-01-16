@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "Area2D",
 "class": "Door",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Door.gd"
+"path": "res://TacticalSpaceCombat/Ship/Rooms/Door.gd"
 }, {
 "base": "Hazard",
 "class": "Fire",
@@ -62,12 +62,12 @@ _global_script_classes=[ {
 "base": "Area2D",
 "class": "Room",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Room.gd"
+"path": "res://TacticalSpaceCombat/Ship/Rooms/Room.gd"
 }, {
 "base": "Node2D",
 "class": "Rooms",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Rooms.gd"
+"path": "res://TacticalSpaceCombat/Ship/Rooms/Rooms.gd"
 }, {
 "base": "Node2D",
 "class": "Ship",
@@ -77,7 +77,7 @@ _global_script_classes=[ {
 "base": "Path2D",
 "class": "Unit",
 "language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Unit.gd"
+"path": "res://TacticalSpaceCombat/Ship/Units/Unit.gd"
 }, {
 "base": "Reference",
 "class": "Utils",

@@ -4,9 +4,10 @@ extends Node2D
 
 signal hitpoints_changed(hitpoints, is_player)
 
-const BreachS = preload("Hazards/Breach.tscn")
-const FireS = preload("Hazards/Fire.tscn")
-const LaserTracker = preload("LaserTracker.tscn")
+const BreachS := preload("Hazards/Breach.tscn")
+const FireS := preload("Hazards/Fire.tscn")
+const LaserTracker := preload("Weapons/LaserTracker.tscn")
+const AttackLabel := preload("Weapons/AttackLabel.tscn")
 
 export(int, 0, 30) var hitpoints := 30
 
@@ -36,6 +37,7 @@ func _ready() -> void:
 	_rng.randomize()
 	
 	for unit in units.get_children():
+		unit.connect("died", self, "_on_Unit_died")
 		for door in doors.get_children():
 			door.connect("opened", unit, "set_is_walking", [true])
 		
@@ -54,12 +56,14 @@ func _ready() -> void:
 		
 		if room.type == Room.Type.SENSORS:
 			has_sensors = true
-	
+		
 	if has_node("Shield"):
 		_shield = $Shield
 		_shield.position = _get_mean_position()
 		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
+	
 	tilemap.setup(rooms, doors)
+	projectiles.setup(spawner)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -119,12 +123,19 @@ func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: Room) -> void:
 
 func _on_HazardsTimer_timeout() -> void:
 	for hazard in hazards.get_children():
-		if hazard is Fire and _rng.randf() < hazard.chance_attack:
-			_take_damage(hazard.attack)
-		elif hazard is Breach:
+		if hazard is Breach:
 			for room in rooms.get_children():
 				if room.has_point(tilemap.world_to_map(hazard.position)):
 					room.o2 -= hazard.attack
+		elif hazard is Fire and _rng.randf() < hazard.chance_attack:
+			_take_damage(hazard.attack, hazard.position)
+	
+	for hazard in hazards.get_children():
+		for room in rooms.get_children():
+			if room.has_point(tilemap.world_to_map(hazard.position)):
+				for unit in room.units:
+					if hazard is Breach and room.o2 < 5 or hazard is Fire:
+						unit.take_damage(hazard.attack)
 	
 	var o2s := {}
 	var ns := {}
@@ -164,6 +175,12 @@ func _on_FireSpreadTimer_timeout() -> void:
 		hazards.add(FireS, neighbors[index])
 
 
+func _on_Unit_died(unit: Unit) -> void:
+	Utils.erase_value(_slots, unit)
+	for room in rooms.get_children():
+		room.units.erase(unit)
+
+
 func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
@@ -178,11 +195,15 @@ func _handle_attack(params: Dictionary, room: Room) -> void:
 	if _rng.randf() < params.chance_hull_breach:
 		hazards.add(BreachS, room.randvi())
 	
-	_take_damage(params.attack)
+	_take_damage(params.attack, room.position)
 
 
-func _take_damage(value: int) -> void:
-	hitpoints -= value
+func _take_damage(attack: int, object_position: Vector2) -> void:
+	var attack_label := AttackLabel.instance()
+	attack_label.setup(attack, object_position)
+	add_child(attack_label)
+	
+	hitpoints -= attack
 	hitpoints = max(0, hitpoints)
 	emit_signal("hitpoints_changed", hitpoints, is_in_group("player"))
 

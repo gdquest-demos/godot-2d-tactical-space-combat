@@ -20,6 +20,7 @@ func _ready() -> void:
 
 
 func fire() -> void:
+	targeted = false
 	var params := {
 		"chance_fire": chance_fire,
 		"chance_hull_breach": chance_hull_breach,

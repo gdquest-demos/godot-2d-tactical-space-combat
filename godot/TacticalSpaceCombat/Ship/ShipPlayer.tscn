@@ -1,13 +1,13 @@
 [gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Door.tscn" type="PackedScene" id=2]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Units/Units.gd" type="Script" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerProjectile.tscn" type="PackedScene" id=4]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Room.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Room.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Unit.tscn" type="PackedScene" id=8]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Units/UnitPlayer.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Wall.tscn" type="PackedScene" id=12]
@@ -65,6 +65,7 @@ shape = SubResource( 2 )
 
 [node name="Room03" parent="Rooms" index="2" instance=ExtResource( 5 )]
 position = Vector2( 224, 160 )
+type = 4
 
 [node name="CollisionShape2D" parent="Rooms/Room03" index="4"]
 shape = SubResource( 3 )
@@ -133,22 +134,20 @@ self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
 script = ExtResource( 3 )
 
 [node name="Unit01" parent="Units" index="0" instance=ExtResource( 8 )]
-colors = {
-"default": Color( 0.239216, 0.431373, 0.439216, 1 ),
-"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
-}
 
 [node name="PathFollow2D" parent="Units/Unit01" index="0"]
-position = Vector2( 96, 288 )
+position = Vector2( 96, 224 )
+
+[node name="HitpointsPathFollow2D" parent="Units/Unit01" index="1"]
+position = Vector2( 96, 224 )
 
 [node name="Unit02" parent="Units" index="1" instance=ExtResource( 8 )]
-colors = {
-"default": Color( 0.239216, 0.431373, 0.439216, 1 ),
-"selected": Color( 0.235294, 0.639216, 0.439216, 1 )
-}
 
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
-position = Vector2( 160, 224 )
+position = Vector2( 160, 288 )
+
+[node name="HitpointsPathFollow2D" parent="Units/Unit02" index="1"]
+position = Vector2( 160, 288 )
 
 [node name="Spawner" parent="." index="8"]
 curve = SubResource( 6 )

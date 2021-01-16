@@ -94,7 +94,6 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "feedback"
-length = 0.4
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -103,8 +102,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.25 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.1, 0.35 ),
+"transitions": PoolRealArray( 2, 1 ),
 "update": 0,
 "values": [ 0.1, 0.0 ]
 }
@@ -115,8 +114,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, -0.5 ),
+"times": PoolRealArray( 0.1, 0.4 ),
+"transitions": PoolRealArray( -0.5, 1 ),
 "update": 0,
 "values": [ 0.0, 1.0 ]
 }
@@ -127,7 +126,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ Vector2( 0, 0 ) ],
