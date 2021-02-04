@@ -1,5 +1,7 @@
 # Godot 2D Tactical Space Combat
 
+![FTL-like demo screenshot](images/godot-tactical-space-combat.png)
+
 This demo is a Real-Time Space Combat Simulator based on Faster Than Light gameplay for Godot designed for the course Godot 2D Secrets.
 
 It's currently a work-in-progress.
