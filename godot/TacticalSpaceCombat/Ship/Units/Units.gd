@@ -1,7 +1,6 @@
 extends Node2D
 
 
-const COLLISION_LAYER := Utils.Layers.UI
 const DEFAULT_POLYGON := PoolVector2Array([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
 
 var _is_pressed := false
@@ -30,7 +29,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		query.transform = global_transform
 		query.collide_with_bodies = false
 		query.collide_with_areas = true
-		query.collision_layer = COLLISION_LAYER
+		query.collision_layer = Global.Layers.UI
 		for dict in get_world_2d().direct_space_state.intersect_shape(query):
 			dict.collider.owner.is_selected = true
 		_polygon = DEFAULT_POLYGON

@@ -66,7 +66,8 @@ script = ExtResource( 5 )
 [node name="Weapon" parent="Weapons/ControllerLaser" index="0"]
 position = Vector2( 32, -32 )
 rotation = 3.14159
-chance_fire = 1.0
+charge_time = 9.0
+chance_fire = 0.1
 
 [node name="ControllerProjectile" parent="Weapons" index="1" instance=ExtResource( 8 )]
 script = ExtResource( 7 )
@@ -74,7 +75,9 @@ script = ExtResource( 7 )
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
 position = Vector2( 192, 160 )
 rotation = 3.14159
-chance_hull_breach = 1.0
+charge_time = 10.0
+chance_fire = 0.1
+chance_hull_breach = 0.1
 
 [node name="Spawner" parent="." index="9"]
 curve = SubResource( 3 )
@@ -84,6 +87,9 @@ collision_mask = 4
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
 shape = SubResource( 4 )
+
+[node name="Timer" parent="Shield" index="2"]
+wait_time = 9.0
 
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]

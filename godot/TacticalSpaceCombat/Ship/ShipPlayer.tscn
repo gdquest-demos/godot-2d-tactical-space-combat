@@ -10,7 +10,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/UnitPlayer.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Wall.tscn" type="PackedScene" id=12]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Wall.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
@@ -54,34 +54,34 @@ show_behind_parent = true
 position = Vector2( 96, 64 )
 type = 1
 
-[node name="CollisionShape2D" parent="Rooms/Room01" index="4"]
+[node name="CollisionShape2D" parent="Rooms/Room01" index="1"]
 shape = SubResource( 1 )
 
 [node name="Room02" parent="Rooms" index="1" instance=ExtResource( 5 )]
 position = Vector2( 128, 256 )
 
-[node name="CollisionShape2D" parent="Rooms/Room02" index="4"]
+[node name="CollisionShape2D" parent="Rooms/Room02" index="1"]
 shape = SubResource( 2 )
 
 [node name="Room03" parent="Rooms" index="2" instance=ExtResource( 5 )]
 position = Vector2( 224, 160 )
 type = 4
 
-[node name="CollisionShape2D" parent="Rooms/Room03" index="4"]
+[node name="CollisionShape2D" parent="Rooms/Room03" index="1"]
 shape = SubResource( 3 )
 
 [node name="Room04" parent="Rooms" index="3" instance=ExtResource( 5 )]
 position = Vector2( 352, 256 )
 type = 3
 
-[node name="CollisionShape2D" parent="Rooms/Room04" index="4"]
+[node name="CollisionShape2D" parent="Rooms/Room04" index="1"]
 shape = SubResource( 4 )
 
 [node name="Room05" parent="Rooms" index="4" instance=ExtResource( 5 )]
 position = Vector2( 384, 128 )
 type = 2
 
-[node name="CollisionShape2D" parent="Rooms/Room05" index="4"]
+[node name="CollisionShape2D" parent="Rooms/Room05" index="1"]
 shape = SubResource( 5 )
 
 [node name="Door0103" parent="Doors" index="0" instance=ExtResource( 2 )]
@@ -99,13 +99,42 @@ rotation = 1.5708
 [node name="Door0506" parent="Doors" index="3" instance=ExtResource( 2 )]
 position = Vector2( 352, 192 )
 
+[node name="Wall" parent="Walls" index="0" instance=ExtResource( 12 )]
+position = Vector2( 412, 192 )
+
+[node name="Units" parent="." index="7"]
+self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
+script = ExtResource( 3 )
+
+[node name="Unit01" parent="Units" index="0" instance=ExtResource( 8 )]
+
+[node name="PathFollow2D" parent="Units/Unit01" index="0"]
+position = Vector2( 96, 224 )
+
+[node name="CollisionShape2D" parent="Units/Unit01/PathFollow2D/AreaUnit" index="1"]
+modulate = Color( 0.709804, 0, 1, 1 )
+
+[node name="HitpointsPathFollow2D" parent="Units/Unit01" index="1"]
+position = Vector2( 96, 224 )
+
+[node name="Unit02" parent="Units" index="1" instance=ExtResource( 8 )]
+
+[node name="PathFollow2D" parent="Units/Unit02" index="0"]
+position = Vector2( 160, 288 )
+
+[node name="CollisionShape2D" parent="Units/Unit02/PathFollow2D/AreaUnit" index="1"]
+modulate = Color( 0.709804, 0, 1, 1 )
+
+[node name="HitpointsPathFollow2D" parent="Units/Unit02" index="1"]
+position = Vector2( 160, 288 )
+
 [node name="ControllerProjectile" parent="Weapons" index="0" instance=ExtResource( 4 )]
 position = Vector2( 384, 32 )
 script = ExtResource( 11 )
 
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
 weapon_name = "Projectile"
-charge_time = 4.0
+charge_time = 8.0
 chance_fire = 0.2
 
 [node name="ControllerLaser1" parent="Weapons" index="1" instance=ExtResource( 6 )]
@@ -114,8 +143,7 @@ script = ExtResource( 10 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser1" index="0"]
 weapon_name = "Laser1"
-charge_time = 1.0
-attack = 1
+charge_time = 12.0
 
 [node name="Line2D" parent="Weapons/ControllerLaser1/Weapon" index="2"]
 modulate = Color( 2.5, 2.5, 2.5, 1 )
@@ -127,29 +155,11 @@ script = ExtResource( 10 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser2" index="0"]
 weapon_name = "Laser2"
-charge_time = 10.0
+charge_time = 7.0
+attack = 0
+chance_fire = 0.6
 
-[node name="Units" parent="." index="7"]
-self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )
-script = ExtResource( 3 )
-
-[node name="Unit01" parent="Units" index="0" instance=ExtResource( 8 )]
-
-[node name="PathFollow2D" parent="Units/Unit01" index="0"]
-position = Vector2( 96, 224 )
-
-[node name="HitpointsPathFollow2D" parent="Units/Unit01" index="1"]
-position = Vector2( 96, 224 )
-
-[node name="Unit02" parent="Units" index="1" instance=ExtResource( 8 )]
-
-[node name="PathFollow2D" parent="Units/Unit02" index="0"]
-position = Vector2( 160, 288 )
-
-[node name="HitpointsPathFollow2D" parent="Units/Unit02" index="1"]
-position = Vector2( 160, 288 )
-
-[node name="Spawner" parent="." index="8"]
+[node name="Spawner" parent="." index="9"]
 curve = SubResource( 6 )
 
 [node name="Shield" parent="." index="11" instance=ExtResource( 7 )]
@@ -158,8 +168,8 @@ collision_mask = 2
 [node name="CollisionShape2D" parent="Shield" index="0"]
 shape = SubResource( 7 )
 
-[node name="Wall" parent="Walls" index="0" instance=ExtResource( 12 )]
-position = Vector2( 412, 192 )
+[node name="Timer" parent="Shield" index="2"]
+wait_time = 14.0
 
 [editable path="Rooms/Room01"]
 [editable path="Rooms/Room02"]
@@ -170,9 +180,9 @@ position = Vector2( 412, 192 )
 [editable path="Doors/Door0203"]
 [editable path="Doors/Door0304"]
 [editable path="Doors/Door0506"]
+[editable path="Units/Unit01"]
+[editable path="Units/Unit02"]
 [editable path="Weapons/ControllerProjectile"]
 [editable path="Weapons/ControllerLaser1"]
 [editable path="Weapons/ControllerLaser2"]
-[editable path="Units/Unit01"]
-[editable path="Units/Unit02"]
 [editable path="Shield"]

@@ -1,4 +1,3 @@
-class_name Ship
 extends Node2D
 
 
@@ -16,12 +15,11 @@ var has_sensors := false
 # This dictionary keeps track of the crew locations.
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
-var _shield: Area2D = null
 var _evasion := 0.0
+var _shield: Area2D = null
 var _shield_is_on := false
 
 onready var scene_tree: SceneTree = get_tree()
-onready var hazards_timer: Timer = $HazardsTimer
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
 onready var hazards: Node2D = $Hazards
@@ -51,6 +49,7 @@ func _ready() -> void:
 		room.connect("area_entered", self, "_on_RoomArea2D_area_entered", [room])
 		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room])
 		
+		# Here we're using the fact that `room` is a custom iterator object
 		for point in room:
 			tilemap.set_cellv(point, 0)
 		

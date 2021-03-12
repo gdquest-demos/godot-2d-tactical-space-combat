@@ -10,9 +10,9 @@ onready var weapon: Weapon = $Weapon
 func _ready() -> void:
 	match get_class():
 		"ContollerPlayerProjectile":
-			weapon.physics_layer = Utils.Layers.SHIP_AI
+			weapon.physics_layer = Global.Layers.SHIPAI
 		"ContollerAIProjectile":
-			weapon.physics_layer = Utils.Layers.SHIP_PLAYER
+			weapon.physics_layer = Global.Layers.SHIPPLAYER
 
 
 func _on_Ship_targeted(msg: Dictionary) -> void:

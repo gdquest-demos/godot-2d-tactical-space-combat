@@ -22,6 +22,9 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 shape = SubResource( 1 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
 [node name="SpriteType" type="Sprite" parent="."]
 visible = false
 modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
@@ -71,9 +74,6 @@ color = Color( 0.690196, 0.188235, 0.360784, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
 
 [node name="Feedback" type="NinePatchRect" parent="."]
 visible = false

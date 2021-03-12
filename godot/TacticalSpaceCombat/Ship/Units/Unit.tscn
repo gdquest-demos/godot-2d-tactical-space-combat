@@ -35,7 +35,6 @@ region_enabled = true
 region_rect = Rect2( 64, 384, 24, 32 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AreaUnit"]
-modulate = Color( 0.709804, 0, 1, 1 )
 shape = SubResource( 2 )
 
 [node name="HitpointsPathFollow2D" type="PathFollow2D" parent="."]

@@ -69,11 +69,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Rooms/Rooms.gd"
 }, {
-"base": "Node2D",
-"class": "Ship",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Ship.gd"
-}, {
 "base": "Path2D",
 "class": "Unit",
 "language": "GDScript",
@@ -112,7 +107,6 @@ _global_script_class_icons={
 "Hazard": "",
 "Room": "",
 "Rooms": "",
-"Ship": "",
 "Unit": "",
 "Utils": "",
 "Weapon": "",

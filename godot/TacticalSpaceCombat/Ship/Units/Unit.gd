@@ -4,7 +4,7 @@ extends Path2D
 
 signal died(unit)
 
-export var colors := {
+const COLORS := {
 	"default": Color("3d6e70"),
 	"selected": Color("3ca370")
 }

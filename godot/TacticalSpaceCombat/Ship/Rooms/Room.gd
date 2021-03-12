@@ -24,8 +24,6 @@ const FOG_COLOR := Color("ffe478")
 export(Type) var type := Type.EMPTY
 
 var units := {}
-var top_left := Vector2.ZERO
-var bottom_right := Vector2.ZERO
 var o2 := 100 setget set_o2
 
 var _modifiers := {
@@ -37,18 +35,34 @@ var _modifiers := {
 }
 var _target_index := -1
 var _entrances := {}
+# Room size in _TileMap_ cells
 var _size := Vector2.ZERO
+# Positions in _TileMap_ coordinates for top left and bottom right corners of the room
+var _top_left := Vector2.ZERO
+var _bottom_right := Vector2.ZERO
+# Room area in _TileMap_ cells =`_size.x * _size.y`
 var _area := 0
+# Room is a custom iterator class so we can access cell positions in _TileMap_ coordinates
+# with:
+#
+# for offset in room:
+#   # do something with `offset`
+#
+# `_iter_index` keeps track of the current iteration value. See the official Godot docs
+# for more:
+# https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_advanced.html#custom-iterators
 var _iter_index := 0
-var _fog := {}
+# We need to convert from world to map positions and the other way around so we need
+# to store a reference to the _TileMap_ node from the _Ship_ scene.
 var _rng := RandomNumberGenerator.new()
 var _tilemap: TileMap = null
+var _fog := {}
 
 onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
+onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var sprite_type: Sprite = $SpriteType
 onready var sprite_target: Sprite = $SpriteTarget
-onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var feedback: NinePatchRect = $Feedback
 onready var o2_color_rect: ColorRect = $O2ColorRect
 
@@ -59,8 +73,8 @@ func setup(tilemap: TileMap) -> void:
 	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
 	_area = _size.x * _size.y
 	
-	top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
-	bottom_right = top_left + _size
+	_top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
+	_bottom_right = _top_left + _size
 	
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_enabled = sprite_type.visible
@@ -78,7 +92,7 @@ func _ready() -> void:
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
 		false: Rect2()
 	}
-	hit_area.collision_mask = Utils.Layers.SHIP_PLAYER if owner.is_in_group("player") else Utils.Layers.SHIP_AI
+	hit_area.collision_mask = Global.Layers.SHIPPLAYER if owner.is_in_group("player") else Global.Layers.SHIPAI
 	
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()
@@ -172,19 +186,19 @@ func _get_entrance(from: Vector2) -> Vector2:
 # Checks if the given point is within the bounds of the room
 func has_point(point: Vector2) -> bool:
 	return (
-		top_left.x <= point.x and top_left.y <= point.y
-		and point.x < bottom_right.x and point.y < bottom_right.y
+		_top_left.x <= point.x and _top_left.y <= point.y
+		and point.x < _bottom_right.x and point.y < _bottom_right.y
 	)
 
 
 func randv() -> Vector2:
-	var top_left_world := _tilemap.map_to_world(top_left)
-	var bottom_right_world := _tilemap.map_to_world(bottom_right)
+	var top_left_world := _tilemap.map_to_world(_top_left)
+	var bottom_right_world := _tilemap.map_to_world(_bottom_right)
 	return Utils.randvf_range(_rng, top_left_world, bottom_right_world)
 
 
 func randvi() -> Vector2:
-	var offset := Utils.randvi_range(_rng, top_left, bottom_right - Vector2.ONE)
+	var offset := Utils.randvi_range(_rng, _top_left, _bottom_right - Vector2.ONE)
 	offset = _tilemap.map_to_world(offset) + _tilemap.cell_size / 2
 	return offset
 
@@ -222,11 +236,8 @@ func _iter_next(_arg) -> bool:
 
 
 func _iter_get(_arg) -> Vector2:
-	var tmp_transform := transform
-	tmp_transform.origin -= collision_shape.shape.extents
-	tmp_transform.origin = _tilemap.world_to_map(tmp_transform.origin)
 	var offset := Utils.index_to_xy(_size.x, _iter_index)
-	return tmp_transform.xform(offset)
+	return _top_left + offset
 
 
 func _iter_is_running() -> bool:

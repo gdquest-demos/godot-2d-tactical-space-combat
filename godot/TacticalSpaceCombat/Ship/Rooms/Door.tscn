@@ -11,15 +11,15 @@ extents = Vector2( 8, 16 )
 ]]
 script = ExtResource( 2 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+modulate = Color( 0.952941, 0.423529, 1, 1 )
+shape = SubResource( 1 )
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 vframes = 2
 region_enabled = true
 region_rect = Rect2( 0, 384, 64, 12 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-modulate = Color( 0.952941, 0.423529, 1, 1 )
-shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
