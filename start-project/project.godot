@@ -13,6 +13,10 @@ config_version=4
 config/name="2D Tactical Space Combat - Start Project"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/ColorPickerPresets/plugin.cfg" )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
