@@ -1,6 +1,6 @@
 [gd_scene format=2]
 
 [node name="Wall" type="Line2D"]
-points = PoolVector2Array( -32, 0, 32, 0 )
+points = PoolVector2Array( -36, 0, 28, 0 )
 width = 4.0
 default_color = Color( 0.301961, 0.65098, 1, 1 )

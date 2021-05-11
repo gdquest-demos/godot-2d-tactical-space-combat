@@ -66,21 +66,20 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("left_click"):
-		for unit in units.get_children():
-			unit.is_selected = false
-	elif event.is_action_pressed("right_click"):
-		for unit in scene_tree.get_nodes_in_group("selected-unit"):
-			var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
-			for room in scene_tree.get_nodes_in_group("selected-room"):
-				var point2: Vector2 = room.get_slot(_slots, unit)
-				if is_inf(point2.x):
-					break
-				
-				var path: Curve2D = tilemap.find_path(point1, point2)
-				Utils.erase_value(_slots, unit)
-				_slots[point2] = unit
-				unit.walk(path)
+	if not event.is_action_pressed("right_click"):
+		return
+	
+	for unit in scene_tree.get_nodes_in_group("selected-unit"):
+		var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
+		for room in scene_tree.get_nodes_in_group("selected-room"):
+			var point2: Vector2 = room.get_slot(_slots, unit)
+			if is_inf(point2.x):
+				break
+			
+			var path: Curve2D = tilemap.find_path(point1, point2)
+			Utils.erase_value(_slots, unit)
+			_slots[point2] = unit
+			unit.walk(path)
 
 
 func _on_Room_modifier_changed(type: int, value: float) -> void:

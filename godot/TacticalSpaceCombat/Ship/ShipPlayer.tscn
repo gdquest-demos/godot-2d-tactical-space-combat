@@ -100,7 +100,7 @@ rotation = 1.5708
 position = Vector2( 352, 192 )
 
 [node name="Wall" parent="Walls" index="0" instance=ExtResource( 12 )]
-position = Vector2( 412, 192 )
+position = Vector2( 416, 192 )
 
 [node name="Units" parent="." index="7"]
 self_modulate = Color( 0.235294, 0.639216, 0.439216, 0.607843 )

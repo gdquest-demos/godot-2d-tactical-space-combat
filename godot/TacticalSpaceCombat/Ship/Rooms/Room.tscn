@@ -15,7 +15,6 @@ extents = Vector2( 32, 32 )
 script = ExtResource( 2 )
 
 [node name="HitArea2D" type="Area2D" parent="."]
-modulate = Color( 0.494118, 0, 0.8, 1 )
 collision_layer = 0
 collision_mask = 0
 
