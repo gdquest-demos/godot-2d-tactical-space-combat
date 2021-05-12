@@ -134,7 +134,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/ColorPickerPresets/plugin.cfg" )
+enabled=PoolStringArray(  )
 
 [input]
 
