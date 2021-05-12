@@ -36,7 +36,7 @@ func setup(rooms: Node2D, doors: Node2D) -> void:
 		_astar.connect_points(id1, id2)
 
 
-# Returns a `Curve2D` for units to follow.
+## Returns a `Curve2D` for units to follow.
 func find_path(point1: Vector2, point2: Vector2) -> Curve2D:
 	var out := Curve2D.new()
 	# Given the two points we first calculate the 1D index IDs
@@ -54,7 +54,7 @@ func find_path(point1: Vector2, point2: Vector2) -> Curve2D:
 	return out
 
 
-# Returns neighboring positions within a `room` given the input `point` location.
+## Returns neighboring positions within a `room` given the input `point` location.
 func _get_neighbors(room: Room, point: Vector2) -> Array:
 	var out := []
 	# We traverse the list of valid `DIRECTIONS`

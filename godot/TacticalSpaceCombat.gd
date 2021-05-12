@@ -1,4 +1,4 @@
-# Entry point for the game.
+## Entry point for the game.
 extends Node2D
 
 

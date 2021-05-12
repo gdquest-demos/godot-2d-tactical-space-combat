@@ -2,15 +2,15 @@ class_name Room
 extends Area2D
 
 
-# Emitted when room is successfuly selected as target in order for the projectile weapon to know
-# when to start shooting
+## Emitted when room is successfuly selected as target in order for the projectile weapon to know
+## when to start shooting
 signal targeted(msg)
 signal modifier_changed(type, value)
 
-# Room type which determines boosts if any
+## Room type which determines boosts if any
 enum Type {EMPTY, SENSORS, HELM, WEAPONS, MEDBAY}
 
-# Srites that go with room types. They're selected from the sprite atlas based on their region
+## Srites that go with room types. They're selected from the sprite atlas based on their region
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
 	Type.SENSORS: Vector2(128, 384),
@@ -20,7 +20,7 @@ const SPRITE := {
 }
 const FOG_COLOR := Color("ffe478")
 
-# Easy access in the inspector to change room type
+## Easy access in the inspector to change room type
 export(Type) var type := Type.EMPTY
 
 var units := {}
@@ -35,25 +35,25 @@ var _modifiers := {
 }
 var _target_index := -1
 var _entrances := {}
-# Room size in _TileMap_ cells
+## Room size in _TileMap_ cells
 var _size := Vector2.ZERO
-# Positions in _TileMap_ coordinates for top left and bottom right corners of the room
+## Positions in _TileMap_ coordinates for top left and bottom right corners of the room
 var _top_left := Vector2.ZERO
 var _bottom_right := Vector2.ZERO
-# Room area in _TileMap_ cells =`_size.x * _size.y`
+## Room area in _TileMap_ cells =`_size.x * _size.y`
 var _area := 0
-# Room is a custom iterator class so we can access cell positions in _TileMap_ coordinates
-# with:
-#
-# for offset in room:
-#   # do something with `offset`
-#
-# `_iter_index` keeps track of the current iteration value. See the official Godot docs
-# for more:
-# https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_advanced.html#custom-iterators
+## Room is a custom iterator class so we can access cell positions in _TileMap_ coordinates
+## with:
+##
+## for offset in room:
+##   # do something with `offset`
+##
+## `_iter_index` keeps track of the current iteration value. See the official Godot docs
+## for more:
+## https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_advanced.html#custom-iterators
 var _iter_index := 0
-# We need to convert from world to map positions and the other way around so we need
-# to store a reference to the _TileMap_ node from the _Ship_ scene.
+## We need to convert from world to map positions and the other way around so we need
+## to store a reference to the _TileMap_ node from the _Ship_ scene.
 var _rng := RandomNumberGenerator.new()
 var _tilemap: TileMap = null
 var _fog := {}
@@ -141,10 +141,10 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 		_entrances[entrance] = null
 
 
-# When targeting is triggered by clicking the UI button we first switch off
-# weapon targeting by turning off the appropriate numbered sprite (child) visibility.
-# If at least one numbered sprite is visible then we also make the parent visible, otherwise
-# it remains invisible
+## When targeting is triggered by clicking the UI button we first switch off
+## weapon targeting by turning off the appropriate numbered sprite (child) visibility.
+## If at least one numbered sprite is visible then we also make the parent visible, otherwise
+## it remains invisible
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	match msg:
 		{"index": var index}:
@@ -170,7 +170,7 @@ func _draw() -> void:
 	draw_rect(_fog[state], FOG_COLOR)
 
 
-# Returns the closest entrance to the `from` location
+## Returns the closest entrance to the `from` location
 func _get_entrance(from: Vector2) -> Vector2:
 	var out := Vector2.INF
 	var distance := INF
@@ -183,7 +183,7 @@ func _get_entrance(from: Vector2) -> Vector2:
 	return out
 
 
-# Checks if the given point is within the bounds of the room
+## Checks if the given point is within the bounds of the room
 func has_point(point: Vector2) -> bool:
 	return (
 		_top_left.x <= point.x and _top_left.y <= point.y
@@ -203,7 +203,7 @@ func randvi() -> Vector2:
 	return offset
 
 
-# Get available tile position (slot) for unit placement if available
+## Get available tile position (slot) for unit placement if available
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var out := Vector2.INF
 	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))

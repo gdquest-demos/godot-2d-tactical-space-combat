@@ -5,7 +5,7 @@ extends Path2D
 signal died(unit)
 
 const COLORS := {
-	"default": Color("3d6e70"),
+	"default": Color("323e4f"),
 	"selected": Color("3ca370")
 }
 

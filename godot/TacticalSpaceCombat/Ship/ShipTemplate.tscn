@@ -41,6 +41,7 @@ script = ExtResource( 3 )
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="Units" type="Node2D" parent="."]
+self_modulate = Color( 0.239216, 0.431373, 0.439216, 0.607843 )
 
 [node name="Weapons" type="Node2D" parent="."]
 

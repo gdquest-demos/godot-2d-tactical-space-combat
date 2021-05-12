@@ -18,6 +18,7 @@ bg_color = Color( 0.239216, 0.431373, 0.439216, 1 )
 bg_color = Color( 0.152941, 0.152941, 0.211765, 1 )
 
 [node name="Unit" type="Path2D"]
+self_modulate = Color( 0.501961, 0.6, 1, 0.701961 )
 curve = SubResource( 1 )
 script = ExtResource( 2 )
 

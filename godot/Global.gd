@@ -1,7 +1,7 @@
 extends Node
 
 
-# Provides easy access to physics layers & masks from code.
+## Provides easy access to physics layers & masks from code.
 enum Layers { NONE }
 
 var winner_is_player := false
@@ -12,7 +12,7 @@ func _ready() -> void:
 	for i in range(1, 21):
 		var layer_name: String = ProjectSettings.get_setting(label % i)
 		if layer_name != '':
-			# The << operator is called the left-shift bit-wise operator. It shifts the
+			# We call `<<` the left-shift bit-wise operator. It shifts the
 			# bits to the left by adding zeros to the right hand side.
 			# So `1 << 3 == 0b1000` which in decimals means 8. The `0b` prefix
 			# instructs Godot that this is a binary value.

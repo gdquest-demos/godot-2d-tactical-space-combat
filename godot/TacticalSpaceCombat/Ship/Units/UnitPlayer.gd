@@ -1,8 +1,8 @@
 extends Unit
 
 
-# This property is managed in the _Units.gd_ script where we query Godot for the
-# selected units under a rectangular area activated by `LMB` & dragging the mouse.
+## _Units.gd_ manages this property. That's  where we query Godot for the selected
+## units under a rectangular area activated by `LMB` & dragging the mouse.
 var is_selected: bool setget set_is_selected
 
 var _ui_unit: ColorRect
@@ -17,7 +17,7 @@ func setup(ui_unit: ColorRect) -> void:
 	_ui_unit_icon = ui_unit.get_node("Icon")
 	_ui_unit_feedback = ui_unit.get_node("Feedback")
 	
-	# instead of overwriting `gui_input()` in the _Unit_ UI node, we prefer to
+	# Instead of overwriting `gui_input()` in the _Unit_ UI node, we prefer to
 	# use the `gui_input` signal to handle player interaction right here.
 	#
 	# This simplifies UI - game entities interactions by a lot.

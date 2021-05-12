@@ -13,17 +13,17 @@ const DIRECTIONS := [
 ]
 
 
-# Converts `Vector2` (x, y) coordinates to `int` index.
+## Converts `Vector2` (x, y) coordinates to `int` index.
 static func xy_to_index(width: int, offset: Vector2) -> int:
 	return int(offset.x + width * offset.y)
 
 
-# Converts an `int` index to `Vector2` (x, y) coordinates.
+## Converts an `int` index to `Vector2` (x, y) coordinates.
 static func index_to_xy(width: int, index: int) -> Vector2:
 	return Vector2(index % width, index / width)
 
 
-# Finds and erases all keys:value pairs for the given value.
+## Finds and erases all keys:value pairs for the given value.
 static func erase_value(dict: Dictionary, value) -> bool:
 	var out := false
 	for key in dict:
