@@ -17,7 +17,7 @@ func setup(rooms: Node2D, doors: Node2D) -> void:
 			# using `Utils.xy_to_index()`. This conversion requires the width of the
 			# _TileMap_ which we get from `_size.x`
 			var id := Utils.xy_to_index(_size.x, point)
-			# `AStar2D` requires that each `point` is associated with an `id`
+			# We need to associate each `point` with an `id`.
 			_astar.add_point(id, point)
 			# For each valid `neighbor` position, we add it to the `AStar2D`
 			# algorithm and connect it with the current `point` via its `id`
@@ -44,11 +44,15 @@ func find_path(point1: Vector2, point2: Vector2) -> Curve2D:
 	var id2 := Utils.xy_to_index(_size.x, point2)
 	if _astar.has_point(id1) and _astar.has_point(id2):
 		# If these are valid points in our `AStar2D` object then we
-		# just get the `path` between these points
+		# get the `path` between these points
 		var path := _astar.get_point_path(id1, id2)
-		# We drop the first point in `path` since that's the location of
-		# the unit, and add the rest to the `Curve2D`. We make sure to
-		# convert to world coordinates considering the centers of the tiles
+		# We drop the first point in `path` because that's the location of the tile
+		# the unit is in, but we'd like to add the location of the unit instead.
+		# That's because if the unit is already moving, we don't want it to jump to the
+		# tile frist before starting to move again.
+		#
+		# We make sure to convert to world coordinates considering the centers of
+		# the tiles.
 		for i in range(1, path.size()):
 			out.add_point(map_to_world(path[i]) + cell_size / 2)
 	return out

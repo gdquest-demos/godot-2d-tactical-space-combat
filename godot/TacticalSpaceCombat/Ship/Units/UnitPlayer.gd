@@ -5,24 +5,29 @@ extends Unit
 ## units under a rectangular area activated by `LMB` & dragging the mouse.
 var is_selected: bool setget set_is_selected
 
-var _ui_unit: ColorRect
-var _ui_unit_icon: NinePatchRect
+## Reference to the UI player feedback element. We need to set its state when units
+## get selected/deselected.
 var _ui_unit_feedback: NinePatchRect
 
 onready var area_select: Area2D = $PathFollow2D/AreaSelect
 
 
 func setup(ui_unit: ColorRect) -> void:
-	_ui_unit = ui_unit
-	_ui_unit_icon = ui_unit.get_node("Icon")
 	_ui_unit_feedback = ui_unit.get_node("Feedback")
 	
+	# We get the icon and adjust its color from code so that it always stays in
+	# sync with `COLORS.default`. I generally store this into a variable for later,
+	# but this is a one-time use.
+	ui_unit.get_node("Icon").modulate = COLORS.default
+
 	# Instead of overwriting `gui_input()` in the _Unit_ UI node, we prefer to
 	# use the `gui_input` signal to handle player interaction right here.
 	#
 	# This simplifies UI - game entities interactions by a lot.
-	_ui_unit.connect("gui_input", self, "_on_UIUnit_gui_input")
-	_ui_unit_icon.modulate = COLORS.default
+	ui_unit.connect("gui_input", self, "_on_UIUnit_gui_input")
+
+	# When the unit dies, we also remove its associated UI element.
+	connect("tree_exited", ui_unit, "queue_free")
 
 
 func _ready() -> void:
@@ -32,7 +37,10 @@ func _ready() -> void:
 
 
 func _on_UIUnit_gui_input(event: InputEvent) -> void:
-	# We keep track of selected units using this group name
+	# Remember that we use used `_input()` instead of `_unhandled_input()`
+	# in `Units.gd`. This is why. With `_unhandled_input()`, we would ignore
+	# the UI clicks in `Units.gd`. We'd keep on selecting new units without
+	# deselecting previous ones.
 	if event.is_action_pressed("left_click"):
 		self.is_selected = true
 

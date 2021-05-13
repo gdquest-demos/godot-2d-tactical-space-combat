@@ -12,11 +12,11 @@ const END_SCENE = "TacticalSpaceCombat/End.tscn"
 onready var scene_tree: SceneTree = get_tree()
 onready var ship_player: Node2D = $ShipPlayer
 onready var ship_ai: Node2D = $ViewportContainer/Viewport/ShipAI
-onready var ui_hitpoints_player: Label = $UI/HitPoints
-onready var ui_hitpoints_ai: Label = $ViewportContainer/Viewport/UI/HitPoints
 onready var ui_units: VBoxContainer = $UI/Units
 onready var ui_systems: HBoxContainer = $UI/Systems
 onready var ui_doors: MarginContainer = $UI/Systems/Doors
+onready var ui_hitpoints_player: Label = $UI/HitPoints
+onready var ui_hitpoints_ai: Label = $ViewportContainer/Viewport/UI/HitPoints
 
 
 func _ready() -> void:

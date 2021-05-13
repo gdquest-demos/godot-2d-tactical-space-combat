@@ -11,7 +11,7 @@ var _is_pressed := false
 var _polygon := DEFAULT_POLYGON
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if not event is InputEventMouse:
 		# Skip it entirely if `event` is something other than `InputEventMouse`
 		return
@@ -26,8 +26,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("left_click"):
 		# When we first detect the `left_click` action pressed we assign
-		# `true` to `_is_pressed`. On next calls to `_unhandeld_input()`, this
-		# allows us to run the code in the other branches of this if statement.
+		# `true` to `_is_pressed`. On next calls to `_input()`, this allows
+		# us to run the code in the other branches of this if statement.
 		_is_pressed = true
 		
 		# Assign `mouse_position` to all indices in `_polygon`. This is the starting

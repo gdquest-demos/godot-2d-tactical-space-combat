@@ -34,6 +34,7 @@ var _modifiers := {
 	Type.MEDBAY: [0.0, 0.0]
 }
 var _target_index := -1
+## Keeps track of tiles where doors are places.
 var _entrances := {}
 ## Room size in _TileMap_ cells
 var _size := Vector2.ZERO
@@ -76,17 +77,26 @@ func setup(tilemap: TileMap) -> void:
 	_top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
 	_bottom_right = _top_left + _size
 	
+	feedback.rect_position -= collision_shape.shape.extents
+	feedback.rect_size = 2 * collision_shape.shape.extents
+	
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_enabled = sprite_type.visible
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 	
-	feedback.rect_position -= collision_shape.shape.extents
-	feedback.rect_size = 2 * collision_shape.shape.extents
 	o2_color_rect.rect_position = feedback.rect_position
 	o2_color_rect.rect_size = feedback.rect_size
 
 
 func _ready() -> void:
+	# Instead of connecting to two functions. We connect to `_on_mouse_entered_exited()`
+	# and send either `true` or `false` as a parameter, depending on which signal
+	# gets triggered.
+	connect("mouse_entered", self, "_on_mouse_entered_exited", [true])
+	connect("mouse_exited", self, "_on_mouse_entered_exited", [false])
+	connect("area_entered", self, "_on_area_entered_exited", [true])
+	connect("area_exited", self, "_on_area_entered_exited", [false])
+	
 	_rng.randomize()
 	_fog = {
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
@@ -115,6 +125,9 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 
 func _on_mouse_entered_exited(has_entered: bool) -> void:
 	feedback.visible = has_entered
+	
+	# We also add/remove the room from `selected-room` group as needed. We can then get
+	# these nodes from other parts of our code based on the assigned group.
 	var group := "selected-room"
 	if has_entered:
 		add_to_group(group)
@@ -133,11 +146,18 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()
 	elif area.is_in_group("door") and has_entered:
+		# Get the `Vector2` pointing from door to the middle of the room.
 		var entrance := position - area.position
-		entrance *= Vector2.DOWN.rotated(-area.rotation)
-		entrance = entrance.normalized() * _tilemap.cell_size / 2
+		# Project that onto the door normal and normalize.
+		entrance = entrance.project(Vector2.DOWN.rotated(area.rotation)).normalized()
+		# Rescale with half of the tilemap size.
+		entrance *= 0.5 * _tilemap.cell_size.x
+		# Add the door position to calculate the relative tile position. Up to this
+		# point we calculated everything in pixels.
 		entrance += area.position
+		# Convert to `TileMap` coordinates.
 		entrance = _tilemap.world_to_map(entrance)
+		# Store the entrance tile position as a key in the `_entrances` dictionary.
 		_entrances[entrance] = null
 
 
@@ -170,19 +190,6 @@ func _draw() -> void:
 	draw_rect(_fog[state], FOG_COLOR)
 
 
-## Returns the closest entrance to the `from` location
-func _get_entrance(from: Vector2) -> Vector2:
-	var out := Vector2.INF
-	var distance := INF
-	for entrance in _entrances:
-		var curve: Curve2D = _tilemap.find_path(from, entrance)
-		var length := curve.get_baked_length()
-		if distance > length:
-			distance = length
-			out = entrance
-	return out
-
-
 ## Checks if the given point is within the bounds of the room
 func has_point(point: Vector2) -> bool:
 	return (
@@ -203,19 +210,25 @@ func randvi() -> Vector2:
 	return offset
 
 
-## Get available tile position (slot) for unit placement if available
+## Get available tile position (slot) for unit placement if available. Note that we
+## have to check for existing unit positions already available in `slots` first.
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var out := Vector2.INF
+	# Get the closest entrance position in the destination room.
 	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))
-	for i in range(0, max(_size.x, _size.y)):
-		for offset in Utils.DIRECTIONS:
-			offset *= i
-			offset += entrance
-			if has_point(offset) and not (offset in slots and slots[offset] != unit):
-				out = offset
-				break
-		
-		if not out == Vector2.INF:
+	
+	# Construct an array with elements of `[position, distance_to_entrance_position]`.
+	var valid_positions := []
+	for offset in self:
+		valid_positions.push_back([offset, offset.distance_to(entrance)])
+	# Sort this array based on the second element, i.e. `distance_to_entrance_position`.
+	valid_positions.sort_custom(Utils, "sort_snd")
+	
+	for data in valid_positions:
+		var offset: Vector2 = data[0]
+		# If the position is valid, update `out` and break the loop.
+		if not (offset in slots and slots[offset] != unit):
+			out = offset
 			break
 	return out
 
@@ -223,6 +236,19 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 func set_o2(value: int) -> void:
 	o2 = clamp(value, 0, 100)
 	o2_color_rect.color.a = lerp(0.5, 0, o2 / 100.0)
+
+
+## Returns the closest entrance `from` location.
+func _get_entrance(from: Vector2) -> Vector2:
+	var out := Vector2.INF
+	var distance := INF
+	for entrance in _entrances:
+		var curve: Curve2D = _tilemap.find_path(from, entrance)
+		var length := curve.get_baked_length()
+		if distance > length:
+			distance = length
+			out = entrance
+	return out
 
 
 func _iter_init(_arg) -> bool:

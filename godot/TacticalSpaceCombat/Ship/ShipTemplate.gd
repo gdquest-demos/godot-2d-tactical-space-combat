@@ -12,7 +12,7 @@ export(int, 0, 30) var hitpoints := 30
 
 var has_sensors := false
 
-# This dictionary keeps track of the crew locations.
+## This dictionary keeps track of unit locations.
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
 var _evasion := 0.0
@@ -39,7 +39,7 @@ func _ready() -> void:
 		for door in doors.get_children():
 			door.connect("opened", unit, "set_is_walking", [true])
 		
-		# store position of unit
+		# Store position of `unit`.
 		var position_map := tilemap.world_to_map(unit.path_follow.position)
 		_slots[position_map] = unit
 	
@@ -72,11 +72,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	for unit in scene_tree.get_nodes_in_group("selected-unit"):
 		var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
 		for room in scene_tree.get_nodes_in_group("selected-room"):
+			# Get available location into the destination room.
 			var point2: Vector2 = room.get_slot(_slots, unit)
+			# If location isn't valid then break out of the loop.
 			if is_inf(point2.x):
 				break
-			
+
 			var path: Curve2D = tilemap.find_path(point1, point2)
+			# Remove old sorted position and store new position.
 			Utils.erase_value(_slots, unit)
 			_slots[point2] = unit
 			unit.walk(path)

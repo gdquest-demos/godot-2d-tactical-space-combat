@@ -91,8 +91,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered_exited" binds= [ true ]]
-[connection signal="area_exited" from="." to="." method="_on_area_entered_exited" binds= [ false ]]
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered_exited" binds= [ true ]]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_entered_exited" binds= [ false ]]
