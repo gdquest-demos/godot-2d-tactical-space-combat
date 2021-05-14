@@ -44,11 +44,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd"
 }, {
-"base": "Area2D",
-"class": "Door",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Rooms/Door.gd"
-}, {
 "base": "Hazard",
 "class": "Fire",
 "language": "GDScript",
@@ -102,7 +97,6 @@ _global_script_class_icons={
 "ControllerPlayer": "",
 "ControllerPlayerLaser": "",
 "ControllerPlayerProjectile": "",
-"Door": "",
 "Fire": "",
 "Hazard": "",
 "Room": "",

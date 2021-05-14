@@ -36,15 +36,15 @@ var _modifiers := {
 var _target_index := -1
 ## Keeps track of tiles where doors are places.
 var _entrances := {}
-## Room size in _TileMap_ cells
+## Room size in _TileMap_ cells.
 var _size := Vector2.ZERO
-## Positions in _TileMap_ coordinates for top left and bottom right corners of the room
+## Positions in _TileMap_ coordinates for top left and bottom right corners of the room.
 var _top_left := Vector2.ZERO
 var _bottom_right := Vector2.ZERO
-## Room area in _TileMap_ cells =`_size.x * _size.y`
+## Room area in _TileMap_ cells =`_size.x * _size.y`.
 var _area := 0
-## Room is a custom iterator class so we can access cell positions in _TileMap_ coordinates
-## with:
+## Room is a custom iterator class so we can access cell positions in _TileMap_
+## coordinates with:
 ##
 ## for offset in room:
 ##   # do something with `offset`
@@ -56,6 +56,8 @@ var _iter_index := 0
 ## We need to convert from world to map positions and the other way around so we need
 ## to store a reference to the _TileMap_ node from the _Ship_ scene.
 var _rng := RandomNumberGenerator.new()
+## We need to convert from world to map positions and the other way around so we need
+## to store a reference to the _TileMap_ node from the _Ship_ scene.
 var _tilemap: TileMap = null
 var _fog := {}
 

@@ -60,5 +60,3 @@ percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[connection signal="area_entered" from="PathFollow2D/AreaUnit" to="." method="_on_AreaUnit_area_entered"]

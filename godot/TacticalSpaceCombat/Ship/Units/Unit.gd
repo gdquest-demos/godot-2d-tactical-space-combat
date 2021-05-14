@@ -20,6 +20,7 @@ onready var hitpoints: ProgressBar = $HitpointsPathFollow2D/Hitpoints
 
 
 func _ready() -> void:
+	area_unit.connect("area_entered", self, "_on_AreaUnit_area_entered")
 	self.is_walking = false
 
 
