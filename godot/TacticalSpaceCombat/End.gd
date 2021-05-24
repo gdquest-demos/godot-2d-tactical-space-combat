@@ -1,6 +1,5 @@
 extends CenterContainer
 
-
 const MAIN_SCENE := "res://TacticalSpaceCombat.tscn"
 
 onready var scene_tree: SceneTree = get_tree()

@@ -1,6 +1,5 @@
 extends Area2D
 
-
 signal hitpoints_changed(hitpoints)
 
 export var hitpoints_max := 4

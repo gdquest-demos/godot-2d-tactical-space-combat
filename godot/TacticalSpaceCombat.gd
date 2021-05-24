@@ -1,6 +1,4 @@
-## Entry point for the game.
 extends Node2D
-
 
 const UIUnit = preload("TacticalSpaceCombat/UI/UIUnit.tscn")
 const UISystem = preload("TacticalSpaceCombat/UI/UISystem.tscn")
@@ -23,13 +21,13 @@ func _ready() -> void:
 	ship_player.connect("hitpoints_changed", self, "_on_Ship_hitpoints_changed")
 	ship_ai.connect("hitpoints_changed", self, "_on_Ship_hitpoints_changed")
 	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
-	
+
 	_ready_sensors()
 	_ready_shield()
 	_ready_units()
 	_ready_weapons_player()
 	_ready_weapons_ai()
-	
+
 	ship_player.emit_signal("hitpoints_changed", ship_player.hitpoints, true)
 	ship_ai.emit_signal("hitpoints_changed", ship_ai.hitpoints, false)
 
@@ -76,15 +74,19 @@ func _ready_weapons_player() -> void:
 			ui_systems.add_child(UIWeapons.instance())
 		var ui_weapon: VBoxContainer = UIWeapon.instance()
 		ui_systems.get_node("Weapons").add_child(ui_weapon)
-		
+
 		if controller is ControllerPlayerProjectile:
-			controller.weapon.connect("projectile_exited", ship_ai.projectiles, "_on_Weapon_projectile_exited")
+			controller.weapon.connect(
+				"projectile_exited", ship_ai.projectiles, "_on_Weapon_projectile_exited"
+			)
 			for room in ship_ai.rooms.get_children():
 				controller.connect("targeting", room, "_on_Controller_targeting")
 				room.connect("targeted", controller, "_on_Ship_targeted")
-		
+
 		elif controller is ControllerPlayerLaser:
-			var laser_tracker: Node = ship_ai.add_laser_tracker(controller.weapon.line.default_color)
+			var laser_tracker: Node = ship_ai.add_laser_tracker(
+				controller.weapon.line.default_color
+			)
 			controller.connect("targeting", laser_tracker, "_on_Controller_targeting")
 			laser_tracker.connect("targeted", controller, "_on_Ship_targeted")
 			controller.weapon.connect("fire_started", laser_tracker, "_on_Weapon_fire_started")
@@ -96,10 +98,14 @@ func _ready_weapons_ai() -> void:
 	for controller in ship_ai.weapons.get_children():
 		if controller is ControllerAIProjectile:
 			controller.connect("targeting", ship_player.rooms, "_on_Controller_targeting")
-			controller.weapon.connect("projectile_exited", ship_player.projectiles, "_on_Weapon_projectile_exited")
+			controller.weapon.connect(
+				"projectile_exited", ship_player.projectiles, "_on_Weapon_projectile_exited"
+			)
 			ship_player.rooms.connect("targeted", controller, "_on_Ship_targeted")
 		elif controller is ControllerAILaser:
-			var laser_tracker: Node = ship_player.add_laser_tracker(controller.weapon.line.default_color)
+			var laser_tracker: Node = ship_player.add_laser_tracker(
+				controller.weapon.line.default_color
+			)
 			controller.connect("targeting", laser_tracker, "_on_Controller_targeting")
 			controller.weapon.connect("fire_started", laser_tracker, "_on_Weapon_fire_started")
 			controller.weapon.connect("fire_stopped", laser_tracker, "_on_Weapon_fire_stopped")

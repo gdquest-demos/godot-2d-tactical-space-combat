@@ -1,13 +1,9 @@
 class_name Unit
 extends Path2D
 
-
 signal died(unit)
 
-const COLORS := {
-	"default": Color("323e4f"),
-	"selected": Color("3ca370")
-}
+const COLORS := {"default": Color("323e4f"), "selected": Color("3ca370")}
 
 var speed := 150
 var attack := 30
@@ -36,19 +32,11 @@ func _process(delta: float) -> void:
 		self.is_walking = false
 
 
-## Assigns the given `Curve2D` `path` to `curve`. It appends `path_follow.position`
-## as the starting point on the `curve`.
 func walk(path: Curve2D) -> void:
-	# Check if path is valid.
 	if path.get_point_count() == 0:
 		return
+
 	curve = path
-	# Remember that `TileMap.find_path()` returns the path missing the start
-	# position. That's because we want the current unit position instead, to
-	# take in account already moving units.
-	#
-	# NOTE that the two `Vector2.ZERO` parameters are the in/out point handles.
-	# They're `Vector2.ZERO` because we don't care about them.
 	curve.add_point(path_follow.position, Vector2.ZERO, Vector2.ZERO, 0)
 	path_follow.offset = 0
 	self.is_walking = true

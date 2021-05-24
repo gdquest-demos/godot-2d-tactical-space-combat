@@ -1,16 +1,12 @@
+tool
 class_name Room
 extends Area2D
 
-
-## Emitted when room is successfuly selected as target in order for the projectile weapon to know
-## when to start shooting
 signal targeted(msg)
 signal modifier_changed(type, value)
 
-## Room type which determines boosts if any
-enum Type {EMPTY, SENSORS, HELM, WEAPONS, MEDBAY}
+enum Type { EMPTY, SENSORS, HELM, WEAPONS, MEDBAY }
 
-## Srites that go with room types. They're selected from the sprite atlas based on their region
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
 	Type.SENSORS: Vector2(128, 384),
@@ -20,8 +16,8 @@ const SPRITE := {
 }
 const FOG_COLOR := Color("ffe478")
 
-## Easy access in the inspector to change room type
-export(Type) var type := Type.EMPTY
+export var size := Vector2.ONE setget set_size
+export (Type) var type := Type.EMPTY
 
 var units := {}
 var o2 := 100 setget set_o2
@@ -34,32 +30,19 @@ var _modifiers := {
 	Type.MEDBAY: [0.0, 0.0]
 }
 var _target_index := -1
-## Keeps track of tiles where doors are places.
+
+var _rng := RandomNumberGenerator.new()
+var _fog := {}
+
 var _entrances := {}
-## Room size in _TileMap_ cells.
-var _size := Vector2.ZERO
-## Positions in _TileMap_ coordinates for top left and bottom right corners of the room.
+
+var _area := 0
 var _top_left := Vector2.ZERO
 var _bottom_right := Vector2.ZERO
-## Room area in _TileMap_ cells =`_size.x * _size.y`.
-var _area := 0
-## Room is a custom iterator class so we can access cell positions in _TileMap_
-## coordinates with:
-##
-## for offset in room:
-##   # do something with `offset`
-##
-## `_iter_index` keeps track of the current iteration value. See the official Godot docs
-## for more:
-## https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_advanced.html#custom-iterators
+
 var _iter_index := 0
-## We need to convert from world to map positions and the other way around so we need
-## to store a reference to the _TileMap_ node from the _Ship_ scene.
-var _rng := RandomNumberGenerator.new()
-## We need to convert from world to map positions and the other way around so we need
-## to store a reference to the _TileMap_ node from the _Ship_ scene.
+
 var _tilemap: TileMap = null
-var _fog := {}
 
 onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
@@ -72,40 +55,49 @@ onready var o2_color_rect: ColorRect = $O2ColorRect
 
 func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
-	
-	_size = _tilemap.world_to_map(2 * collision_shape.shape.extents)
-	_area = _size.x * _size.y
-	
+	_setup_extents()
+
+	_area = size.x * size.y
 	_top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
-	_bottom_right = _top_left + _size
-	
+	_bottom_right = _top_left + size
+
 	feedback.rect_position -= collision_shape.shape.extents
 	feedback.rect_size = 2 * collision_shape.shape.extents
-	
+
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_enabled = sprite_type.visible
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
-	
+
 	o2_color_rect.rect_position = feedback.rect_position
 	o2_color_rect.rect_size = feedback.rect_size
 
 
+func _setup_extents() -> void:
+	if _tilemap != null:
+		collision_shape.shape.extents = 0.5 * _tilemap.map_to_world(size)
+
+
 func _ready() -> void:
-	# Instead of connecting to two functions. We connect to `_on_mouse_entered_exited()`
-	# and send either `true` or `false` as a parameter, depending on which signal
-	# gets triggered.
+	if Engine.editor_hint:
+		return
+
 	connect("mouse_entered", self, "_on_mouse_entered_exited", [true])
 	connect("mouse_exited", self, "_on_mouse_entered_exited", [false])
 	connect("area_entered", self, "_on_area_entered_exited", [true])
 	connect("area_exited", self, "_on_area_entered_exited", [false])
-	
+	connect("input_event", self, "_on_input_event")
+
 	_rng.randomize()
 	_fog = {
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
 		false: Rect2()
 	}
-	hit_area.collision_mask = Global.Layers.SHIPPLAYER if owner.is_in_group("player") else Global.Layers.SHIPAI
-	
+	hit_area.collision_mask = (
+		Global.Layers.SHIPPLAYER
+		if owner.is_in_group("player")
+		else Global.Layers.SHIPAI
+	)
+
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()
 		medbay_timer.autostart = true
@@ -127,9 +119,6 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 
 func _on_mouse_entered_exited(has_entered: bool) -> void:
 	feedback.visible = has_entered
-	
-	# We also add/remove the room from `selected-room` group as needed. We can then get
-	# these nodes from other parts of our code based on the assigned group.
 	var group := "selected-room"
 	if has_entered:
 		add_to_group(group)
@@ -148,18 +137,11 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()
 	elif area.is_in_group("door") and has_entered:
-		# Get the `Vector2` pointing from door to the middle of the room.
 		var entrance := position - area.position
-		# Project that onto the door normal and normalize.
 		entrance = entrance.project(Vector2.DOWN.rotated(area.rotation)).normalized()
-		# Rescale with half of the tilemap size.
 		entrance *= 0.5 * _tilemap.cell_size.x
-		# Add the door position to calculate the relative tile position. Up to this
-		# point we calculated everything in pixels.
 		entrance += area.position
-		# Convert to `TileMap` coordinates.
 		entrance = _tilemap.world_to_map(entrance)
-		# Store the entrance tile position as a key in the `_entrances` dictionary.
 		_entrances[entrance] = null
 
 
@@ -186,18 +168,13 @@ func _on_MedbayTimer_timeout() -> void:
 
 
 func _draw() -> void:
+	if Engine.editor_hint:
+		return
+
 	var state: bool = not owner.has_sensors
 	if owner.is_in_group("player"):
 		state = state and units.empty()
 	draw_rect(_fog[state], FOG_COLOR)
-
-
-## Checks if the given point is within the bounds of the room
-func has_point(point: Vector2) -> bool:
-	return (
-		_top_left.x <= point.x and _top_left.y <= point.y
-		and point.x < _bottom_right.x and point.y < _bottom_right.y
-	)
 
 
 func randv() -> Vector2:
@@ -212,27 +189,13 @@ func randvi() -> Vector2:
 	return offset
 
 
-## Get available tile position (slot) for unit placement if available. Note that we
-## have to check for existing unit positions already available in `slots` first.
-func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
-	var out := Vector2.INF
-	# Get the closest entrance position in the destination room.
-	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))
-	
-	# Construct an array with elements of `[position, distance_to_entrance_position]`.
-	var valid_positions := []
-	for offset in self:
-		valid_positions.push_back([offset, offset.distance_to(entrance)])
-	# Sort this array based on the second element, i.e. `distance_to_entrance_position`.
-	valid_positions.sort_custom(Utils, "sort_snd")
-	
-	for data in valid_positions:
-		var offset: Vector2 = data[0]
-		# If the position is valid, update `out` and break the loop.
-		if not (offset in slots and slots[offset] != unit):
-			out = offset
-			break
-	return out
+func has_point(point: Vector2) -> bool:
+	return (
+		_top_left.x <= point.x
+		and _top_left.y <= point.y
+		and point.x < _bottom_right.x
+		and point.y < _bottom_right.y
+	)
 
 
 func set_o2(value: int) -> void:
@@ -240,7 +203,29 @@ func set_o2(value: int) -> void:
 	o2_color_rect.color.a = lerp(0.5, 0, o2 / 100.0)
 
 
-## Returns the closest entrance `from` location.
+func set_size(value: Vector2) -> void:
+	for axis in [Vector2.AXIS_X, Vector2.AXIS_Y]:
+		size[axis] = max(1, value[axis])
+	_setup_extents()
+
+
+func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
+	var out := Vector2.INF
+	var entrance := _get_entrance(_tilemap.world_to_map(unit.path_follow.position))
+
+	var valid_positions := []
+	for offset in self:
+		valid_positions.push_back([offset, offset.distance_to(entrance)])
+	valid_positions.sort_custom(Utils, "sort_snd")
+
+	for data in valid_positions:
+		var offset: Vector2 = data[0]
+		if not (offset in slots and slots[offset] != unit):
+			out = offset
+			break
+	return out
+
+
 func _get_entrance(from: Vector2) -> Vector2:
 	var out := Vector2.INF
 	var distance := INF
@@ -264,7 +249,7 @@ func _iter_next(_arg) -> bool:
 
 
 func _iter_get(_arg) -> Vector2:
-	var offset := Utils.index_to_xy(_size.x, _iter_index)
+	var offset := Utils.index_to_xy(size.x, _iter_index)
 	return _top_left + offset
 
 

@@ -1,6 +1,5 @@
 extends Node2D
 
-
 const Projectile = preload("Projectile.tscn")
 
 var _rng := RandomNumberGenerator.new()
@@ -9,6 +8,7 @@ var _spawner: Path2D = null
 
 func setup(spawner: Path2D) -> void:
 	_spawner = spawner
+
 
 func _ready() -> void:
 	_rng.randomize()

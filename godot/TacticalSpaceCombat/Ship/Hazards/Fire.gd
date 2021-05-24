@@ -1,8 +1,7 @@
 class_name Fire
 extends Hazard
 
-
-export(float, 0.0, 1.0) var chance_attack := 0.1
+export (float, 0.0, 1.0) var chance_attack := 0.1
 
 onready var animation_tree: AnimationTree = $AnimationTree
 

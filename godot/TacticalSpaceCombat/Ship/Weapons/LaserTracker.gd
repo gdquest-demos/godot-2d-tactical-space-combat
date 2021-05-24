@@ -1,6 +1,5 @@
 extends Node2D
 
-
 signal targeted(msg)
 
 const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
@@ -68,7 +67,7 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 func _on_Weapon_fire_started(duration: float, params: Dictionary) -> void:
 	if _points[0] == Vector2.INF or _points[1] == Vector2.INF:
 		return
-	
+
 	_swipe_start = _spawner.interpolate(_rng.randf())
 	area.set_deferred("monitorable", true)
 	area.params = params

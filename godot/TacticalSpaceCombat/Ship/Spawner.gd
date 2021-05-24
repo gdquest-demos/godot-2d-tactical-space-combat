@@ -1,6 +1,5 @@
 extends Path2D
 
-
 const POINTS_MASK := [Vector2.ZERO, Vector2.RIGHT, Vector2.ONE, Vector2.DOWN, Vector2.ZERO]
 
 

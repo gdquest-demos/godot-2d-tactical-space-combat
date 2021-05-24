@@ -1,6 +1,5 @@
 extends Node2D
 
-
 var _rng := RandomNumberGenerator.new()
 var _slots := {}
 

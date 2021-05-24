@@ -1,7 +1,6 @@
 class_name WeaponProjectile
 extends Weapon
 
-
 signal fired
 signal projectile_exited(physics_layer, params)
 
@@ -21,9 +20,11 @@ func fire() -> void:
 	}
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.linear_velocity = projectile.linear_velocity.rotated(global_rotation)
-	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", physics_layer, params])
+	projectile.connect(
+		"tree_exited", self, "emit_signal", ["projectile_exited", physics_layer, params]
+	)
 	add_child(projectile)
-	
+
 	emit_signal("fired")
 
 

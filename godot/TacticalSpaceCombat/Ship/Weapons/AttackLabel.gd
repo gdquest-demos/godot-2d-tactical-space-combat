@@ -1,6 +1,5 @@
 extends Control
 
-
 onready var label: Label = $Label
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 

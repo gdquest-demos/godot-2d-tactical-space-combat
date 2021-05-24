@@ -1,11 +1,10 @@
 class_name WeaponLaser
 extends Weapon
 
-
 signal fire_started(duration, params)
 signal fire_stopped
 
-export(int, 0, 250) var targeting_length := 140
+export (int, 0, 250) var targeting_length := 140
 
 var targeted := false
 
@@ -22,9 +21,7 @@ func _ready() -> void:
 func fire() -> void:
 	targeted = false
 	var params := {
-		"chance_fire": chance_fire,
-		"chance_hull_breach": chance_hull_breach,
-		"attack": attack
+		"chance_fire": chance_fire, "chance_hull_breach": chance_hull_breach, "attack": attack
 	}
 	timer.start()
 	line.visible = true

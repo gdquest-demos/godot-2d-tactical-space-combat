@@ -1,11 +1,9 @@
 class_name Controller
 extends Node2D
 
-
 signal targeting(msg)
 
 onready var weapon: Weapon = $Weapon
-
 
 func _ready() -> void:
 	match get_class():

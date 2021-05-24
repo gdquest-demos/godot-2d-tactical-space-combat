@@ -1,8 +1,7 @@
 class_name Hazard
 extends Sprite
 
-
-export(int) var attack := 1
+export (int) var attack := 1
 
 var _hitpoints := 100 setget _set_hitpoints
 

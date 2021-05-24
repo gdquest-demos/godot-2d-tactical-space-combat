@@ -28,6 +28,7 @@ shape = SubResource( 2 )
 visible = false
 modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
 texture = ExtResource( 1 )
+region_enabled = true
 region_rect = Rect2( 128, 384, 32, 32 )
 
 [node name="SpriteTarget" type="Sprite" parent="."]
@@ -90,5 +91,3 @@ patch_margin_bottom = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[connection signal="input_event" from="." to="." method="_on_input_event"]

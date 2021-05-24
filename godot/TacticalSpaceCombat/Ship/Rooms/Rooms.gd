@@ -1,7 +1,6 @@
 class_name Rooms
 extends Node2D
 
-
 signal targeted(msg)
 
 var _rng := RandomNumberGenerator.new()
