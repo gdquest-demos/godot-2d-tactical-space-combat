@@ -1,15 +1,13 @@
 extends Path2D
 
-const POINTS_MASK := [Vector2.ZERO, Vector2.RIGHT, Vector2.ONE, Vector2.DOWN, Vector2.ZERO]
+const POINTS := 24
+const VECTOR := 2000 * Vector2.RIGHT
 
 
 func _ready() -> void:
-	if curve:
-		curve.clear_points()
-		var viewport_size := get_viewport_rect().size
-		for point_mask in POINTS_MASK:
-			var point: Vector2 = global_transform.xform_inv(point_mask * viewport_size)
-			curve.add_point(point)
+	for i in range(POINTS):
+		var step := range_lerp(i, 0, POINTS - 1, 0, 2 * PI)
+		curve.add_point(VECTOR.rotated(step))
 
 
 func interpolate(offset: float) -> Vector2:

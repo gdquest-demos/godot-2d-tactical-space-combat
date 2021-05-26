@@ -38,7 +38,7 @@ void fragment() {
 resource_local_to_scene = true
 shader = SubResource( 2 )
 shader_param/force = 0.0
-shader_param/size = 1.0
+shader_param/size = 0.0
 
 [sub_resource type="Animation" id=4]
 resource_name = "BASE"
@@ -164,13 +164,11 @@ tracks/4/keys = {
 [node name="Projectile" type="RigidBody2D"]
 collision_layer = 0
 collision_mask = 0
-mode = 2
 linear_velocity = Vector2( 750, 0 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-visible = false
-modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
+modulate = Color( 0.921569, 0.337255, 0.294118, 1 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 130, 419, 28, 12 )
@@ -179,9 +177,8 @@ region_rect = Rect2( 130, 419, 28, 12 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-
 [node name="Shockwave" type="ColorRect" parent="."]
+visible = false
 material = SubResource( 3 )
 margin_left = -64.0
 margin_top = -64.0
@@ -196,5 +193,3 @@ __meta__ = {
 autoplay = "BASE"
 anims/BASE = SubResource( 4 )
 anims/feedback = SubResource( 5 )
-
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="queue_free"]

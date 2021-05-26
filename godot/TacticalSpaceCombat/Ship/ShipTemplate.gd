@@ -63,9 +63,10 @@ func _ready_not_editor_hint() -> void:
 		if room.type == Room.Type.SENSORS:
 			has_sensors = true
 
+	spawner.position = _get_mean_position()
 	if has_node("Shield"):
 		_shield = $Shield
-		_shield.position = _get_mean_position()
+		_shield.position = spawner.position
 		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
 
 	tilemap.setup(rooms, doors)

@@ -30,6 +30,4 @@ margin_top = 64.0
 margin_right = 128.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 8 )
-step = 1.0
-rounded = true
 percent_visible = false

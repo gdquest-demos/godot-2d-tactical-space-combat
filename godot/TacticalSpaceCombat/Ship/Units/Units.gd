@@ -40,7 +40,7 @@ func _draw() -> void:
 	draw_polygon(_polygon, [self_modulate])
 
 
-func find_units_to_select(area: Array) -> Array:
+func find_units_to_select(area: PoolVector2Array) -> Array:
 	var units := []
 	var query := Physics2DShapeQueryParameters.new()
 	var shape := ConvexPolygonShape2D.new()

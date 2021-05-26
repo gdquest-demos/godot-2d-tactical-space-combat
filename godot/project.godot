@@ -78,16 +78,6 @@ _global_script_classes=[ {
 "class": "Weapon",
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Weapons/Weapon.gd"
-}, {
-"base": "Weapon",
-"class": "WeaponLaser",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd"
-}, {
-"base": "Weapon",
-"class": "WeaponProjectile",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.gd"
 } ]
 _global_script_class_icons={
 "Breach": "",
@@ -103,9 +93,7 @@ _global_script_class_icons={
 "Rooms": "",
 "Unit": "",
 "Utils": "",
-"Weapon": "",
-"WeaponLaser": "",
-"WeaponProjectile": ""
+"Weapon": ""
 }
 
 [application]

@@ -26,7 +26,7 @@ var _modifiers := {
 	Type.EMPTY: [0.0, 0.0],
 	Type.SENSORS: [0.0, 0.0],
 	Type.HELM: [0.0, 0.5],
-	Type.WEAPONS: [1.0, 0.5],
+	Type.WEAPONS: [1.0, 2.0],
 	Type.MEDBAY: [0.0, 0.0]
 }
 var _target_index := -1

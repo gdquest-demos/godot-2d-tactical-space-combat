@@ -1,4 +1,3 @@
-class_name WeaponLaser
 extends Weapon
 
 signal fire_started(duration, params)

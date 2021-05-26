@@ -103,7 +103,7 @@ position = Vector2( 384, 32 )
 script = ExtResource( 11 )
 
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0" instance=ExtResource( 9 )]
-charge_time = 8.0
+charge_time = 10.0
 attack = 1
 chance_fire = 0.3
 chance_hull_breach = 0.2
@@ -133,7 +133,7 @@ targeting_length = 80
 [node name="Spawner" parent="." index="9"]
 curve = SubResource( 1 )
 
-[node name="Shield" parent="." index="11" instance=ExtResource( 7 )]
+[node name="Shield" parent="." index="12" instance=ExtResource( 7 )]
 collision_mask = 2
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
