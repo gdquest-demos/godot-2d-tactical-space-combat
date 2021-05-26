@@ -16,7 +16,3 @@ func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	emit_signal(
 		"targeting", {"is_targeting": is_pressed, "targeting_length": weapon.targeting_length}
 	)
-
-
-func get_class() -> String:
-	return "ControllerPlayerLaser"

@@ -10,7 +10,7 @@ func _input(event: InputEvent) -> void:
 	if not event is InputEventMouse:
 		return
 
-	var mouse_position: Vector2 = global_transform.inverse().xform(event.position)
+	var mouse_position: Vector2 = get_local_mouse_position()
 	if event.is_action_pressed("left_click"):
 		_is_pressed = true
 

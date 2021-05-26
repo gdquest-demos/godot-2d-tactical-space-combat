@@ -3,14 +3,14 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/Units.gd" type="Script" id=3]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerProjectile.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Room.tscn" type="PackedScene" id=5]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerLaser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/UnitPlayer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=9]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Wall.tscn" type="PackedScene" id=12]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=13]
 
 [sub_resource type="Curve2D" id=1]
 resource_local_to_scene = true
@@ -98,36 +98,37 @@ modulate = Color( 0.709804, 0, 1, 1 )
 [node name="HitpointsPathFollow2D" parent="Units/Unit02" index="1"]
 position = Vector2( 160, 288 )
 
-[node name="ControllerProjectile" parent="Weapons" index="0" instance=ExtResource( 4 )]
+[node name="ControllerProjectile" type="Node2D" parent="Weapons" index="0"]
 position = Vector2( 384, 32 )
 script = ExtResource( 11 )
 
-[node name="Weapon" parent="Weapons/ControllerProjectile" index="0"]
-weapon_name = "Projectile"
+[node name="Weapon" parent="Weapons/ControllerProjectile" index="0" instance=ExtResource( 9 )]
 charge_time = 8.0
-chance_fire = 0.2
+attack = 1
+chance_fire = 0.3
+chance_hull_breach = 0.2
 
-[node name="ControllerLaser1" parent="Weapons" index="1" instance=ExtResource( 6 )]
+[node name="ControllerLaser1" type="Node2D" parent="Weapons" index="1"]
 position = Vector2( 480, 256 )
 script = ExtResource( 10 )
 
-[node name="Weapon" parent="Weapons/ControllerLaser1" index="0"]
-weapon_name = "Laser1"
-charge_time = 12.0
+[node name="Weapon" parent="Weapons/ControllerLaser1" index="0" instance=ExtResource( 13 )]
+weapon_name = "Laser 1"
+charge_time = 10.0
+attack = 1
+chance_fire = 0.2
+chance_hull_breach = 0.2
+targeting_length = 160
 
-[node name="Line2D" parent="Weapons/ControllerLaser1/Weapon" index="2"]
-modulate = Color( 2.5, 2.5, 2.5, 1 )
-default_color = Color( 0.4, 1, 0.890196, 1 )
-
-[node name="ControllerLaser2" parent="Weapons" index="2" instance=ExtResource( 6 )]
+[node name="ControllerLaser2" type="Node2D" parent="Weapons" index="2"]
 position = Vector2( 352, 352 )
 script = ExtResource( 10 )
 
-[node name="Weapon" parent="Weapons/ControllerLaser2" index="0"]
-weapon_name = "Laser2"
-charge_time = 7.0
-attack = 0
-chance_fire = 0.6
+[node name="Weapon" parent="Weapons/ControllerLaser2" index="0" instance=ExtResource( 13 )]
+weapon_name = "Laser 2"
+charge_time = 14.0
+chance_hull_breach = 0.1
+targeting_length = 80
 
 [node name="Spawner" parent="." index="9"]
 curve = SubResource( 1 )
@@ -147,7 +148,4 @@ wait_time = 14.0
 [editable path="Doors/Door0506"]
 [editable path="Units/Unit01"]
 [editable path="Units/Unit02"]
-[editable path="Weapons/ControllerProjectile"]
-[editable path="Weapons/ControllerLaser1"]
-[editable path="Weapons/ControllerLaser2"]
 [editable path="Shield"]

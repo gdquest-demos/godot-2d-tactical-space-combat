@@ -1,24 +1,18 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.gd" type="Script" id=2]
 
-[node name="ControllerLaser" type="Node2D"]
-
-[node name="Weapon" type="Sprite" parent="."]
-self_modulate = Color( 1, 1, 0.921569, 1 )
-texture = ExtResource( 1 )
-region_enabled = true
+[node name="Weapon" instance=ExtResource( 1 )]
 region_rect = Rect2( 96, 416, 32, 32 )
 script = ExtResource( 2 )
+weapon_name = "Laser"
 
-[node name="Tween" type="Tween" parent="Weapon"]
-
-[node name="Timer" type="Timer" parent="Weapon"]
+[node name="Timer" type="Timer" parent="." index="1"]
 wait_time = 0.6
 one_shot = true
 
-[node name="Line2D" type="Line2D" parent="Weapon"]
+[node name="Line2D" type="Line2D" parent="." index="2"]
 visible = false
 modulate = Color( 2, 2, 2, 1 )
 show_behind_parent = true

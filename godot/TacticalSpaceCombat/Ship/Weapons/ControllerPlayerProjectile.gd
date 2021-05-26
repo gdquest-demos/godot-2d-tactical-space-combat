@@ -2,6 +2,10 @@ class_name ControllerPlayerProjectile
 extends ControllerPlayer
 
 
+func _ready() -> void:
+	weapon.physics_layer = Global.Layers.SHIPAI
+
+
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	._on_UIWeaponButton_toggled(is_pressed)
 	var index := -1
@@ -18,7 +22,3 @@ func _on_Ship_targeted(msg: Dictionary) -> void:
 	var index: int = msg.get("index", -1)
 	if index == get_index():
 		_ui_weapon_button.pressed = false
-
-
-func get_class() -> String:
-	return "ControllerPlayerProjectile"

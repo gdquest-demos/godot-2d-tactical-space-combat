@@ -3,8 +3,6 @@ extends Node2D
 
 signal hitpoints_changed(hitpoints, is_player)
 
-const READY_FUNCS := {true: "_ready_editor_hint", false: "_ready_not_editor_hint"}
-
 const BreachS := preload("Hazards/Breach.tscn")
 const FireS := preload("Hazards/Fire.tscn")
 const LaserTracker := preload("Weapons/LaserTracker.tscn")
@@ -33,7 +31,7 @@ onready var lasers: Node2D = $Lasers
 
 
 func _ready() -> void:
-	call(READY_FUNCS[Engine.editor_hint])
+	call("_ready_editor_hint" if Engine.editor_hint else "_ready_not_editor_hint")
 
 
 func _ready_editor_hint() -> void:

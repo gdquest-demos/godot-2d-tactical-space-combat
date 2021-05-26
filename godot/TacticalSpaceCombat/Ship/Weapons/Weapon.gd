@@ -1,7 +1,7 @@
 class_name Weapon
 extends Sprite
 
-export var weapon_name := ''
+export var weapon_name := ""
 export var charge_time := 2.0
 export (int, 0, 5) var attack := 2
 export (float, 0, 1) var chance_fire := 0.0
