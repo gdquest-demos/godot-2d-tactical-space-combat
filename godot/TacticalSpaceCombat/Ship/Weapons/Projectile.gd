@@ -1,3 +1,4 @@
+class_name Projectile
 extends RigidBody2D
 
 const MAX_DISTANCE := 2000

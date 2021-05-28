@@ -1,7 +1,7 @@
 extends Path2D
 
 const POINTS := 24
-const VECTOR := 2000 * Vector2.RIGHT
+const VECTOR := Projectile.MAX_DISTANCE * Vector2.RIGHT
 
 
 func _ready() -> void:
