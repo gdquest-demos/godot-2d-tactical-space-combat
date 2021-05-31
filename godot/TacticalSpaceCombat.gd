@@ -7,7 +7,6 @@ const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
 
 const END_SCENE = "TacticalSpaceCombat/End.tscn"
 
-onready var get_tree(): SceneTree = get_tree()
 onready var ship_player: Node2D = $ShipPlayer
 onready var ship_ai: Node2D = $ViewportContainer/Viewport/ShipAI
 onready var ui_units: VBoxContainer = $UI/Units
