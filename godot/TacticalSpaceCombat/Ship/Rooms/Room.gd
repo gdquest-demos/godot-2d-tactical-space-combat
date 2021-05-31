@@ -113,7 +113,14 @@ func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) ->
 	):
 		sprite_target.visible = true
 		sprite_target.get_child(_target_index).visible = true
-		emit_signal("targeted", {"index": _target_index, "target_position": position})
+		emit_signal(
+			"targeted",
+			{
+				"type": Controller.Type.PROJECTILE,
+				"index": _target_index,
+				"target_position": position
+			}
+		)
 		_target_index = -1
 
 

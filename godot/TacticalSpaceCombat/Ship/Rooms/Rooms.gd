@@ -12,10 +12,11 @@ func _ready() -> void:
 
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	match msg:
-		{"index": var index}:
+		{"type": Controller.Type.PROJECTILE, "index": var index}:
 			var r := _rng.randi_range(0, get_child_count() - 1)
 			var room: Room = get_child(r)
-			emit_signal("targeted", {"index": index, "target_position": room.position})
+			msg.target_position = room.position
+			emit_signal("targeted", msg)
 
 
 func get_laser_points(targeting_length: float) -> Array:
