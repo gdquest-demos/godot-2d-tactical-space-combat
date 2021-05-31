@@ -7,7 +7,7 @@ const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
 
 const END_SCENE = "TacticalSpaceCombat/End.tscn"
 
-onready var scene_tree: SceneTree = get_tree()
+onready var get_tree(): SceneTree = get_tree()
 onready var ship_player: Node2D = $ShipPlayer
 onready var ship_ai: Node2D = $ViewportContainer/Viewport/ShipAI
 onready var ui_units: VBoxContainer = $UI/Units
@@ -37,7 +37,7 @@ func _on_Ship_hitpoints_changed(hitpoints: int, is_player: bool) -> void:
 	label.text = "HP: %d" % hitpoints
 	if hitpoints == 0:
 		Global.winner_is_player = not is_player
-		scene_tree.change_scene(END_SCENE)
+		get_tree().change_scene(END_SCENE)
 
 
 func _ready_sensors() -> void:

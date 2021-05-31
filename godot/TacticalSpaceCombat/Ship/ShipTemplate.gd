@@ -18,7 +18,6 @@ var _evasion := 0.0
 var _shield: Area2D = null
 var _shield_is_on := false
 
-onready var scene_tree: SceneTree = get_tree()
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
 onready var doors: Node2D = $Doors
@@ -77,9 +76,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("right_click"):
 		return
 
-	for unit in scene_tree.get_nodes_in_group("selected-unit"):
+	for unit in get_tree().get_nodes_in_group("selected-unit"):
 		var point1: Vector2 = tilemap.world_to_map(unit.path_follow.position)
-		for room in scene_tree.get_nodes_in_group("selected-room"):
+		for room in get_tree().get_nodes_in_group("selected-room"):
 			if not room.owner.is_in_group("player"):
 				break
 

@@ -44,7 +44,6 @@ var _iter_index := 0
 
 var _tilemap: TileMap = null
 
-onready var scene_tree: SceneTree = get_tree()
 onready var hit_area: Area2D = $HitArea2D
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var sprite_type: Sprite = $SpriteType

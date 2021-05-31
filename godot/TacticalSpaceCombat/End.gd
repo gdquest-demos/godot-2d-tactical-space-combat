@@ -2,7 +2,6 @@ extends CenterContainer
 
 const MAIN_SCENE := "res://TacticalSpaceCombat.tscn"
 
-onready var scene_tree: SceneTree = get_tree()
 onready var label: Label = $VBoxContainer/Label
 
 
@@ -11,8 +10,8 @@ func _ready() -> void:
 
 
 func _on_RetryButton_pressed() -> void:
-	scene_tree.change_scene(MAIN_SCENE)
+	get_tree().change_scene(MAIN_SCENE)
 
 
 func _on_QuitButton_pressed() -> void:
-	scene_tree.quit()
+	get_tree().quit()
