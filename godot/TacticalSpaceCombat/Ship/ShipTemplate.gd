@@ -87,7 +87,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				break
 
 			var path: Curve2D = tilemap.find_path(point1, point2)
-			_slots.erase(point1)
+			Utils.erase_value(_slots, unit)
 			_slots[point2] = unit
 			unit.walk(path)
 
@@ -184,8 +184,7 @@ func _on_FireSpreadTimer_timeout() -> void:
 
 
 func _on_Unit_died(unit: Unit) -> void:
-	var current_cell := tilemap.world_to_map(unit.path_follow.position)
-	_slots.erase(current_cell)
+	Utils.erase_value(_slots, unit)
 	for room in rooms.get_children():
 		room.units.erase(unit)
 
