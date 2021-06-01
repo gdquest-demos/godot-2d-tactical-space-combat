@@ -3,7 +3,7 @@ extends ControllerPlayer
 
 
 func _ready() -> void:
-	weapon.physics_layer = Global.Layers.SHIPAI
+	weapon.setup(Global.Layers.SHIPAI)
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
