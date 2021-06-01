@@ -133,7 +133,6 @@ func _on_mouse_entered_exited(has_entered: bool) -> void:
 
 
 func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
-	print("entered")
 	if area.is_in_group("unit"):
 		if has_entered:
 			units[area.owner] = null
@@ -144,7 +143,6 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()
 	elif area.is_in_group("door"):
-		print(name, area.name)
 		var entrance := position - area.position
 		entrance = entrance.project(Vector2.DOWN.rotated(area.rotation)).normalized()
 		entrance *= 0.5 * _tilemap.cell_size.x

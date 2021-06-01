@@ -9,7 +9,7 @@ var _is_targeting := false
 var _points := TARGET_LINE_DEFAULT
 var _targeting_length := 0
 var _rng := RandomNumberGenerator.new()
-var _rooms: Rooms = null
+var _rooms: Node2D = null
 var _spawner: Path2D = null
 var _shield: Area2D = null
 var _shield_polygon := PoolVector2Array()
@@ -20,7 +20,7 @@ onready var target_line: Line2D = $TargetLine2D
 onready var tween: Tween = $Tween
 
 
-func setup(rooms: Rooms, spawner: Path2D, shield: Area2D, color: Color) -> void:
+func setup(rooms: Node2D, spawner: Path2D, shield: Area2D, color: Color) -> void:
 	_rooms = rooms
 	_spawner = spawner
 	_shield = shield

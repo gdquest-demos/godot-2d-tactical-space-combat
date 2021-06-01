@@ -3,7 +3,7 @@ extends Node2D
 
 signal targeting(msg)
 
-enum Type {PROJECTILE}
+enum Type {PROJECTILE, LASER}
 
 onready var weapon: Weapon = $Weapon
 

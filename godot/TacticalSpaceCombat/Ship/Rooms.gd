@@ -1,4 +1,3 @@
-class_name Rooms
 extends Node2D
 
 signal targeted(msg)
@@ -12,7 +11,7 @@ func _ready() -> void:
 
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	match msg:
-		{"type": Controller.Type.PROJECTILE, "index": var index}:
+		{"type": Controller.Type.PROJECTILE, ..}:
 			var r := _rng.randi_range(0, get_child_count() - 1)
 			var room: Room = get_child(r)
 			msg.target_position = room.position
