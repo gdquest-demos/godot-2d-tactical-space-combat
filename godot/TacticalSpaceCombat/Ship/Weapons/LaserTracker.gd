@@ -4,7 +4,6 @@ signal targeted(msg)
 
 const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
 
-var _mean_position := Vector2.ZERO
 var _swipe_start := Vector2.ZERO
 var _is_targeting := false
 var _points := TARGET_LINE_DEFAULT
@@ -20,9 +19,8 @@ onready var target_line: Line2D = $TargetLine2D
 onready var tween: Tween = $Tween
 
 
-func setup(rooms: Node2D, shield: Area2D, mean_position: Vector2, color: Color) -> void:
+func setup(rooms: Node2D, shield: Area2D, color: Color) -> void:
 	_rooms = rooms
-	_mean_position = mean_position
 	_shield = shield
 	line.default_color = color
 	target_line.default_color = color
@@ -68,8 +66,7 @@ func _on_Weapon_fire_started(duration: float, params: Dictionary) -> void:
 	if _points[0] == Vector2.INF or _points[1] == Vector2.INF:
 		return
 
-	_swipe_start = _mean_position
-	_swipe_start += Utils.randvf_circle(_rng, Projectile.MAX_DISTANCE)
+	_swipe_start = _rooms.mean_position + Utils.randvf_circle(_rng, Projectile.MAX_DISTANCE)
 	area.set_deferred("monitorable", true)
 	area.params = params
 	tween.interpolate_method(self, "_swipe_laser", _points[0], _points[1], duration)

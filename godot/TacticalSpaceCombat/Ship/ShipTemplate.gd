@@ -61,14 +61,13 @@ func _ready_not_editor_hint() -> void:
 		if room.type == Room.Type.SENSORS:
 			has_sensors = true
 
-	var mean_position = _get_mean_position()
 	if has_node("Shield"):
 		_shield = $Shield
-		_shield.position = mean_position
+		_shield.position = rooms.mean_position
 		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
 
 	tilemap.setup(rooms, doors)
-	projectiles.setup(mean_position)
+	projectiles.setup(rooms.mean_position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -191,7 +190,7 @@ func _on_Unit_died(unit: Unit) -> void:
 func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(rooms, _shield, _get_mean_position(), color)
+	laser_tracker.setup(rooms, _shield, color)
 	return laser_tracker
 
 
@@ -226,13 +225,4 @@ func _get_neightbor_positions(at: Vector2) -> Array:
 		var curve: Curve2D = tilemap.find_path(point1, point2)
 		if curve.get_point_count() == 1:
 			out.append_array(curve.get_baked_points())
-	return out
-
-
-func _get_mean_position() -> Vector2:
-	var out := Vector2.ZERO
-	if rooms.get_child_count() > 0:
-		for room in rooms.get_children():
-			out += room.position
-		out /= rooms.get_child_count()
 	return out

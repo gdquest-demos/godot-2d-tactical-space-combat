@@ -222,7 +222,7 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 	var valid_positions := []
 	for offset in self:
 		valid_positions.push_back([offset, offset.distance_to(entrance)])
-	valid_positions.sort_custom(Utils, "sort_by_second_index")
+	valid_positions.sort_custom(self, "sort_by_second_index")
 
 	for data in valid_positions:
 		var offset: Vector2 = data[0]
@@ -230,6 +230,10 @@ func get_slot(slots: Dictionary, unit: Unit) -> Vector2:
 			out = offset
 			break
 	return out
+
+
+static func sort_by_second_index(a: Array, b: Array) -> bool:
+	return a[1] < b[1]
 
 
 func _get_entrance(from: Vector2) -> Vector2:
@@ -242,10 +246,6 @@ func _get_entrance(from: Vector2) -> Vector2:
 			distance = length
 			out = entrance
 	return out
-
-
-static func sort_by_second_index(a: Array, b: Array) -> bool:
-	return a[1] < b[1]
 
 
 func _iter_init(_arg) -> bool:

@@ -17,15 +17,15 @@ static func xy_to_index(width: int, offset: Vector2) -> int:
 static func index_to_xy(width: int, index: int) -> Vector2:
 	return Vector2(index % width, index / width)
 
-static func randvf_circle(_rng: RandomNumberGenerator, radius: float) -> Vector2:
-	return (radius * Vector2.RIGHT).rotated(_rng.randf_range(0, 2 * PI))
-
 static func erase_value(dict: Dictionary, value) -> bool:
 	var out := false
 	for key in dict:
 		if dict[key] == value:
 			out = dict.erase(key)
 	return out
+
+static func randvf_circle(_rng: RandomNumberGenerator, radius: float) -> Vector2:
+	return (radius * Vector2.RIGHT).rotated(_rng.randf_range(0, 2 * PI))
 
 static func randvf_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:
 	var x: float = lerp(top_left.x, bottom_right.x, _rng.randf())

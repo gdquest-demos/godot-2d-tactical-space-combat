@@ -4,7 +4,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Hazards/Hazards.gd" type="Script" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.gd" type="Script" id=4]
 [ext_resource path="res://TacticalSpaceCombat/Ship/TileMap.gd" type="Script" id=6]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/Projectiles.gd" type="Script" id=7]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Projectiles.gd" type="Script" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms.gd" type="Script" id=8]
 
 [node name="ShipTemplate" type="Node2D"]
