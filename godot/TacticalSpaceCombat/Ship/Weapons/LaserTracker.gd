@@ -4,13 +4,13 @@ signal targeted(msg)
 
 const TARGET_LINE_DEFAULT := PoolVector2Array([Vector2.INF, Vector2.INF])
 
+var _mean_position := Vector2.ZERO
 var _swipe_start := Vector2.ZERO
 var _is_targeting := false
 var _points := TARGET_LINE_DEFAULT
 var _targeting_length := 0
 var _rng := RandomNumberGenerator.new()
 var _rooms: Node2D = null
-var _spawner: Path2D = null
 var _shield: Area2D = null
 var _shield_polygon := PoolVector2Array()
 
@@ -20,9 +20,9 @@ onready var target_line: Line2D = $TargetLine2D
 onready var tween: Tween = $Tween
 
 
-func setup(rooms: Node2D, spawner: Path2D, shield: Area2D, color: Color) -> void:
+func setup(rooms: Node2D, shield: Area2D, mean_position: Vector2, color: Color) -> void:
 	_rooms = rooms
-	_spawner = spawner
+	_mean_position = mean_position
 	_shield = shield
 	line.default_color = color
 	target_line.default_color = color
@@ -53,12 +53,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	match msg:
-		{"is_targeting": var is_targeting, "targeting_length": var targeting_length}:
+		{"type": Controller.Type.LASER, "targeting_length": var targeting_length, "is_targeting": var is_targeting}:
 			_is_targeting = is_targeting
 			_targeting_length = targeting_length
 			if is_targeting:
 				_points = TARGET_LINE_DEFAULT
-		{"targeting_length": var targeting_length}:
+		{"type": Controller.Type.LASER, "targeting_length": var targeting_length}:
 			_points = _rooms.get_laser_points(targeting_length)
 			target_line.points = _points
 			emit_signal("targeted", {})
@@ -68,7 +68,8 @@ func _on_Weapon_fire_started(duration: float, params: Dictionary) -> void:
 	if _points[0] == Vector2.INF or _points[1] == Vector2.INF:
 		return
 
-	_swipe_start = _spawner.interpolate(_rng.randf())
+	_swipe_start = _mean_position
+	_swipe_start += Utils.randvf_circle(_rng, Projectile.MAX_DISTANCE)
 	area.set_deferred("monitorable", true)
 	area.params = params
 	tween.interpolate_method(self, "_swipe_laser", _points[0], _points[1], duration)

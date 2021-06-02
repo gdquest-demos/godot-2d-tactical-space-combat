@@ -24,7 +24,6 @@ onready var doors: Node2D = $Doors
 onready var units: Node2D = $Units
 onready var hazards: Node2D = $Hazards
 onready var weapons: Node2D = $Weapons
-onready var spawner: Path2D = $Spawner
 onready var projectiles: Node2D = $Projectiles
 onready var lasers: Node2D = $Lasers
 
@@ -62,14 +61,14 @@ func _ready_not_editor_hint() -> void:
 		if room.type == Room.Type.SENSORS:
 			has_sensors = true
 
-	spawner.position = _get_mean_position()
+	var mean_position = _get_mean_position()
 	if has_node("Shield"):
 		_shield = $Shield
-		_shield.position = spawner.position
+		_shield.position = mean_position
 		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
 
 	tilemap.setup(rooms, doors)
-	projectiles.setup(spawner)
+	projectiles.setup(mean_position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -192,7 +191,7 @@ func _on_Unit_died(unit: Unit) -> void:
 func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(rooms, spawner, _shield, color)
+	laser_tracker.setup(rooms, _shield, _get_mean_position(), color)
 	return laser_tracker
 
 

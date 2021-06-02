@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
@@ -8,12 +8,6 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=6]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAIProjectile.gd" type="Script" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=8]
-
-[sub_resource type="Curve2D" id=1]
-resource_local_to_scene = true
-_data = {
-"points": PoolVector2Array(  )
-}
 
 [sub_resource type="CapsuleShape2D" id=2]
 resource_local_to_scene = true
@@ -41,7 +35,6 @@ rotation = -3.14159
 script = ExtResource( 5 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser" index="0" instance=ExtResource( 8 )]
-charge_time = 6.0
 attack = 1
 chance_fire = 0.2
 chance_hull_breach = 0.1
@@ -54,9 +47,6 @@ script = ExtResource( 7 )
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0" instance=ExtResource( 6 )]
 chance_fire = 0.4
 chance_hull_breach = 0.1
-
-[node name="Spawner" parent="." index="9"]
-curve = SubResource( 1 )
 
 [node name="Shield" parent="." index="11" instance=ExtResource( 4 )]
 collision_mask = 4
