@@ -21,13 +21,16 @@ func fire() -> void:
 	if not can_fire():
 		return
 
-	has_targeted = false
-	var params := {
-		"chance_fire": chance_fire, "chance_hull_breach": chance_hull_breach, "attack": attack
-	}
 	timer.start()
+	has_targeted = false
 	line.visible = true
-	emit_signal("fire_started", timer.wait_time, params)
+	var params := {
+		"duration": timer.wait_time,
+		"chance_fire": chance_fire,
+		"chance_hull_breach": chance_hull_breach,
+		"attack": attack
+	}
+	emit_signal("fire_started", params)
 
 
 func can_fire() -> bool:
