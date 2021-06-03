@@ -12,9 +12,9 @@ func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
 	if is_pressed:
 		index = get_index()
 		weapon.target_position = Vector2.INF
-	elif not (is_pressed or weapon.is_charging or weapon.target_position == Vector2.INF):
+	elif not (is_pressed or weapon.can_fire()):
 		weapon.fire()
-	emit_signal("targeting", {"type": Type.PROJECTILE, "index": index})
+	emit_signal("targeting", {"index": index})
 
 
 func _on_Ship_targeted(msg: Dictionary) -> void:

@@ -23,11 +23,16 @@ func _ready() -> void:
 	self.is_charging = true
 
 
+func fire() -> void:
+	pass
+
+
 func set_is_charging(value: bool) -> void:
 	is_charging = value
 	if is_charging:
 		tween.interpolate_property(self, "_charge", MIN_CHARGE, MAX_CHARGE, charge_time)
 		tween.start()
+	fire()
 
 
 func set_modifier(value: float) -> void:

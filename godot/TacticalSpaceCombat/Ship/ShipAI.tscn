@@ -9,7 +9,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAIProjectile.gd" type="Script" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=8]
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
 radius = 250.0
 height = 100.0
@@ -35,6 +35,7 @@ rotation = -3.14159
 script = ExtResource( 5 )
 
 [node name="Weapon" parent="Weapons/ControllerLaser" index="0" instance=ExtResource( 8 )]
+charge_time = 5.0
 attack = 1
 chance_fire = 0.2
 chance_hull_breach = 0.1
@@ -52,7 +53,7 @@ chance_hull_breach = 0.1
 collision_mask = 4
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Timer" parent="Shield" index="2"]
 wait_time = 9.0

@@ -14,6 +14,4 @@ func _on_Ship_targeted(msg: Dictionary) -> void:
 			if msg.index == get_index():
 				weapon.target_position = msg.target_position
 		{"type": Type.LASER, ..}:
-			weapon.targeted = true
-			if not weapon.is_charging:
-				weapon.fire()
+			weapon.has_targeted = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
@@ -12,13 +12,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Wall.tscn" type="PackedScene" id=12]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=13]
 
-[sub_resource type="Curve2D" id=1]
-resource_local_to_scene = true
-_data = {
-"points": PoolVector2Array(  )
-}
-
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
 radius = 300.0
 height = 100.0
@@ -130,14 +124,11 @@ charge_time = 14.0
 chance_hull_breach = 0.1
 targeting_length = 80
 
-[node name="Spawner" parent="." index="9"]
-curve = SubResource( 1 )
-
-[node name="Shield" parent="." index="12" instance=ExtResource( 7 )]
+[node name="Shield" parent="." index="11" instance=ExtResource( 7 )]
 collision_mask = 2
 
 [node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Timer" parent="Shield" index="2"]
 wait_time = 14.0

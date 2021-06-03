@@ -46,20 +46,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		target_line.points = _points
 	elif event.is_action_released("left_click") and _points[1] != Vector2.INF:
 		_is_targeting = false
-		emit_signal("targeted", {})
+		emit_signal("targeted", {"type": Controller.Type.LASER})
 
 
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	match msg:
-		{"type": Controller.Type.LASER, "targeting_length": var targeting_length, "is_targeting": var is_targeting}:
+		{"targeting_length": var targeting_length, "is_targeting": var is_targeting}:
 			_is_targeting = is_targeting
 			_targeting_length = targeting_length
-			if is_targeting:
+			if _is_targeting:
 				_points = TARGET_LINE_DEFAULT
-		{"type": Controller.Type.LASER, "targeting_length": var targeting_length}:
+		{"targeting_length": var targeting_length}:
 			_points = _rooms.get_laser_points(targeting_length)
 			target_line.points = _points
-			emit_signal("targeted", {})
+			emit_signal("targeted", {"type": Controller.Type.LASER})
 
 
 func _on_Weapon_fire_started(duration: float, params: Dictionary) -> void:
@@ -74,7 +74,7 @@ func _on_Weapon_fire_started(duration: float, params: Dictionary) -> void:
 
 
 func _on_Weapon_fire_stopped() -> void:
-	tween.remove(self, "_swipe_laser")
+	tween.remove_all()
 	area.set_deferred("monitorable", false)
 	area.position = Vector2.ZERO
 	line.points = []

@@ -15,6 +15,9 @@ func setup(physics_layer: int) -> void:
 
 
 func fire() -> void:
+	if not can_fire():
+		return
+
 	self.is_charging = true
 	var projectile: RigidBody2D = Projectile.instance()
 	projectile.linear_velocity = projectile.linear_velocity.rotated(global_rotation)
@@ -30,7 +33,5 @@ func fire() -> void:
 	emit_signal("fired")
 
 
-func set_is_charging(value: bool) -> void:
-	.set_is_charging(value)
-	if not is_charging and target_position != Vector2.INF:
-		fire()
+func can_fire() -> bool:
+	return not is_charging and target_position != Vector2.INF

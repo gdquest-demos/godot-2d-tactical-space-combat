@@ -5,7 +5,7 @@ extends Controller
 func _ready() -> void:
 	weapon.setup(Global.Layers.SHIPPLAYER)
 
-	var msg := {"type": Type.PROJECTILE, "index": get_index()}
+	var msg := {"index": get_index()}
 	weapon.connect("fired", self, "emit_signal", ["targeting", msg])
 
 	yield(get_tree(), "idle_frame")
