@@ -3,10 +3,10 @@ extends Node2D
 
 signal hitpoints_changed(hitpoints, is_player)
 
-const BreachS := preload("Hazards/Breach.tscn")
-const FireS := preload("Hazards/Fire.tscn")
 const LaserTracker := preload("Weapons/LaserTracker.tscn")
 const AttackLabel := preload("Weapons/AttackLabel.tscn")
+const BreachS := preload("Hazards/Breach.tscn")
+const FireS := preload("Hazards/Fire.tscn")
 
 export (int, 0, 30) var hitpoints := 30
 
@@ -190,7 +190,7 @@ func _on_Unit_died(unit: Unit) -> void:
 func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(rooms, _shield, color)
+	laser_tracker.setup(color, rooms, _shield)
 	return laser_tracker
 
 

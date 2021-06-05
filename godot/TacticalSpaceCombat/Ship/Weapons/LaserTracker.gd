@@ -13,13 +13,13 @@ var _rooms: Node2D = null
 var _shield: Area2D = null
 var _shield_polygon := PoolVector2Array()
 
+onready var tween: Tween = $Tween
 onready var area: Area2D = $Area2D
 onready var line: Line2D = $Line2D
 onready var target_line: Line2D = $TargetLine2D
-onready var tween: Tween = $Tween
 
 
-func setup(rooms: Node2D, shield: Area2D, color: Color) -> void:
+func setup(color: Color, rooms: Node2D, shield: Area2D) -> void:
 	_rooms = rooms
 	_shield = shield
 	line.default_color = color

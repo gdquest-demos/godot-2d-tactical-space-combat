@@ -1,9 +1,10 @@
 extends Weapon
 
-signal fire_started(duration, params)
+signal fire_started(params)
 signal fire_stopped
 
 export (int, 0, 250) var targeting_length := 140
+export var color := Color("b0305c")
 
 var has_targeted := false
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	timer.connect("timeout", self, "emit_signal", ["fire_stopped"])
 	timer.connect("timeout", self, "set_is_charging", [true])
 	timer.connect("timeout", line, "set_visible", [false])
+	line.default_color = color
 
 
 func fire() -> void:

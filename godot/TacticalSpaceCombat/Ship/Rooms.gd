@@ -23,12 +23,12 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 
 func get_laser_points(targeting_length: float) -> Array:
 	var room_index_first := _rng.randi_range(0, _rooms_count - 1)
-	var rs_remaining := []
+	var remaining := []
 	for room_index in range(_rooms_count):
 		if room_index != room_index_first:
-			rs_remaining.push_back(room_index)
-	var index = _rng.randi_range(0, rs_remaining.size() - 1)
-	var room_index_second = rs_remaining[index]
+			remaining.push_back(room_index)
+	var index = _rng.randi_range(0, remaining.size() - 1)
+	var room_index_second = remaining[index]
 
 	var point1: Vector2 = get_child(room_index_first).randv()
 	var point2: Vector2 = get_child(room_index_second).randv()
