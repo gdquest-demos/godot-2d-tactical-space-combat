@@ -17,6 +17,7 @@ func _ready() -> void:
 func _on_Controller_targeting(msg: Dictionary) -> void:
 	var r := _rng.randi_range(0, _rooms_count - 1)
 	var room: Room = get_child(r)
+	msg.type = Controller.Type.PROJECTILE
 	msg.target_position = room.position
 	emit_signal("targeted", msg)
 
