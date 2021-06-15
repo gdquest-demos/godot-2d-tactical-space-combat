@@ -70,7 +70,9 @@ func _on_Weapon_fire_started(params: Dictionary) -> void:
 	area.params = params
 
 	line.points[0] = _rooms.mean_position + Utils.randvf_circle(_rng, Projectile.MAX_DISTANCE)
-	tween.interpolate_method(self, "_swipe_laser", target_line.points[0], target_line.points[1], params.duration)
+	tween.interpolate_method(
+		self, "_swipe_laser", target_line.points[0], target_line.points[1], params.duration
+	)
 	tween.start()
 
 

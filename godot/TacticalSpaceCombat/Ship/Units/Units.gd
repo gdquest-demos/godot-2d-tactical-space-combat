@@ -7,7 +7,7 @@ var _polygon := DEFAULT_POLYGON
 
 
 func _input(event: InputEvent) -> void:
-	if not event is InputEventMouse:
+	if not (event is InputEventMouse and Input.get_current_cursor_shape() == Input.CURSOR_ARROW):
 		return
 
 	var mouse_position: Vector2 = get_local_mouse_position()

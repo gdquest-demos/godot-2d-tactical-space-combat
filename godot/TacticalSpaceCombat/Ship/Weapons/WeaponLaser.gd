@@ -1,3 +1,4 @@
+tool
 extends Weapon
 
 signal fire_started(params)
@@ -13,10 +14,19 @@ onready var line: Line2D = $Line2D
 
 
 func _ready() -> void:
+	if Engine.editor_hint:
+		return
+
 	timer.connect("timeout", self, "emit_signal", ["fire_stopped"])
 	timer.connect("timeout", self, "set_is_charging", [true])
 	timer.connect("timeout", line, "set_visible", [false])
 	line.default_color = color
+
+
+func _get_configuration_warning() -> String:
+	var parent := get_parent()
+	var is_verified := parent != null and parent is ControllerAILaser
+	return "" if is_verified else "WeaponLaser needs to be a parent of ControllerAILaser"
 
 
 func fire() -> void:

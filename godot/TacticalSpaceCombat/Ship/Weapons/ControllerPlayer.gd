@@ -14,19 +14,22 @@ func setup(ui_weapon: VBoxContainer) -> void:
 	_ui_weapon_progress_bar.max_value = Weapon.MAX_CHARGE
 
 	weapon.tween.connect("tween_step", self, "_on_WeaponTween_tween_step")
-	_ui_weapon_button.connect("gui_input", self, "_on_UIWeaponButton_gui_input")
 	_ui_weapon_button.connect("toggled", self, "_on_UIWeaponButton_toggled")
 
 	_ui_weapon_button.text = weapon.weapon_name
 
 
+func _input(event: InputEvent) -> void:
+	if (
+		event.is_action("right_click")
+		and _ui_weapon_button.pressed
+		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
+	):
+		_ui_weapon_button.pressed = false
+
+
 func _on_WeaponTween_tween_step(_o: Object, _k: NodePath, _e: float, value: float) -> void:
 	_ui_weapon_progress_bar.value = value
-
-
-func _on_UIWeaponButton_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("right_click"):
-		_ui_weapon_button.pressed = false
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:

@@ -4,10 +4,10 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Room.tscn" type="PackedScene" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=4]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAIProjectile.gd" type="Script" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=6]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAIProjectile.tscn" type="PackedScene" id=7]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAILaser.gd" type="Script" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=8]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerAILaser.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
@@ -29,9 +29,10 @@ size = Vector2( 3, 1 )
 position = Vector2( 128, 96 )
 rotation = 1.57079
 
-[node name="ControllerAILaser" parent="Weapons" index="0" instance=ExtResource( 9 )]
+[node name="ControllerAILaser" type="Node2D" parent="Weapons" index="0"]
 position = Vector2( 32, -32 )
 rotation = 3.14159
+script = ExtResource( 7 )
 
 [node name="Weapon" parent="Weapons/ControllerAILaser" index="0" instance=ExtResource( 8 )]
 charge_time = 5.0
@@ -39,9 +40,10 @@ attack = 1
 chance_fire = 0.2
 chance_hull_breach = 0.1
 
-[node name="ControllerAIProjectile2" parent="Weapons" index="1" instance=ExtResource( 7 )]
+[node name="ControllerAIProjectile2" type="Node2D" parent="Weapons" index="1"]
 position = Vector2( 192, 160 )
 rotation = 3.14159
+script = ExtResource( 5 )
 
 [node name="Weapon" parent="Weapons/ControllerAIProjectile2" index="0" instance=ExtResource( 6 )]
 chance_fire = 0.4

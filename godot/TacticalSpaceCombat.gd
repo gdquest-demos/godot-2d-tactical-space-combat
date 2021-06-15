@@ -11,7 +11,7 @@ onready var ship_player: Node2D = $ShipPlayer
 onready var ship_ai: Node2D = $ViewportContainer/Viewport/ShipAI
 onready var ui_units: VBoxContainer = $UI/Units
 onready var ui_systems: HBoxContainer = $UI/Systems
-onready var ui_doors: MarginContainer = $UI/Systems/Doors
+onready var ui_doors: Button = $UI/Systems/Doors
 onready var ui_hitpoints_player: Label = $UI/HitPoints
 onready var ui_hitpoints_ai: Label = $ViewportContainer/Viewport/UI/HitPoints
 
@@ -19,7 +19,7 @@ onready var ui_hitpoints_ai: Label = $ViewportContainer/Viewport/UI/HitPoints
 func _ready() -> void:
 	ship_player.connect("hitpoints_changed", self, "_on_Ship_hitpoints_changed")
 	ship_ai.connect("hitpoints_changed", self, "_on_Ship_hitpoints_changed")
-	ui_doors.get_node("Button").connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
+	ui_doors.connect("pressed", ship_player, "_on_UIDoorsButton_pressed")
 
 	_ready_sensors()
 	_ready_shield()
@@ -43,9 +43,8 @@ func _ready_sensors() -> void:
 	ship_ai.has_sensors = ship_player.has_sensors
 	if ship_player.has_sensors:
 		var ui_sensors := UISystem.instance()
-		var button := ui_sensors.get_node("Button")
-		button.text = "s"
-		button.disabled = true
+		ui_sensors.text = "s"
+		ui_sensors.disabled = true
 		ui_systems.add_child(ui_sensors)
 	ui_systems.add_child(VSeparator.new())
 
@@ -53,9 +52,8 @@ func _ready_sensors() -> void:
 func _ready_shield() -> void:
 	if ship_player.has_node("Shield"):
 		var ui_shield := UISystem.instance()
-		var ui_shield_button := ui_shield.get_node("Button")
-		ui_shield_button.text = "S"
-		ui_shield_button.disabled = true
+		ui_shield.text = "S"
+		ui_shield.disabled = true
 		ui_systems.add_child(ui_shield)
 
 

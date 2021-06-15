@@ -1,21 +1,15 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TacticalSpaceCombat/UI/UISystem.tscn" type="PackedScene" id=1]
 
 [node name="Weapons" type="HBoxContainer"]
 show_behind_parent = true
-margin_right = 32.0
-margin_bottom = 72.0
 rect_min_size = Vector2( 0, 72 )
 custom_constants/separation = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="."]
-margin_top = 40.0
-margin_right = 32.0
-margin_bottom = 72.0
-rect_min_size = Vector2( 32, 32 )
-size_flags_horizontal = 0
-size_flags_vertical = 10
+[node name="Button" parent="." instance=ExtResource( 1 )]
 disabled = true
 text = "W"

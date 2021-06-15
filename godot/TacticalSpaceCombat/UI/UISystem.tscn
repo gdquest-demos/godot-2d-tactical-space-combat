@@ -1,16 +1,12 @@
 [gd_scene format=2]
 
-[node name="System" type="MarginContainer"]
-margin_right = 32.0
-margin_bottom = 72.0
-rect_min_size = Vector2( 32, 72 )
-custom_constants/margin_top = 40
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button" type="Button" parent="."]
+[node name="System" type="Button"]
 margin_top = 40.0
 margin_right = 32.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 32, 32 )
+size_flags_vertical = 10
+text = "S"
+__meta__ = {
+"_edit_use_anchors_": false
+}

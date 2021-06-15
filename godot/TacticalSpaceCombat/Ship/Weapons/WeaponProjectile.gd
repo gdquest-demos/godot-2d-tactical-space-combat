@@ -1,3 +1,4 @@
+tool
 extends Weapon
 
 signal fired
@@ -12,6 +13,12 @@ var _physics_layer := -1
 
 func setup(physics_layer: int) -> void:
 	_physics_layer = physics_layer
+
+
+func _get_configuration_warning() -> String:
+	var parent := get_parent()
+	var is_verified := parent != null and parent is ControllerAIProjectile
+	return "" if is_verified else "WeaponProjectile needs to be a parent of ControllerAIProjectile"
 
 
 func fire() -> void:

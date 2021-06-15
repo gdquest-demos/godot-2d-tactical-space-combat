@@ -5,7 +5,7 @@ signal targeting(msg)
 
 enum Type {PROJECTILE, LASER}
 
-onready var weapon: Weapon = $Weapon
+onready var weapon: Weapon = null if Engine.editor_hint else $Weapon
 
 
 func _on_Ship_targeted(msg: Dictionary) -> void:
@@ -15,3 +15,7 @@ func _on_Ship_targeted(msg: Dictionary) -> void:
 				weapon.target_position = msg.target_position
 		{"type": Type.LASER, ..}:
 			weapon.has_targeted = true
+
+
+func _get_configuration_warning() -> String:
+	return "" if has_node("Weapon") else "%s needs a Weapon child" % name
