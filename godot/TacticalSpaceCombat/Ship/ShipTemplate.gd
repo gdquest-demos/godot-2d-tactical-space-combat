@@ -70,6 +70,15 @@ func _ready_not_editor_hint() -> void:
 	projectiles.setup(rooms.mean_position)
 
 
+func _get_configuration_warning() -> String:
+	var is_verified := (
+		is_in_group("player")
+		and weapons.get_child_count() <= 4
+		or not is_in_group("player")
+	)
+	return "" if is_verified else "%s can't have more than 4 weapons!" % name
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("right_click"):
 		return

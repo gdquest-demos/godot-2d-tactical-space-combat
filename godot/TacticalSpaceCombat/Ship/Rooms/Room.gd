@@ -44,11 +44,11 @@ var _iter_index := 0
 
 var _tilemap: TileMap = null
 
-onready var hit_area: Area2D = $HitArea2D
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
-onready var sprite_type: Sprite = $SpriteType
-onready var sprite_target: Sprite = $SpriteTarget
 onready var feedback: NinePatchRect = $Feedback
+onready var sprite_target: Sprite = $SpriteTarget
+onready var sprite_type: Sprite = $SpriteType
+onready var hit_area: Area2D = $HitArea2D
 onready var o2_color_rect: ColorRect = $O2ColorRect
 
 
@@ -104,7 +104,7 @@ func _ready() -> void:
 		medbay_timer.connect("timeout", self, "_on_MedbayTimer_timeout")
 
 
-func _on_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
+func _on_input_event(_v: Viewport, event: InputEvent, _s: int) -> void:
 	if (
 		event.is_action_pressed("left_click")
 		and Input.get_current_cursor_shape() == Input.CURSOR_CROSS
@@ -133,7 +133,14 @@ func _on_mouse_entered_exited(has_entered: bool) -> void:
 
 
 func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
-	if area.is_in_group("unit"):
+	if area.is_in_group("door"):
+		var entrance := position - area.position
+		entrance = entrance.project(Vector2.DOWN.rotated(area.rotation)).normalized()
+		entrance *= 0.5 * _tilemap.cell_size.x
+		entrance += area.position
+		entrance = _tilemap.world_to_map(entrance)
+		_entrances[entrance] = null
+	elif area.is_in_group("unit"):
 		if has_entered:
 			units[area.owner] = null
 			emit_signal("modifier_changed", type, _modifiers[type][1])
@@ -142,30 +149,17 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 			if units.empty():
 				emit_signal("modifier_changed", type, _modifiers[type][0])
 		update()
-	elif area.is_in_group("door"):
-		var entrance := position - area.position
-		entrance = entrance.project(Vector2.DOWN.rotated(area.rotation)).normalized()
-		entrance *= 0.5 * _tilemap.cell_size.x
-		entrance += area.position
-		entrance = _tilemap.world_to_map(entrance)
-		_entrances[entrance] = null
 
 
-## When targeting is triggered by clicking the UI button we first switch off
-## weapon targeting by turning off the appropriate numbered sprite (child) visibility.
-## If at least one numbered sprite is visible then we also make the parent visible, otherwise
-## it remains invisible
 func _on_Controller_targeting(msg: Dictionary) -> void:
-	match msg:
-		{"index": var index}:
-			_target_index = index
-			if _target_index != -1:
-				sprite_target.visible = false
-				sprite_target.get_child(_target_index).visible = false
-				for node in sprite_target.get_children():
-					if node.visible:
-						sprite_target.visible = true
-						break
+	_target_index = msg.index
+	if _target_index != -1:
+		sprite_target.visible = false
+		sprite_target.get_child(_target_index).visible = false
+		for node in sprite_target.get_children():
+			if node.visible:
+				sprite_target.visible = true
+				break
 
 
 func _on_MedbayTimer_timeout() -> void:

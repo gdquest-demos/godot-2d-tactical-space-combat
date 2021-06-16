@@ -2,7 +2,7 @@
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Units/Units.gd" type="Script" id=3]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Room.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/UnitPlayer.tscn" type="PackedScene" id=8]
@@ -97,7 +97,6 @@ position = Vector2( 384, 32 )
 script = ExtResource( 11 )
 
 [node name="Weapon" parent="Weapons/ControllerProjectile" index="0" instance=ExtResource( 9 )]
-charge_time = 10.0
 attack = 1
 chance_fire = 0.3
 chance_hull_breach = 0.2

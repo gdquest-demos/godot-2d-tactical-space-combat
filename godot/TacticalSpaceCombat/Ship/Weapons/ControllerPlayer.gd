@@ -1,22 +1,22 @@
 class_name ControllerPlayer
 extends Controller
 
-var _ui_weapon: VBoxContainer
 var _ui_weapon_button: Button
 var _ui_weapon_progress_bar: ProgressBar
 
 
 func setup(ui_weapon: VBoxContainer) -> void:
-	_ui_weapon = ui_weapon
 	_ui_weapon_button = ui_weapon.get_node("Button")
 	_ui_weapon_progress_bar = ui_weapon.get_node("ProgressBar")
 	_ui_weapon_progress_bar.min_value = Weapon.MIN_CHARGE
 	_ui_weapon_progress_bar.max_value = Weapon.MAX_CHARGE
 
-	weapon.tween.connect("tween_step", self, "_on_WeaponTween_tween_step")
 	_ui_weapon_button.connect("toggled", self, "_on_UIWeaponButton_toggled")
-
 	_ui_weapon_button.text = weapon.weapon_name
+
+
+func _ready() -> void:
+	weapon.tween.connect("tween_step", self, "_on_WeaponTween_tween_step")
 
 
 func _input(event: InputEvent) -> void:

@@ -4,12 +4,11 @@ extends ControllerPlayer
 
 func _on_Ship_targeted(msg: Dictionary) -> void:
 	._on_Ship_targeted(msg)
+	_ui_weapon_button.pressed = false
 
 	match msg:
-		{"type": Type.LASER}:
+		{"type": Type.LASER, ..}:
 			weapon.fire()
-
-	_ui_weapon_button.pressed = false
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:

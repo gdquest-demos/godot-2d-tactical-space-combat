@@ -31,9 +31,26 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 128, 384, 32, 32 )
 
+[node name="Feedback" type="NinePatchRect" parent="."]
+visible = false
+modulate = Color( 1, 0.709804, 0.439216, 1 )
+margin_right = 64.0
+margin_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 416, 32, 32 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SpriteTarget" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.294118, 0.356863, 0.670588, 1 )
+modulate = Color( 0.45098, 0.152941, 0.360784, 1 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 96, 384, 32, 32 )
@@ -71,23 +88,6 @@ margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
 color = Color( 0.690196, 0.188235, 0.360784, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Feedback" type="NinePatchRect" parent="."]
-visible = false
-modulate = Color( 1, 0.709804, 0.439216, 1 )
-margin_right = 64.0
-margin_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource( 1 )
-region_rect = Rect2( 0, 416, 32, 32 )
-patch_margin_left = 8
-patch_margin_top = 8
-patch_margin_right = 8
-patch_margin_bottom = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }

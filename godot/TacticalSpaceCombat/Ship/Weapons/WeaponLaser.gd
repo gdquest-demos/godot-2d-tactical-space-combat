@@ -25,8 +25,8 @@ func _ready() -> void:
 
 func _get_configuration_warning() -> String:
 	var parent := get_parent()
-	var is_verified := parent != null and parent is ControllerAILaser
-	return "" if is_verified else "WeaponLaser needs to be a parent of ControllerAILaser"
+	var is_verified := parent != null and parent is ControllerAILaser or parent is ControllerPlayerLaser
+	return "" if is_verified else "WeaponLaser needs to be a parent of Controller*Laser"
 
 
 func fire() -> void:

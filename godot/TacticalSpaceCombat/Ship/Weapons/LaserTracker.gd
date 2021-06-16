@@ -43,7 +43,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var offset: Vector2 = get_local_mouse_position() - target_line.points[0]
 		offset = offset.clamped(_targeting_length)
 		target_line.points[1] = target_line.points[0] + offset
-		target_line.points = target_line.points
 	elif event.is_action_released("left_click") and target_line.points[1] != Vector2.INF:
 		_is_targeting = false
 		emit_signal("targeted", {"type": Controller.Type.LASER})
@@ -58,7 +57,6 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 				target_line.points = LINE_DEFAULT
 		{"targeting_length": var targeting_length}:
 			target_line.points = _rooms.get_laser_points(targeting_length)
-			target_line.points = target_line.points
 			emit_signal("targeted", {"type": Controller.Type.LASER})
 
 
@@ -78,9 +76,10 @@ func _on_Weapon_fire_started(params: Dictionary) -> void:
 
 func _on_Weapon_fire_stopped() -> void:
 	tween.remove_all()
+	target_line.points = LINE_DEFAULT
 	line.points = LINE_DEFAULT
-	area.set_deferred("monitorable", false)
 	area.position = Vector2.ZERO
+	area.set_deferred("monitorable", false)
 
 
 func _swipe_laser(offset: Vector2) -> void:
