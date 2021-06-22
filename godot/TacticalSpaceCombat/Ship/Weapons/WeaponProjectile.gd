@@ -31,9 +31,9 @@ func fire() -> void:
 	var params := {
 		"physics_layer": _physics_layer,
 		"target_position": target_position,
+		"attack": attack,
 		"chance_fire": chance_fire,
-		"chance_hull_breach": chance_hull_breach,
-		"attack": attack
+		"chance_hull_breach": chance_hull_breach
 	}
 	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", params])
 	add_child(projectile)

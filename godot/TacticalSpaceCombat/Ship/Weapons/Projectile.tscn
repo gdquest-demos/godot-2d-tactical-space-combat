@@ -41,7 +41,7 @@ shader_param/force = 0.0
 shader_param/size = 0.0
 
 [sub_resource type="Animation" id=4]
-resource_name = "BASE"
+resource_name = "_"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -190,6 +190,5 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "BASE"
-anims/BASE = SubResource( 4 )
+anims/_ = SubResource( 4 )
 anims/feedback = SubResource( 5 )

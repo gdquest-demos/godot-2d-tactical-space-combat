@@ -20,11 +20,10 @@ onready var target_line: Line2D = $TargetLine2D
 func setup(color: Color, rooms: Node2D, shield: Area2D) -> void:
 	_rooms = rooms
 	_shield = shield
+	_shield_polygon = _shield.polygon.polygon
+	_shield_polygon = _shield.transform.xform(_shield_polygon)
 	line.default_color = color
 	target_line.default_color = color
-	if _shield != null:
-		_shield_polygon = _shield.polygon.polygon
-		_shield_polygon = _shield.transform.xform(_shield_polygon)
 
 
 func _ready() -> void:
@@ -84,7 +83,7 @@ func _on_Weapon_fire_stopped() -> void:
 
 func _swipe_laser(offset: Vector2) -> void:
 	line.points[1] = offset
-	if _shield != null and _shield.hitpoints > 0:
+	if _shield.is_on:
 		for points in Geometry.clip_polyline_with_polygon_2d(line.points, _shield_polygon):
 			line.points = points
 	area.position = line.points[1]

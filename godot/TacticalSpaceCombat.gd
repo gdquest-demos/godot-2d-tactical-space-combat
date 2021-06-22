@@ -1,9 +1,9 @@
 extends Node2D
 
 const UIUnit = preload("TacticalSpaceCombat/UI/UIUnit.tscn")
-const UISystem = preload("TacticalSpaceCombat/UI/UISystem.tscn")
 const UIWeapons = preload("TacticalSpaceCombat/UI/UIWeapons.tscn")
 const UIWeapon = preload("TacticalSpaceCombat/UI/UIWeapon.tscn")
+const UISystem = preload("TacticalSpaceCombat/UI/UISystem.tscn")
 
 const END_SCENE = "TacticalSpaceCombat/End.tscn"
 
@@ -27,34 +27,8 @@ func _ready() -> void:
 	_ready_weapons_ai()
 	_ready_weapons_player()
 
-	ship_player.emit_signal("hitpoints_changed", ship_player.hitpoints, true)
-	ship_ai.emit_signal("hitpoints_changed", ship_ai.hitpoints, false)
-
-
-func _on_Ship_hitpoints_changed(hitpoints: int, is_player: bool) -> void:
-	var label := ui_hitpoints_player if is_player else ui_hitpoints_ai
-	label.text = "HP: %d" % hitpoints
-	if hitpoints == 0:
-		Global.winner_is_player = not is_player
-		get_tree().change_scene(END_SCENE)
-
-
-func _ready_sensors() -> void:
-	ship_ai.has_sensors = ship_player.has_sensors
-	if ship_player.has_sensors:
-		var ui_sensors := UISystem.instance()
-		ui_sensors.text = "s"
-		ui_sensors.disabled = true
-		ui_systems.add_child(ui_sensors)
-	ui_systems.add_child(VSeparator.new())
-
-
-func _ready_shield() -> void:
-	if ship_player.has_node("Shield"):
-		var ui_shield := UISystem.instance()
-		ui_shield.text = "S"
-		ui_shield.disabled = true
-		ui_systems.add_child(ui_shield)
+	_on_Ship_hitpoints_changed(ship_player.hitpoints, true)
+	_on_Ship_hitpoints_changed(ship_ai.hitpoints, false)
 
 
 func _ready_units() -> void:
@@ -102,3 +76,31 @@ func _ready_weapons_player() -> void:
 			controller.weapon.connect("fire_stopped", laser_tracker, "_on_Weapon_fire_stopped")
 			laser_tracker.connect("targeted", controller, "_on_Ship_targeted")
 		controller.setup(ui_weapon)
+
+
+func _ready_shield() -> void:
+	var ui_shield := UISystem.instance()
+	ui_shield.connect("toggled", ship_player.shield, "set_powered")
+	ui_shield.toggle_mode = true
+	ui_shield.pressed = ship_player.shield.powered
+	ui_shield.disabled = not ship_player.shield.powered
+	ui_shield.text = "S"
+	ui_systems.add_child(ui_shield)
+
+
+func _ready_sensors() -> void:
+	ship_ai.has_sensors = ship_player.has_sensors
+	if ship_player.has_sensors:
+		var ui_sensors := UISystem.instance()
+		ui_sensors.text = "s"
+		ui_sensors.disabled = true
+		ui_systems.add_child(ui_sensors)
+	ui_systems.add_child(VSeparator.new())
+
+
+func _on_Ship_hitpoints_changed(hitpoints: int, is_player: bool) -> void:
+	var label := ui_hitpoints_player if is_player else ui_hitpoints_ai
+	label.text = "HP: %d" % hitpoints
+	if hitpoints == 0:
+		Global.winner_is_player = not is_player
+		get_tree().change_scene(END_SCENE)

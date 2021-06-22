@@ -1,19 +1,36 @@
+tool
 extends Area2D
 
-signal hitpoints_changed(hitpoints)
-
+export var powered := true setget set_powered
 export var hitpoints_max := 4
+export var charge_time := 5
+export var radius := 300 setget set_radius
+export var height := 100 setget set_height
 
 var hitpoints := 0 setget set_hitpoints
+var is_on := false
 
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var polygon: Polygon2D = $Polygon2D
 onready var timer: Timer = $Timer
 
 
+func setup(mean_position: Vector2, mask: int) -> void:
+	position = mean_position
+	collision_mask = mask
+
+
 func _ready() -> void:
+	if Engine.editor_hint:
+		return
+
+	connect("body_entered", self, "_on_body_entered")
+	timer.connect("timeout", self, "_on_Timer_timeout")
 	polygon.self_modulate.a = 0
 	polygon.polygon = _get_shape_points()
+	timer.wait_time = charge_time
+	if powered:
+		timer.start()
 
 
 func _on_Timer_timeout() -> void:
@@ -21,8 +38,9 @@ func _on_Timer_timeout() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if hitpoints > 0:
+	if is_on:
 		self.hitpoints -= 1
+		timer.start()
 		body.animation_player.play("feedback")
 
 
@@ -38,11 +56,30 @@ func _get_shape_points() -> PoolVector2Array:
 	return collision_shape.transform.xform(out)
 
 
+func set_powered(value: bool) -> void:
+	if Engine.editor_hint:
+		return
+
+	powered = value
+	self.hitpoints = 0
+	if timer != null:
+		timer.call("start" if powered else "stop")
+
+
+func set_radius(value: int) -> void:
+	radius = value
+	if collision_shape != null:
+		collision_shape.shape.radius = radius
+
+
+func set_height(value: int) -> void:
+	height = value
+	if collision_shape != null:
+		collision_shape.shape.height = height
+
+
 func set_hitpoints(value: int) -> void:
-	if value == hitpoints_max:
-		timer.stop()
-	else:
-		hitpoints = clamp(value, 0, hitpoints_max)
-		timer.start()
+	hitpoints = clamp(value, 0, hitpoints_max)
+	timer.call("stop" if hitpoints == hitpoints_max else "start")
+	is_on = hitpoints > 0
 	polygon.self_modulate.a = hitpoints / float(hitpoints_max)
-	emit_signal("hitpoints_changed", hitpoints)

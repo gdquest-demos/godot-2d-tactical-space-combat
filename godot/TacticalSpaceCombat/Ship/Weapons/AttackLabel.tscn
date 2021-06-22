@@ -4,27 +4,15 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/AttackLabel.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
-resource_name = "BASE"
+resource_name = "_"
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:visible")
+tracks/0/path = NodePath("Label:rect_position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Label:rect_position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -46,25 +34,13 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( -10, -15 ), Vector2( -10, -60 ) ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:visible")
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/2/type = "method"
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
 "times": PoolRealArray( 0.6 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -74,6 +50,7 @@ tracks/2/keys = {
 }
 
 [node name="AttackLabel" type="Control"]
+theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -87,7 +64,6 @@ margin_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_min_size = Vector2( 20, 30 )
-theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.294118, 0.356863, 0.670588, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 0.921569, 1 )
 custom_constants/shadow_as_outline = 1
@@ -99,6 +75,5 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "BASE"
-anims/BASE = SubResource( 1 )
+anims/_ = SubResource( 1 )
 anims/feedback = SubResource( 2 )

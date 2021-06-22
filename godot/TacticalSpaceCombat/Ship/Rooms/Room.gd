@@ -56,6 +56,13 @@ func setup(tilemap: TileMap) -> void:
 	_tilemap = tilemap
 	_setup_extents()
 
+	if not Engine.editor_hint:
+		hit_area.collision_mask = (
+			Global.Layers.SHIPPLAYER
+			if owner.is_in_group("player")
+			else Global.Layers.SHIPAI
+		)
+
 	_area = size.x * size.y
 	_top_left = _tilemap.world_to_map(position - collision_shape.shape.extents)
 	_bottom_right = _top_left + size
@@ -91,11 +98,6 @@ func _ready() -> void:
 		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
 		false: Rect2()
 	}
-	hit_area.collision_mask = (
-		Global.Layers.SHIPPLAYER
-		if owner.is_in_group("player")
-		else Global.Layers.SHIPAI
-	)
 
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()

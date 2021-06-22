@@ -1,21 +1,15 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Ship/ShipTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Door.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units.gd" type="Script" id=3]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Room.tscn" type="PackedScene" id=5]
-[ext_resource path="res://TacticalSpaceCombat/Ship/Shield.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/UnitPlayer.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponProjectile.tscn" type="PackedScene" id=9]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerLaser.gd" type="Script" id=10]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/ControllerPlayerProjectile.gd" type="Script" id=11]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Rooms/Wall.tscn" type="PackedScene" id=12]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/WeaponLaser.tscn" type="PackedScene" id=13]
-
-[sub_resource type="CapsuleShape2D" id=1]
-resource_local_to_scene = true
-radius = 300.0
-height = 100.0
 
 [node name="ShipPlayer" groups=[
 "player",
@@ -123,14 +117,8 @@ charge_time = 14.0
 chance_hull_breach = 0.1
 targeting_length = 80
 
-[node name="Shield" parent="." index="11" instance=ExtResource( 7 )]
-collision_mask = 2
-
-[node name="CollisionShape2D" parent="Shield" index="0"]
-shape = SubResource( 1 )
-
-[node name="Timer" parent="Shield" index="2"]
-wait_time = 14.0
+[node name="Shield" parent="." index="11"]
+charge_time = 3
 
 [editable path="Doors/Door0103"]
 [editable path="Doors/Door0203"]
@@ -138,4 +126,3 @@ wait_time = 14.0
 [editable path="Doors/Door0506"]
 [editable path="Units/Unit01"]
 [editable path="Units/Unit02"]
-[editable path="Shield"]

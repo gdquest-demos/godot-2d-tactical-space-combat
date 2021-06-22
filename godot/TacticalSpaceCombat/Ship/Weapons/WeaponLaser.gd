@@ -38,9 +38,9 @@ func fire() -> void:
 	line.visible = true
 	var params := {
 		"duration": timer.wait_time,
+		"attack": attack,
 		"chance_fire": chance_fire,
-		"chance_hull_breach": chance_hull_breach,
-		"attack": attack
+		"chance_hull_breach": chance_hull_breach
 	}
 	emit_signal("fire_started", params)
 

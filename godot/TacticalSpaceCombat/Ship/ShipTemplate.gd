@@ -15,8 +15,6 @@ var has_sensors := false
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
 var _evasion := 0.0
-var _shield: Area2D = null
-var _shield_is_on := false
 
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
@@ -26,6 +24,7 @@ onready var hazards: Node2D = $Hazards
 onready var weapons: Node2D = $Weapons
 onready var projectiles: Node2D = $Projectiles
 onready var lasers: Node2D = $Lasers
+onready var shield: Area2D = $Shield
 
 
 func _ready() -> void:
@@ -45,15 +44,14 @@ func _ready_not_editor_hint() -> void:
 		for door in doors.get_children():
 			door.connect("opened", unit, "set_is_walking", [true])
 
-		# Store position of `unit`.
 		var position_map := tilemap.world_to_map(unit.path_follow.position)
 		_slots[position_map] = unit
 
 	for room in rooms.get_children():
-		room.setup(tilemap)
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
 		room.connect("area_entered", self, "_on_RoomArea2D_area_entered", [room])
 		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room])
+		room.setup(tilemap)
 
 		for point in room:
 			tilemap.set_cellv(point, 0)
@@ -61,13 +59,12 @@ func _ready_not_editor_hint() -> void:
 		if room.type == Room.Type.SENSORS:
 			has_sensors = true
 
-	if has_node("Shield"):
-		_shield = $Shield
-		_shield.position = rooms.mean_position
-		_shield.connect("hitpoints_changed", self, "_on_Shield_hitpoints_changed")
-
 	tilemap.setup(rooms, doors)
 	projectiles.setup(rooms.mean_position)
+	shield.setup(
+		rooms.mean_position,
+		Global.Layers.SHIPPLAYER if is_in_group("player") else Global.Layers.SHIPAI
+	)
 
 
 func _get_configuration_warning() -> String:
@@ -99,15 +96,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			unit.walk(path)
 
 
-func _on_Room_modifier_changed(type: int, value: float) -> void:
-	match type:
-		Room.Type.HELM:
-			_evasion = value
-		Room.Type.WEAPONS:
-			for weapon in weapons.get_children():
-				weapon.weapon.modifier = value
-
-
 func _on_UIDoorsButton_pressed() -> void:
 	var has_opened_doors := false
 	for door in doors.get_children():
@@ -119,21 +107,26 @@ func _on_UIDoorsButton_pressed() -> void:
 		door.is_open = not has_opened_doors
 
 
-func _on_Shield_hitpoints_changed(hitpoints: int) -> void:
-	_shield_is_on = hitpoints > 0
-
-
-func _on_RoomArea2D_area_entered(area: Area2D, room: Room) -> void:
-	if area.is_in_group("laser") and not _shield_is_on:
-		_handle_attack(area.params, room)
-
-
 func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: Room) -> void:
 	if not room.position.is_equal_approx(body.params.target_position) or _rng.randf() < _evasion:
 		return
 
 	body.animation_player.play("feedback")
 	_handle_attack(body.params, room)
+
+
+func _on_RoomArea2D_area_entered(area: Area2D, room: Room) -> void:
+	if area.is_in_group("laser"):
+		_handle_attack(area.params, room)
+
+
+func _on_Room_modifier_changed(type: int, value: float) -> void:
+	match type:
+		Room.Type.HELM:
+			_evasion = value
+		Room.Type.WEAPONS:
+			for weapon in weapons.get_children():
+				weapon.weapon.modifier = value
 
 
 func _on_HazardsTimer_timeout() -> void:
@@ -199,7 +192,7 @@ func _on_Unit_died(unit: Unit) -> void:
 func add_laser_tracker(color: Color) -> Node:
 	var laser_tracker := LaserTracker.instance()
 	lasers.add_child(laser_tracker)
-	laser_tracker.setup(color, rooms, _shield)
+	laser_tracker.setup(color, rooms, shield)
 	return laser_tracker
 
 
