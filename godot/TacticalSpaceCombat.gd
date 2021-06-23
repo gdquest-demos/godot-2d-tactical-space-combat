@@ -48,7 +48,9 @@ func _ready_weapons_ai() -> void:
 			ship_player.rooms.connect("targeted", controller, "_on_Ship_targeted")
 		elif controller is ControllerAILaser:
 			var laser_tracker: Node = ship_player.add_laser_tracker(controller.weapon.color)
-			controller.connect("targeting", laser_tracker, "_on_Controller_targeting")
+			controller.connect(
+				"targeting", laser_tracker, "_on_Controller_targeting", [], CONNECT_DEFERRED
+			)
 			controller.weapon.connect("fire_started", laser_tracker, "_on_Weapon_fire_started")
 			controller.weapon.connect("fire_stopped", laser_tracker, "_on_Weapon_fire_stopped")
 			laser_tracker.connect("targeted", controller, "_on_Ship_targeted")
