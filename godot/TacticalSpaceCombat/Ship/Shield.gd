@@ -21,6 +21,8 @@ func setup(mean_position: Vector2, mask: int) -> void:
 
 
 func _ready() -> void:
+	self.radius = radius
+	self.height = height
 	if Engine.editor_hint:
 		return
 

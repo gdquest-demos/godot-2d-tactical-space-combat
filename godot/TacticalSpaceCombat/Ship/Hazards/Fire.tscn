@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
+[ext_resource path="res://TacticalSpaceCombat/Ship/Hazards/Breach.tscn" type="PackedScene" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Hazards/Fire.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
-resource_name = "BASE"
+resource_name = "*"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:scale")
@@ -31,7 +31,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( -2, -2 ),
+"transitions": PoolRealArray( -2, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 0.8, 0.8 ) ]
 }
@@ -65,56 +65,23 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( -2, -2 ),
+"transitions": PoolRealArray( -2, 1 ),
 "update": 0,
 "values": [ Vector2( 0.8, 0.8 ), Vector2( 0.4, 0.4 ) ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=5]
-animation = "high"
-
-[sub_resource type="AnimationNodeAnimation" id=6]
-animation = "low"
-
-[sub_resource type="AnimationNodeAnimation" id=7]
-animation = "medium"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=8]
-advance_condition = "high_to_medium"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=9]
-advance_condition = "medium_to_low"
-
-[sub_resource type="AnimationNodeStateMachine" id=10]
-states/high/node = SubResource( 5 )
-states/high/position = Vector2( 205, 63 )
-states/low/node = SubResource( 6 )
-states/low/position = Vector2( 643, 63 )
-states/medium/node = SubResource( 7 )
-states/medium/position = Vector2( 418, 63 )
-transitions = [ "high", "medium", SubResource( 8 ), "medium", "low", SubResource( 9 ) ]
-start_node = "high"
-graph_offset = Vector2( 3, -12 )
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=11]
-
-[node name="Fire" type="Sprite"]
-scale = Vector2( 0.832764, 0.832764 )
-texture = ExtResource( 1 )
-region_enabled = true
+[node name="Fire" instance=ExtResource( 1 )]
 region_rect = Rect2( 320, 384, 64, 64 )
 script = ExtResource( 2 )
+attack = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/BASE = SubResource( 1 )
+[node name="Timer" type="Timer" parent="." index="0"]
+wait_time = 0.5
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+autoplay = "high"
+anims/* = SubResource( 1 )
 anims/high = SubResource( 2 )
 anims/low = SubResource( 3 )
 anims/medium = SubResource( 4 )
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 10 )
-anim_player = NodePath("../AnimationPlayer")
-active = true
-parameters/playback = SubResource( 11 )
-parameters/conditions/high_to_medium = false
-parameters/conditions/medium_to_low = false

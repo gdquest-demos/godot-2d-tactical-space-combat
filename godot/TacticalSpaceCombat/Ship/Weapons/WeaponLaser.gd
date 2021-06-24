@@ -40,7 +40,7 @@ func fire() -> void:
 		"duration": timer.wait_time,
 		"attack": attack,
 		"chance_fire": chance_fire,
-		"chance_hull_breach": chance_hull_breach
+		"chance_breach": chance_breach
 	}
 	emit_signal("fire_started", params)
 

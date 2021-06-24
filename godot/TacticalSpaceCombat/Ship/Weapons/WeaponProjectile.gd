@@ -33,7 +33,7 @@ func fire() -> void:
 		"target_position": target_position,
 		"attack": attack,
 		"chance_fire": chance_fire,
-		"chance_hull_breach": chance_hull_breach
+		"chance_breach": chance_breach
 	}
 	projectile.connect("tree_exited", self, "emit_signal", ["projectile_exited", params])
 	add_child(projectile)

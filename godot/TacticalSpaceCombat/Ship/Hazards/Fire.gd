@@ -1,12 +1,40 @@
 class_name Fire
 extends Hazard
 
-export (float, 0.0, 1.0) var chance_attack := 0.1
+signal attacked(attack, position)
+signal spread(position)
 
-onready var animation_tree: AnimationTree = $AnimationTree
+export (float, 0.0, 1.0) var chance_attack := 0.1
+export (float, 0.0, 1.0) var chance_spread := 0.05
+export (int, 0, 100) var o2_damage := 30
+
+var _rng := RandomNumberGenerator.new()
+
+onready var timer: Timer = $Timer
+onready var animation_player: AnimationPlayer = $AnimationPlayer
+
+
+func _ready() -> void:
+	timer.connect("timeout", self, "_on_Timer_timeout")
+	_rng.randomize()
+
+
+func _on_Timer_timeout() -> void:
+	if _rng.randf() < chance_attack:
+		emit_signal("attacked", attack, position)
+
+	if _rng.randf() < chance_spread:
+		emit_signal("spread", position)
 
 
 func _set_hitpoints(value: int) -> void:
 	._set_hitpoints(value)
-	animation_tree.set("parameters/conditions/high_to_medium", _hitpoints <= 70)
-	animation_tree.set("parameters/conditions/medium_to_low", _hitpoints <= 30)
+
+	var animation := "high"
+	if _hitpoints < THRESHOLD.low:
+		animation = "low"
+	elif _hitpoints < THRESHOLD.medium:
+		animation = "medium"
+
+	if animation_player.current_animation != animation:
+		animation_player.play(animation)

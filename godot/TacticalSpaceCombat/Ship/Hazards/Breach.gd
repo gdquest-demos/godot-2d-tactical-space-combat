@@ -4,7 +4,8 @@ extends Hazard
 
 func _set_hitpoints(value: int) -> void:
 	._set_hitpoints(value)
-	if 30 < _hitpoints and _hitpoints <= 70:
+
+	if THRESHOLD.low <= _hitpoints and _hitpoints < THRESHOLD.medium:
 		scale = 0.75 * Vector2.ONE
-	elif 0 < _hitpoints and _hitpoints <= 30:
+	elif _hitpoints < THRESHOLD.low:
 		scale = 0.5 * Vector2.ONE

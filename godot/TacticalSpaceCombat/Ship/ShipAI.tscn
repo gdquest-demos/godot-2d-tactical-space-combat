@@ -32,7 +32,7 @@ script = ExtResource( 7 )
 charge_time = 5.0
 attack = 1
 chance_fire = 0.2
-chance_hull_breach = 0.1
+chance_breach = 1.0
 
 [node name="ControllerAIProjectile2" type="Node2D" parent="Weapons" index="1"]
 position = Vector2( 192, 160 )
@@ -41,7 +41,8 @@ script = ExtResource( 5 )
 
 [node name="Weapon" parent="Weapons/ControllerAIProjectile2" index="0" instance=ExtResource( 6 )]
 chance_fire = 0.4
-chance_hull_breach = 0.1
+chance_breach = 1.0
 
-[node name="Shield" parent="." index="11"]
+[node name="Shield" parent="." index="9"]
 charge_time = 4
+radius = 200

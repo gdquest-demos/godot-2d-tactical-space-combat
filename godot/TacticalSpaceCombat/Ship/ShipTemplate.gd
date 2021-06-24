@@ -9,6 +9,8 @@ const BreachS := preload("Hazards/Breach.tscn")
 const FireS := preload("Hazards/Fire.tscn")
 
 export (int, 0, 30) var hitpoints := 30
+export (int, 0, 100) var o2_asphyxiation := 10
+export (int, 0, 10) var o2_replenish := 2
 
 var has_sensors := false
 
@@ -20,11 +22,12 @@ onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
 onready var doors: Node2D = $Doors
 onready var units: Node2D = $Units
-onready var hazards: Node2D = $Hazards
 onready var weapons: Node2D = $Weapons
 onready var projectiles: Node2D = $Projectiles
 onready var lasers: Node2D = $Lasers
 onready var shield: Area2D = $Shield
+onready var hazards: Node2D = $Hazards
+onready var timer_hazards: Timer = $TimerHazards
 
 
 func _ready() -> void:
@@ -37,6 +40,7 @@ func _ready_editor_hint() -> void:
 
 
 func _ready_not_editor_hint() -> void:
+	timer_hazards.connect("timeout", self, "_on_TimerHazards_timeout")
 	_rng.randomize()
 
 	for unit in units.get_children():
@@ -129,22 +133,59 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 				weapon.weapon.modifier = value
 
 
-func _on_HazardsTimer_timeout() -> void:
-	for hazard in hazards.get_children():
-		if hazard is Breach:
-			for room in rooms.get_children():
-				if room.has_point(tilemap.world_to_map(hazard.position)):
-					room.o2 -= hazard.attack
-		elif hazard is Fire and _rng.randf() < hazard.chance_attack:
-			_take_damage(hazard.attack, hazard.position)
+func _on_Unit_died(unit: Unit) -> void:
+	Utils.erase_value(_slots, unit)
+	for room in rooms.get_children():
+		room.units.erase(unit)
 
+
+func _on_Fire_spread(fire_position: Vector2) -> void:
+	var neighbors: Array = _get_neightbor_positions(fire_position)
+	var index := _rng.randi_range(0, neighbors.size() - 1)
+	var fire: Fire = hazards.add(FireS, neighbors[index])
+	if fire != null:
+		fire.connect("attacked", self, "_take_damage")
+		fire.connect("spread", self, "_on_Fire_spread")
+
+
+func _on_TimerHazards_timeout() -> void:
+	_hazards_breach()
+	_hazards_units()
+	_hazards_o2()
+
+
+func _hazards_breach() -> void:
 	for hazard in hazards.get_children():
+		if hazard is Fire:
+			continue
+
 		for room in rooms.get_children():
 			if room.has_point(tilemap.world_to_map(hazard.position)):
+				room.o2 -= hazard.attack
+
+
+func _hazards_units() -> void:
+	for room in rooms.get_children():
+		var hazard_was_attacked := false
+		for hazard in hazards.get_children():
+			if room.has_point(tilemap.world_to_map(hazard.position)):
 				for unit in room.units:
-					if hazard is Breach and room.o2 < 5 or hazard is Fire:
+					if hazard is Fire:
 						unit.take_damage(hazard.attack)
 
+					if not hazard_was_attacked:
+						hazard.take_damage(unit.attack)
+						hazard_was_attacked = true
+
+				if hazard is Fire and room.o2 < o2_asphyxiation:
+					hazard.take_damage(hazard.o2_damage)
+
+		for unit in room.units:
+			if room.o2 < o2_asphyxiation:
+				unit.take_damage(unit.o2_damage)
+
+
+func _hazards_o2() -> void:
 	var o2s := {}
 	var ns := {}
 	for door in doors.get_children():
@@ -164,29 +205,7 @@ func _on_HazardsTimer_timeout() -> void:
 		if room in o2s:
 			o2s[room] /= ns[room]
 			room.o2 = lerp(room.o2, o2s[room], 0.5)
-
-		for hazard in hazards.get_children():
-			if room.has_point(tilemap.world_to_map(hazard.position)):
-				for unit in room.units:
-					hazard.take_damage(unit.attack)
-				break
-		room.o2 += 2
-
-
-func _on_FireSpreadTimer_timeout() -> void:
-	for hazard in hazards.get_children():
-		if hazard is Breach:
-			continue
-
-		var neighbors: Array = _get_neightbor_positions(hazard.position)
-		var index := _rng.randi_range(0, neighbors.size() - 1)
-		hazards.add(FireS, neighbors[index])
-
-
-func _on_Unit_died(unit: Unit) -> void:
-	Utils.erase_value(_slots, unit)
-	for room in rooms.get_children():
-		room.units.erase(unit)
+		room.o2 += o2_replenish
 
 
 func add_laser_tracker(color: Color) -> Node:
@@ -198,9 +217,13 @@ func add_laser_tracker(color: Color) -> Node:
 
 func _handle_attack(params: Dictionary, room: Room) -> void:
 	if _rng.randf() < params.chance_fire:
-		hazards.add(FireS, room.randvi())
+		var fire: Fire = hazards.add(FireS, room.randvi())
+		if fire != null:
+			fire.connect("attacked", self, "_take_damage")
+			fire.connect("spread", self, "_on_Fire_spread")
 
-	if _rng.randf() < params.chance_hull_breach:
+
+	if _rng.randf() < params.chance_breach:
 		hazards.add(BreachS, room.randvi())
 
 	_take_damage(params.attack, room.position)
@@ -221,10 +244,6 @@ func _get_neightbor_positions(at: Vector2) -> Array:
 	var point1 := tilemap.world_to_map(at)
 	for offset in Utils.DIRECTIONS:
 		var point2: Vector2 = point1 + offset
-		if point2.x < 0 or point2.y < 0:
-			continue
-
-		var curve: Curve2D = tilemap.find_path(point1, point2)
-		if curve.get_point_count() == 1:
-			out.append_array(curve.get_baked_points())
+		if tilemap.get_cellv(point2) != tilemap.INVALID_CELL:
+			out.push_back(tilemap.map_to_world(point2) + 0.5 * tilemap.cell_size)
 	return out

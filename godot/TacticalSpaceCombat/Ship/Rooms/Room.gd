@@ -7,6 +7,7 @@ signal modifier_changed(type, value)
 
 enum Type { EMPTY, SENSORS, HELM, WEAPONS, MEDBAY }
 
+const FOG_COLOR := Color("ffe478")
 const SPRITE := {
 	Type.EMPTY: Vector2.INF,
 	Type.SENSORS: Vector2(128, 384),
@@ -14,14 +15,14 @@ const SPRITE := {
 	Type.WEAPONS: Vector2(128, 416),
 	Type.MEDBAY: Vector2(160, 416)
 }
-const FOG_COLOR := Color("ffe478")
 
-export var size := Vector2.ONE setget set_size
 export (Type) var type := Type.EMPTY
+export var size := Vector2.ONE setget set_size
 
 var units := {}
 var o2 := 100 setget set_o2
 
+var _target_index := -1
 var _modifiers := {
 	Type.EMPTY: [0.0, 0.0],
 	Type.SENSORS: [0.0, 0.0],
@@ -29,13 +30,10 @@ var _modifiers := {
 	Type.WEAPONS: [1.0, 2.0],
 	Type.MEDBAY: [0.0, 0.0]
 }
-var _target_index := -1
 
-var _rng := RandomNumberGenerator.new()
 var _fog := {}
-
+var _rng := RandomNumberGenerator.new()
 var _entrances := {}
-
 var _area := 0
 var _top_left := Vector2.ZERO
 var _bottom_right := Vector2.ZERO
@@ -47,9 +45,9 @@ var _tilemap: TileMap = null
 onready var collision_shape: CollisionShape2D = $CollisionShape2D
 onready var feedback: NinePatchRect = $Feedback
 onready var sprite_target: Sprite = $SpriteTarget
-onready var sprite_type: Sprite = $SpriteType
 onready var hit_area: Area2D = $HitArea2D
-onready var o2_color_rect: ColorRect = $O2ColorRect
+onready var color_rect_o2: ColorRect = $ColorRectO2
+onready var sprite_type: Sprite = $SpriteType
 
 
 func setup(tilemap: TileMap) -> void:
@@ -70,12 +68,11 @@ func setup(tilemap: TileMap) -> void:
 	feedback.rect_position -= collision_shape.shape.extents
 	feedback.rect_size = 2 * collision_shape.shape.extents
 
-	sprite_type.visible = type != Type.EMPTY
-	sprite_type.region_enabled = sprite_type.visible
-	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
+	color_rect_o2.rect_position = feedback.rect_position
+	color_rect_o2.rect_size = feedback.rect_size
 
-	o2_color_rect.rect_position = feedback.rect_position
-	o2_color_rect.rect_size = feedback.rect_size
+	sprite_type.visible = type != Type.EMPTY
+	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 
 
 func _setup_extents() -> void:
@@ -101,9 +98,9 @@ func _ready() -> void:
 
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()
+		medbay_timer.connect("timeout", self, "_on_MedbayTimer_timeout")
 		medbay_timer.autostart = true
 		add_child(medbay_timer)
-		medbay_timer.connect("timeout", self, "_on_MedbayTimer_timeout")
 
 
 func _on_input_event(_v: Viewport, event: InputEvent, _s: int) -> void:
@@ -200,15 +197,15 @@ func has_point(point: Vector2) -> bool:
 	)
 
 
-func set_o2(value: int) -> void:
-	o2 = clamp(value, 0, 100)
-	o2_color_rect.color.a = lerp(0.5, 0, o2 / 100.0)
-
-
 func set_size(value: Vector2) -> void:
 	for axis in [Vector2.AXIS_X, Vector2.AXIS_Y]:
 		size[axis] = max(1, value[axis])
 	_setup_extents()
+
+
+func set_o2(value: int) -> void:
+	o2 = clamp(value, 0, 100)
+	color_rect_o2.color.a = lerp(0.5, 0, o2 / 100.0)
 
 
 func get_slot(slots: Dictionary, unit: Unit) -> Vector2:

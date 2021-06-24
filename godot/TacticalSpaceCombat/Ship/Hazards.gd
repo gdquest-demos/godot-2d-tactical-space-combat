@@ -14,7 +14,8 @@ func _on_Hazard_tree_exited(hazard_position: Vector2) -> void:
 	_slots.erase(hazard_position)
 
 
-func add(hazard_scene: PackedScene, offset: Vector2) -> void:
+func add(hazard_scene: PackedScene, offset: Vector2) -> Node:
+	var out: Node = null
 	if not offset in _slots:
 		var hazard := hazard_scene.instance()
 		hazard.position = offset
@@ -23,3 +24,5 @@ func add(hazard_scene: PackedScene, offset: Vector2) -> void:
 		if hazard is Fire:
 			move_child(hazard, 0)
 		_slots[hazard.position] = null
+		out = hazard
+	return out

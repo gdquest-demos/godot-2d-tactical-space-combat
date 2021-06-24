@@ -5,8 +5,10 @@ signal died(unit)
 
 const COLORS := {"default": Color("323e4f"), "selected": Color("3ca370")}
 
-var speed := 150
-var attack := 30
+export var speed := 150
+export var attack := 15
+export var o2_damage := 10
+
 var is_walking: bool setget set_is_walking
 
 onready var path_follow: PathFollow2D = $PathFollow2D

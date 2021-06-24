@@ -8,7 +8,7 @@ export var weapon_name := ""
 export var charge_time := 2.0
 export (int, 0, 5) var attack := 2
 export (float, 0, 1) var chance_fire := 0.0
-export (float, 0, 1) var chance_hull_breach := 0.0
+export (float, 0, 1) var chance_breach := 0.0
 
 var modifier := 1.0 setget set_modifier
 var is_charging := false setget set_is_charging

@@ -24,13 +24,6 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
 
-[node name="SpriteType" type="Sprite" parent="."]
-visible = false
-modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 128, 384, 32, 32 )
-
 [node name="Feedback" type="NinePatchRect" parent="."]
 visible = false
 modulate = Color( 1, 0.709804, 0.439216, 1 )
@@ -47,6 +40,12 @@ patch_margin_bottom = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SpriteType" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.890196, 0.411765, 0.337255, 1 )
+texture = ExtResource( 1 )
+region_enabled = true
 
 [node name="SpriteTarget" type="Sprite" parent="."]
 visible = false
@@ -83,7 +82,7 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 88, 408, 8, 8 )
 
-[node name="O2ColorRect" type="ColorRect" parent="."]
+[node name="ColorRectO2" type="ColorRect" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2

@@ -89,8 +89,8 @@ __meta__ = {
 text = "D"
 
 [node name="HitPoints" type="Label" parent="UI"]
-margin_left = 128.0
-margin_right = 258.0
+margin_left = 64.0
+margin_right = 194.0
 margin_bottom = 48.0
 custom_fonts/font = ExtResource( 6 )
 text = "HP: 100"
