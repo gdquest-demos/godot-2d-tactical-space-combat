@@ -59,13 +59,11 @@ func _get_shape_points() -> PoolVector2Array:
 
 
 func set_powered(value: bool) -> void:
-	if Engine.editor_hint:
-		return
-
 	powered = value
 	self.hitpoints = 0
 	if timer != null:
 		timer.call("start" if powered else "stop")
+
 
 
 func set_radius(value: int) -> void:
@@ -82,6 +80,7 @@ func set_height(value: int) -> void:
 
 func set_hitpoints(value: int) -> void:
 	hitpoints = clamp(value, 0, hitpoints_max)
-	timer.call("stop" if hitpoints == hitpoints_max else "start")
 	is_on = hitpoints > 0
-	polygon.self_modulate.a = hitpoints / float(hitpoints_max)
+	if polygon != null and timer != null:
+		polygon.self_modulate.a = hitpoints / float(hitpoints_max)
+		timer.call("stop" if hitpoints == hitpoints_max else "start")
