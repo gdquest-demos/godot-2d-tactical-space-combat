@@ -72,9 +72,6 @@ position = Vector2( 96, 224 )
 [node name="CollisionShape2D" parent="Units/Unit01/PathFollow2D/AreaUnit" index="1"]
 modulate = Color( 0.709804, 0, 1, 1 )
 
-[node name="HitpointsPathFollow2D" parent="Units/Unit01" index="1"]
-position = Vector2( 96, 224 )
-
 [node name="Unit02" parent="Units" index="1" instance=ExtResource( 8 )]
 
 [node name="PathFollow2D" parent="Units/Unit02" index="0"]
@@ -82,9 +79,6 @@ position = Vector2( 160, 288 )
 
 [node name="CollisionShape2D" parent="Units/Unit02/PathFollow2D/AreaUnit" index="1"]
 modulate = Color( 0.709804, 0, 1, 1 )
-
-[node name="HitpointsPathFollow2D" parent="Units/Unit02" index="1"]
-position = Vector2( 160, 288 )
 
 [node name="ControllerProjectile" type="Node2D" parent="Weapons" index="0"]
 position = Vector2( 384, 32 )

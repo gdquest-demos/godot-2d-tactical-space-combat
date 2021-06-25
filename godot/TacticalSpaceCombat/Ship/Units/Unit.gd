@@ -13,8 +13,7 @@ var is_walking: bool setget set_is_walking
 
 onready var path_follow: PathFollow2D = $PathFollow2D
 onready var area_unit: Area2D = $PathFollow2D/AreaUnit
-onready var hitpoints_path_follow: PathFollow2D = $HitpointsPathFollow2D
-onready var hitpoints: ProgressBar = $HitpointsPathFollow2D/Hitpoints
+onready var hitpoints: ProgressBar = $Hitpoints/Hitpoints
 
 
 func _ready() -> void:
@@ -29,7 +28,6 @@ func _on_AreaUnit_area_entered(area: Area2D) -> void:
 
 func _process(delta: float) -> void:
 	path_follow.offset += speed * delta
-	hitpoints_path_follow.offset = path_follow.offset
 	if path_follow.offset >= curve.get_baked_length():
 		self.is_walking = false
 

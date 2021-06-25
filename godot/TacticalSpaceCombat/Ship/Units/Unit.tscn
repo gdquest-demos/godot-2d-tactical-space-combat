@@ -2,6 +2,8 @@
 
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Units/Unit.gd" type="Script" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Assets/UnitHitpointsBg.tres" type="StyleBox" id=3]
+[ext_resource path="res://TacticalSpaceCombat/Assets/UnitHitpointsFg.tres" type="StyleBox" id=4]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -10,12 +12,6 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
-
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.239216, 0.431373, 0.439216, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.152941, 0.152941, 0.211765, 1 )
 
 [node name="Unit" type="Path2D"]
 self_modulate = Color( 0.501961, 0.6, 1, 0.701961 )
@@ -38,20 +34,21 @@ region_rect = Rect2( 64, 384, 24, 32 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AreaUnit"]
 shape = SubResource( 2 )
 
-[node name="HitpointsPathFollow2D" type="PathFollow2D" parent="."]
-rotate = false
-cubic_interp = false
-loop = false
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
+remote_path = NodePath("../../Hitpoints")
+update_rotation = false
 
-[node name="Hitpoints" type="ProgressBar" parent="HitpointsPathFollow2D"]
+[node name="Hitpoints" type="Node2D" parent="."]
+
+[node name="Hitpoints" type="ProgressBar" parent="Hitpoints"]
 margin_left = -16.0
 margin_top = -20.0
 margin_right = 16.0
 margin_bottom = -16.0
 rect_min_size = Vector2( 32, 4 )
 mouse_filter = 2
-custom_styles/fg = SubResource( 3 )
-custom_styles/bg = SubResource( 4 )
+custom_styles/fg = ExtResource( 4 )
+custom_styles/bg = ExtResource( 3 )
 value = 100.0
 rounded = true
 percent_visible = false
