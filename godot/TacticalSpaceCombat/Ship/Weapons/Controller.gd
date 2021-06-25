@@ -13,7 +13,7 @@ func _on_Ship_targeted(msg: Dictionary) -> void:
 		{"type": Type.PROJECTILE, ..}:
 			if msg.index == get_index():
 				weapon.target_position = msg.target_position
-		{"type": Type.LASER, ..}:
+		{"type": Type.LASER, "success": true}:
 			weapon.has_targeted = true
 
 

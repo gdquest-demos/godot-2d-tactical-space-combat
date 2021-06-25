@@ -163,7 +163,7 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 
 func _on_MedbayTimer_timeout() -> void:
 	for unit in units:
-		unit.heal(2)
+		unit.heal(10)
 
 
 func _draw() -> void:

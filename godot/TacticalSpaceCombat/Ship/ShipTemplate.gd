@@ -192,7 +192,7 @@ func _hazards_o2() -> void:
 		if not door.is_open:
 			continue
 
-		var o2_mean := 0
+		var o2_mean := 0.0
 		for room in door.rooms:
 			o2_mean += room.o2
 			ns[room] = ns.get(room, 0) + 1

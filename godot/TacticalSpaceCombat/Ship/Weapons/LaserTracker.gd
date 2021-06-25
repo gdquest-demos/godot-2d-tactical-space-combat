@@ -42,9 +42,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var offset: Vector2 = get_local_mouse_position() - target_line.points[0]
 		offset = offset.clamped(_targeting_length)
 		target_line.points[1] = target_line.points[0] + offset
-	elif event.is_action_released("left_click") and target_line.points[1] != Vector2.INF:
+	elif event.is_action_released("left_click"):
 		_is_targeting = false
-		emit_signal("targeted", {"type": Controller.Type.LASER})
+		var msg := {"type": Controller.Type.LASER, "success": target_line.points[1] != Vector2.INF}
+		emit_signal("targeted", msg)
 
 
 func _on_Controller_targeting(msg: Dictionary) -> void:
@@ -56,7 +57,7 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 				target_line.points = LINE_DEFAULT
 		{"targeting_length": var targeting_length}:
 			target_line.points = _rooms.get_laser_points(targeting_length)
-			emit_signal("targeted", {"type": Controller.Type.LASER})
+			emit_signal("targeted", {"type": Controller.Type.LASER, "success": true})
 
 
 func _on_Weapon_fire_started(params: Dictionary) -> void:

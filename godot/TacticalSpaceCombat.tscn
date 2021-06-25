@@ -49,7 +49,7 @@ texture = ExtResource( 7 )
 centered = false
 
 [node name="ShipAI" parent="ViewportContainer/Viewport" instance=ExtResource( 1 )]
-position = Vector2( 256, 352 )
+position = Vector2( 192, 288 )
 
 [node name="UI" type="Control" parent="ViewportContainer/Viewport"]
 margin_right = 40.0

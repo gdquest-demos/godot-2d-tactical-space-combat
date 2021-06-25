@@ -2,11 +2,6 @@ class_name ControllerPlayerProjectile
 extends ControllerPlayer
 
 
-func setup(ui_weapon: VBoxContainer) -> void:
-	.setup(ui_weapon)
-	_ui_weapon_button.connect("gui_input", self, "_on_UIWeaponButton_gui_input")
-
-
 func _ready() -> void:
 	weapon.setup(Global.Layers.SHIPAI)
 
@@ -22,10 +17,11 @@ func _on_Ship_targeted(msg: Dictionary) -> void:
 
 
 func _on_UIWeaponButton_gui_input(event: InputEvent) -> void:
+	._on_UIWeaponButton_gui_input(event)
 	if event.is_action_pressed("right_click"):
 		weapon.target_position = Vector2.INF
-		_ui_weapon_button.pressed = false
 		emit_signal("targeting", {"index": get_index()})
+		emit_signal("targeting", {"index": -1})
 
 
 func _on_UIWeaponButton_toggled(is_pressed: bool) -> void:
