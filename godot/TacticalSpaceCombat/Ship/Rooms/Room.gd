@@ -4,6 +4,7 @@ extends Area2D
 
 signal targeted(msg)
 signal modifier_changed(type, value)
+signal fog_changed(room, has_fog)
 
 enum Type { EMPTY, SENSORS, HELM, WEAPONS, MEDBAY }
 
@@ -31,7 +32,7 @@ var _modifiers := {
 	Type.MEDBAY: [0.0, 0.0]
 }
 
-var _fog := {}
+var _fog := {false: Rect2()}
 var _rng := RandomNumberGenerator.new()
 var _entrances := {}
 var _area := 0
@@ -74,6 +75,8 @@ func setup(tilemap: TileMap) -> void:
 	sprite_type.visible = type != Type.EMPTY
 	sprite_type.region_rect = Rect2(SPRITE[type], _tilemap.cell_size / 2)
 
+	_fog[true] = Rect2(feedback.rect_position, feedback.rect_size)
+
 
 func _setup_extents() -> void:
 	if _tilemap != null:
@@ -91,11 +94,6 @@ func _ready() -> void:
 	connect("input_event", self, "_on_input_event")
 
 	_rng.randomize()
-	_fog = {
-		true: Rect2(-collision_shape.shape.extents, 2 * collision_shape.shape.extents),
-		false: Rect2()
-	}
-
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()
 		medbay_timer.connect("timeout", self, "_on_MedbayTimer_timeout")
@@ -139,6 +137,7 @@ func _on_area_entered_exited(area: Area2D, has_entered: bool) -> void:
 		entrance += area.position
 		entrance = _tilemap.world_to_map(entrance)
 		_entrances[entrance] = null
+
 	elif area.is_in_group("unit"):
 		if has_entered:
 			units[area.owner] = null
@@ -170,10 +169,11 @@ func _draw() -> void:
 	if Engine.editor_hint:
 		return
 
-	var state: bool = not owner.has_sensors
+	var has_fog: bool = not owner.has_sensors
 	if owner.is_in_group("player"):
-		state = state and units.empty()
-	draw_rect(_fog[state], FOG_COLOR)
+		has_fog = has_fog and units.empty()
+		emit_signal("fog_changed", self, has_fog)
+	draw_rect(_fog[has_fog], FOG_COLOR)
 
 
 func randv() -> Vector2:

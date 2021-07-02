@@ -8,4 +8,3 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 384, 384, 64, 64 )
 script = ExtResource( 2 )
-attack = 10

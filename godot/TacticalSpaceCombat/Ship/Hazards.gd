@@ -4,12 +4,6 @@ var _rng := RandomNumberGenerator.new()
 var _slots := {}
 
 
-func _ready() -> void:
-	for hazard in get_children():
-		hazard.connect("tree_exited", self, "_on_Hazard_tree_exited", [hazard.position])
-		_slots[hazard.position] = null
-
-
 func _on_Hazard_tree_exited(hazard_position: Vector2) -> void:
 	_slots.erase(hazard_position)
 
@@ -22,7 +16,13 @@ func add(hazard_scene: PackedScene, offset: Vector2) -> Node:
 		hazard.connect("tree_exited", self, "_on_Hazard_tree_exited", [hazard.position])
 		add_child(hazard)
 		if hazard is Fire:
-			move_child(hazard, 0)
+			var index := 0
+			for child in get_children():
+				if child is Fire:
+					index += 1
+				else:
+					break
+			move_child(hazard, index)
 		_slots[hazard.position] = null
 		out = hazard
 	return out

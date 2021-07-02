@@ -53,6 +53,7 @@ func _ready_not_editor_hint() -> void:
 
 	for room in rooms.get_children():
 		room.connect("modifier_changed", self, "_on_Room_modifier_changed")
+		room.connect("fog_changed", self, "_on_Room_fog_changed")
 		room.connect("area_entered", self, "_on_RoomArea2D_area_entered", [room])
 		room.hit_area.connect("body_entered", self, "_on_RoomHitArea2D_body_entered", [room])
 		room.setup(tilemap)
@@ -133,6 +134,12 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 				weapon.weapon.modifier = value
 
 
+func _on_Room_fog_changed(room: Room, has_fog: bool) -> void:
+	for hazard in hazards.get_children():
+		if room.has_point(tilemap.world_to_map(hazard.position)):
+			hazard.visible = not has_fog
+
+
 func _on_Unit_died(unit: Unit) -> void:
 	Utils.erase_value(_slots, unit)
 	for room in rooms.get_children():
@@ -140,12 +147,16 @@ func _on_Unit_died(unit: Unit) -> void:
 
 
 func _on_Fire_spread(fire_position: Vector2) -> void:
-	var neighbors: Array = _get_neightbor_positions(fire_position)
-	var index := _rng.randi_range(0, neighbors.size() - 1)
-	var fire: Fire = hazards.add(FireS, neighbors[index])
+	var neighbor_position := _get_neighbor_position(fire_position)
+	var fire: Fire = hazards.add(FireS, neighbor_position)
 	if fire != null:
 		fire.connect("attacked", self, "_take_damage")
 		fire.connect("spread", self, "_on_Fire_spread")
+		for room in rooms.get_children():
+			if room.has_point(tilemap.world_to_map(fire.position)):
+				var room_has_fog: bool = not has_sensors and room.units.empty()
+				fire.visible = not room_has_fog
+				break
 
 
 func _on_TimerHazards_timeout() -> void:
@@ -216,15 +227,19 @@ func add_laser_tracker(color: Color) -> Node:
 
 
 func _handle_attack(params: Dictionary, room: Room) -> void:
+	var room_has_fog := not has_sensors and room.units.empty()
 	if _rng.randf() < params.chance_fire:
 		var fire: Fire = hazards.add(FireS, room.randvi())
 		if fire != null:
 			fire.connect("attacked", self, "_take_damage")
 			fire.connect("spread", self, "_on_Fire_spread")
+			fire.visible = not room_has_fog
 
 
 	if _rng.randf() < params.chance_breach:
-		hazards.add(BreachS, room.randvi())
+		var breach: Breach = hazards.add(BreachS, room.randvi())
+		if breach != null:
+			breach.visible = not room_has_fog
 
 	_take_damage(params.attack, room.position)
 
@@ -239,11 +254,12 @@ func _take_damage(attack: int, object_position: Vector2) -> void:
 	emit_signal("hitpoints_changed", hitpoints, is_in_group("player"))
 
 
-func _get_neightbor_positions(at: Vector2) -> Array:
-	var out := []
+func _get_neighbor_position(at: Vector2) -> Vector2:
+	var neighbors := []
 	var point1 := tilemap.world_to_map(at)
 	for offset in Utils.DIRECTIONS:
 		var point2: Vector2 = point1 + offset
 		if tilemap.get_cellv(point2) != tilemap.INVALID_CELL:
-			out.push_back(tilemap.map_to_world(point2) + 0.5 * tilemap.cell_size)
-	return out
+			neighbors.push_back(tilemap.map_to_world(point2) + 0.5 * tilemap.cell_size)
+	var index := _rng.randi_range(0, neighbors.size() - 1)
+	return neighbors[index]
