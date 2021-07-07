@@ -8,6 +8,7 @@ const COLORS := {"default": Color("323e4f"), "selected": Color("3ca370")}
 export var speed := 150
 export var attack := 15
 export var o2_damage := 10
+export var heal_recovery := 15
 
 var is_walking: bool setget set_is_walking
 
@@ -18,6 +19,7 @@ onready var hitpoints: ProgressBar = $Hitpoints/Hitpoints
 
 func _ready() -> void:
 	area_unit.connect("area_entered", self, "_on_AreaUnit_area_entered")
+	area_unit.modulate = COLORS.default
 	self.is_walking = false
 
 
@@ -42,8 +44,8 @@ func walk(path: Curve2D) -> void:
 	self.is_walking = true
 
 
-func heal(value: int) -> void:
-	hitpoints.value += value
+func heal() -> void:
+	hitpoints.value += heal_recovery
 
 
 func take_damage(other_attack: int) -> void:

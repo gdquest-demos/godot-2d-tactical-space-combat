@@ -94,6 +94,9 @@ func _ready_shield() -> void:
 
 func _ready_sensors() -> void:
 	ship_ai.has_sensors = ship_player.has_sensors
+	for unit in ship_ai.units.get_children():
+		unit.visible = ship_player.has_sensors
+
 	if ship_player.has_sensors:
 		var ui_sensors := UISystem.instance()
 		ui_sensors.text = "s"

@@ -92,8 +92,8 @@ func _ready() -> void:
 	connect("area_entered", self, "_on_area_entered_exited", [true])
 	connect("area_exited", self, "_on_area_entered_exited", [false])
 	connect("input_event", self, "_on_input_event")
-
 	_rng.randomize()
+
 	if type == Type.MEDBAY:
 		var medbay_timer := Timer.new()
 		medbay_timer.connect("timeout", self, "_on_MedbayTimer_timeout")
@@ -162,7 +162,7 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 
 func _on_MedbayTimer_timeout() -> void:
 	for unit in units:
-		unit.heal(10)
+		unit.heal()
 
 
 func _draw() -> void:

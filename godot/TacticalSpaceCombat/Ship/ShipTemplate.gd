@@ -14,9 +14,9 @@ export (int, 0, 10) var o2_replenish := 2
 
 var has_sensors := false
 
+var _evasion := 0.0
 var _slots := {}
 var _rng := RandomNumberGenerator.new()
-var _evasion := 0.0
 
 onready var tilemap: TileMap = $TileMap
 onready var rooms: Node2D = $Rooms
@@ -61,7 +61,7 @@ func _ready_not_editor_hint() -> void:
 		for point in room:
 			tilemap.set_cellv(point, 0)
 
-		if room.type == Room.Type.SENSORS:
+		if is_in_group("player") and room.type == Room.Type.SENSORS:
 			has_sensors = true
 
 	tilemap.setup(rooms, doors)
@@ -130,8 +130,8 @@ func _on_Room_modifier_changed(type: int, value: float) -> void:
 		Room.Type.HELM:
 			_evasion = value
 		Room.Type.WEAPONS:
-			for weapon in weapons.get_children():
-				weapon.weapon.modifier = value
+			for controller in weapons.get_children():
+				controller.weapon.modifier = value
 
 
 func _on_Room_fog_changed(room: Room, has_fog: bool) -> void:
@@ -154,8 +154,7 @@ func _on_Fire_spread(fire_position: Vector2) -> void:
 		fire.connect("spread", self, "_on_Fire_spread")
 		for room in rooms.get_children():
 			if room.has_point(tilemap.world_to_map(fire.position)):
-				var room_has_fog: bool = not has_sensors and room.units.empty()
-				fire.visible = not room_has_fog
+				fire.visible = not _has_fog(room)
 				break
 
 
@@ -226,15 +225,22 @@ func add_laser_tracker(color: Color) -> Node:
 	return laser_tracker
 
 
+func _has_fog(room: Room) -> bool:
+	var room_has_fog := not has_sensors
+	if is_in_group("player"):
+		room_has_fog = room_has_fog and room.units.empty()
+	return room_has_fog
+
+
 func _handle_attack(params: Dictionary, room: Room) -> void:
-	var room_has_fog := not has_sensors and room.units.empty()
+	var room_has_fog := _has_fog(room)
+
 	if _rng.randf() < params.chance_fire:
 		var fire: Fire = hazards.add(FireS, room.randvi())
 		if fire != null:
 			fire.connect("attacked", self, "_take_damage")
 			fire.connect("spread", self, "_on_Fire_spread")
 			fire.visible = not room_has_fog
-
 
 	if _rng.randf() < params.chance_breach:
 		var breach: Breach = hazards.add(BreachS, room.randvi())
