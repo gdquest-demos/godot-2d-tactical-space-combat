@@ -1,47 +1,15 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://TacticalSpaceCombat/Assets/Assets.svg" type="Texture" id=1]
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/Projectile.gd" type="Script" id=2]
+[ext_resource path="res://TacticalSpaceCombat/Assets/Shockwave.tres" type="Material" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
 height = 18.0
 
-[sub_resource type="Shader" id=2]
-code = "shader_type canvas_item;
-
-
-uniform float force;
-uniform float size;
-
-
-float donought(float l) {
-	return (1.0 - smoothstep(size - 0.1, size, l)) * smoothstep(size - 0.2, size - 0.1, l);
-}
-
-
-void fragment() {
-	vec2 uv = UV - vec2(0.5);
-	float lr = length(uv) + 5e-2;
-	float lg = length(uv);
-	float lb = length(uv) - 5e-2;
-	vec2 dispr = normalize(uv) * force * donought(lr);
-	vec2 dispg = normalize(uv) * force * donought(lg);
-	vec2 dispb = normalize(uv) * force * donought(lb);
-	float r = texture(SCREEN_TEXTURE, SCREEN_UV - dispr).r;
-	float g = texture(SCREEN_TEXTURE, SCREEN_UV - dispg).g;
-	float b = texture(SCREEN_TEXTURE, SCREEN_UV - dispb).b;
-	COLOR.rgb = vec3(r, g, b);
-}"
-
-[sub_resource type="ShaderMaterial" id=3]
-resource_local_to_scene = true
-shader = SubResource( 2 )
-shader_param/force = 0.0
-shader_param/size = 0.0
-
-[sub_resource type="Animation" id=4]
-resource_name = "_"
+[sub_resource type="Animation" id=2]
+resource_name = "*"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -92,8 +60,9 @@ tracks/3/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "feedback"
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -102,10 +71,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.1, 0.35 ),
+"times": PoolRealArray( 0, 0.45 ),
 "transitions": PoolRealArray( 2, 1 ),
 "update": 0,
-"values": [ 0.1, 0.0 ]
+"values": [ 0.2, 0.0 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Shockwave:material:shader_param/size")
@@ -114,10 +83,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.1, 0.4 ),
-"transitions": PoolRealArray( -0.5, 1 ),
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( -2, 1 ),
 "update": 0,
-"values": [ 0.0, 1.0 ]
+"values": [ 0.0, 0.5 ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -126,7 +95,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ Vector2( 0, 0 ) ],
@@ -168,6 +137,7 @@ linear_velocity = Vector2( 750, 0 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0.921569, 0.337255, 0.294118, 1 )
 texture = ExtResource( 1 )
 region_enabled = true
@@ -178,8 +148,7 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Shockwave" type="ColorRect" parent="."]
-visible = false
-material = SubResource( 3 )
+material = ExtResource( 3 )
 margin_left = -64.0
 margin_top = -64.0
 margin_right = 64.0
@@ -190,5 +159,6 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/_ = SubResource( 4 )
-anims/feedback = SubResource( 5 )
+autoplay = "*"
+anims/* = SubResource( 2 )
+anims/feedback = SubResource( 3 )

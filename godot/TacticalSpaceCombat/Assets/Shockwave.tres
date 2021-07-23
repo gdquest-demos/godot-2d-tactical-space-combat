@@ -1,0 +1,34 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+
+uniform float force;
+uniform float size;
+
+
+float donought(float l) {
+	return (1.0 - smoothstep(size - 0.1, size, l)) * smoothstep(size - 0.2, size - 0.1, l);
+}
+
+
+void fragment() {
+	vec2 uv = UV - vec2(0.5);
+	float lr = length(uv) + 5e-2;
+	float lg = length(uv);
+	float lb = length(uv) - 5e-2;
+	vec2 dispr = normalize(uv) * force * donought(lr);
+	vec2 dispg = normalize(uv) * force * donought(lg);
+	vec2 dispb = normalize(uv) * force * donought(lb);
+	float r = texture(SCREEN_TEXTURE, SCREEN_UV - dispr).r;
+	float g = texture(SCREEN_TEXTURE, SCREEN_UV - dispg).g;
+	float b = texture(SCREEN_TEXTURE, SCREEN_UV - dispb).b;
+	COLOR.rgb = vec3(r, g, b);
+}"
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/force = 0.0
+shader_param/size = 0.0

@@ -65,7 +65,6 @@ func set_powered(value: bool) -> void:
 		timer.call("start" if powered else "stop")
 
 
-
 func set_radius(value: int) -> void:
 	radius = value
 	if collision_shape != null:
