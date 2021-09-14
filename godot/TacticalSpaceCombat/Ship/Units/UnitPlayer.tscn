@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 24.0208
 
-[node name="Unit" instance=ExtResource( 1 )]
+[node name="UnitPlayer" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="AreaSelect" type="Area2D" parent="PathFollow2D" index="1"]

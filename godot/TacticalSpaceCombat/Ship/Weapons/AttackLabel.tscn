@@ -4,7 +4,7 @@
 [ext_resource path="res://TacticalSpaceCombat/Ship/Weapons/AttackLabel.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
-resource_name = "_"
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Label:rect_position")
@@ -75,5 +75,5 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/_ = SubResource( 1 )
+anims/RESET = SubResource( 1 )
 anims/feedback = SubResource( 2 )

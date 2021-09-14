@@ -9,7 +9,7 @@ radius = 4.0
 height = 18.0
 
 [sub_resource type="Animation" id=2]
-resource_name = "*"
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Shockwave:material:shader_param/force")
@@ -137,7 +137,6 @@ linear_velocity = Vector2( 750, 0 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-visible = false
 modulate = Color( 0.921569, 0.337255, 0.294118, 1 )
 texture = ExtResource( 1 )
 region_enabled = true
@@ -148,6 +147,7 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Shockwave" type="ColorRect" parent="."]
+visible = false
 material = ExtResource( 3 )
 margin_left = -64.0
 margin_top = -64.0
@@ -159,6 +159,6 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "*"
-anims/* = SubResource( 2 )
+autoplay = "RESET"
+anims/RESET = SubResource( 2 )
 anims/feedback = SubResource( 3 )

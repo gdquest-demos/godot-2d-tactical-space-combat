@@ -25,11 +25,11 @@ static func erase_value(dict: Dictionary, value) -> bool:
 	return out
 
 static func randvf_circle(_rng: RandomNumberGenerator, radius: float) -> Vector2:
-	return (radius * Vector2.RIGHT).rotated(_rng.randf_range(0, 2 * PI))
+	return (radius * Vector2.RIGHT).rotated(_rng.randf_range(0, TAU))
 
 static func randvf_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:
-	var x: float = lerp(top_left.x, bottom_right.x, _rng.randf())
-	var y: float = lerp(top_left.y, bottom_right.y, _rng.randf())
+	var x := _rng.randf_range(top_left.x, bottom_right.x)
+	var y := _rng.randf_range(top_left.y, bottom_right.y)
 	return Vector2(x, y)
 
 static func randvi_range(_rng: RandomNumberGenerator, top_left: Vector2, bottom_right: Vector2) -> Vector2:

@@ -5,8 +5,8 @@ signal hitpoints_changed(hitpoints, is_player)
 
 const LaserTracker := preload("Weapons/LaserTracker.tscn")
 const AttackLabel := preload("Weapons/AttackLabel.tscn")
-const BreachS := preload("Hazards/Breach.tscn")
-const FireS := preload("Hazards/Fire.tscn")
+const BreachScene := preload("Hazards/Breach.tscn")
+const FireScene := preload("Hazards/Fire.tscn")
 
 export (int, 0, 30) var hitpoints := 30
 export (int, 0, 100) var o2_asphyxiation := 10
@@ -148,7 +148,7 @@ func _on_Unit_died(unit: Unit) -> void:
 
 func _on_Fire_spread(fire_position: Vector2) -> void:
 	var neighbor_position := _get_neighbor_position(fire_position)
-	var fire: Fire = hazards.add(FireS, neighbor_position)
+	var fire: Fire = hazards.add(FireScene, neighbor_position)
 	if fire != null:
 		fire.connect("attacked", self, "_take_damage")
 		fire.connect("spread", self, "_on_Fire_spread")
@@ -196,8 +196,8 @@ func _hazards_units() -> void:
 
 
 func _hazards_o2() -> void:
-	var o2s := {}
-	var ns := {}
+	var o2_associations := {}
+	var room_associations := {}
 	for door in doors.get_children():
 		if not door.is_open:
 			continue
@@ -205,16 +205,16 @@ func _hazards_o2() -> void:
 		var o2_mean := 0.0
 		for room in door.rooms:
 			o2_mean += room.o2
-			ns[room] = ns.get(room, 0) + 1
+			room_associations[room] = room_associations.get(room, 0) + 1
 		o2_mean /= door.rooms.size()
 
 		for room in door.rooms:
-			o2s[room] = o2s.get(room, 0) + o2_mean
+			o2_associations[room] = o2_associations.get(room, 0) + o2_mean
 
 	for room in rooms.get_children():
-		if room in o2s:
-			o2s[room] /= ns[room]
-			room.o2 = lerp(room.o2, o2s[room], 0.5)
+		if room in o2_associations:
+			o2_associations[room] /= room_associations[room]
+			room.o2 = lerp(room.o2, o2_associations[room], 0.5)
 		room.o2 += o2_replenish
 
 
@@ -236,14 +236,14 @@ func _handle_attack(params: Dictionary, room: Room) -> void:
 	var room_has_fog := _has_fog(room)
 
 	if _rng.randf() < params.chance_fire:
-		var fire: Fire = hazards.add(FireS, room.randvi())
+		var fire: Fire = hazards.add(FireScene, room.randvi())
 		if fire != null:
 			fire.connect("attacked", self, "_take_damage")
 			fire.connect("spread", self, "_on_Fire_spread")
 			fire.visible = not room_has_fog
 
 	if _rng.randf() < params.chance_breach:
-		var breach: Breach = hazards.add(BreachS, room.randvi())
+		var breach: Breach = hazards.add(BreachScene, room.randvi())
 		if breach != null:
 			breach.visible = not room_has_fog
 

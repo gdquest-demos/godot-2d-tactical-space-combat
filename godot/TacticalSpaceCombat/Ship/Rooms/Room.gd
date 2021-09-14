@@ -189,12 +189,7 @@ func randvi() -> Vector2:
 
 
 func has_point(point: Vector2) -> bool:
-	return (
-		_top_left.x <= point.x
-		and _top_left.y <= point.y
-		and point.x < _bottom_right.x
-		and point.y < _bottom_right.y
-	)
+	return Rect2(_top_left, size).has_point(point)
 
 
 func set_size(value: Vector2) -> void:

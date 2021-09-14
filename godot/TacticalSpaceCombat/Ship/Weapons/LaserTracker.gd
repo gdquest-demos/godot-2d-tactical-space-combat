@@ -61,7 +61,7 @@ func _on_Controller_targeting(msg: Dictionary) -> void:
 
 
 func _on_Weapon_fire_started(params: Dictionary) -> void:
-	if target_line.points[0] == Vector2.INF or target_line.points[1] == Vector2.INF:
+	if Vector2.INF in target_line.points:
 		return
 
 	area.set_deferred("monitorable", true)
