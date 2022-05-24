@@ -1,5 +1,5 @@
 tool
-class_name Room
+class_name BaseRoom
 extends Area2D
 
 signal targeted(msg)

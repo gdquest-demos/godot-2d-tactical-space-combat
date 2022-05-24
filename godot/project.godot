@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "BaseRoom",
+"language": "GDScript",
+"path": "res://TacticalSpaceCombat/Ship/Rooms/Room.gd"
+}, {
 "base": "Hazard",
 "class": "Breach",
 "language": "GDScript",
@@ -59,11 +64,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://TacticalSpaceCombat/Ship/Weapons/Projectile.gd"
 }, {
-"base": "Area2D",
-"class": "Room",
-"language": "GDScript",
-"path": "res://TacticalSpaceCombat/Ship/Rooms/Room.gd"
-}, {
 "base": "Path2D",
 "class": "Unit",
 "language": "GDScript",
@@ -80,6 +80,7 @@ _global_script_classes=[ {
 "path": "res://TacticalSpaceCombat/Ship/Weapons/Weapon.gd"
 } ]
 _global_script_class_icons={
+"BaseRoom": "",
 "Breach": "",
 "Controller": "",
 "ControllerAILaser": "",
@@ -90,7 +91,6 @@ _global_script_class_icons={
 "Fire": "",
 "Hazard": "",
 "Projectile": "",
-"Room": "",
 "Unit": "",
 "Utils": "",
 "Weapon": ""

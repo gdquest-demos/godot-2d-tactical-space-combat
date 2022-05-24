@@ -34,7 +34,7 @@ func find_path(point1: Vector2, point2: Vector2) -> Curve2D:
 	return out
 
 
-func _get_neighbors(room: Room, point: Vector2) -> Array:
+func _get_neighbors(room: BaseRoom, point: Vector2) -> Array:
 	var out := []
 	for offset in Utils.DIRECTIONS:
 		offset += point

@@ -10,9 +10,7 @@
 resource_local_to_scene = true
 extents = Vector2( 32, 32 )
 
-[node name="Room" type="Area2D" groups=[
-"room",
-]]
+[node name="Room" type="Area2D" groups=["room"]]
 script = ExtResource( 2 )
 
 [node name="HitArea2D" type="Area2D" parent="."]

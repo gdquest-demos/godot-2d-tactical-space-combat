@@ -61,7 +61,7 @@ func _ready_not_editor_hint() -> void:
 		for point in room:
 			tilemap.set_cellv(point, 0)
 
-		if is_in_group("player") and room.type == Room.Type.SENSORS:
+		if is_in_group("player") and room.type == BaseRoom.Type.SENSORS:
 			has_sensors = true
 
 	tilemap.setup(rooms, doors)
@@ -112,7 +112,7 @@ func _on_UIDoorsButton_pressed() -> void:
 		door.is_open = not has_opened_doors
 
 
-func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: Room) -> void:
+func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: BaseRoom) -> void:
 	if not room.position.is_equal_approx(body.params.target_position) or _rng.randf() < _evasion:
 		return
 
@@ -120,21 +120,21 @@ func _on_RoomHitArea2D_body_entered(body: RigidBody2D, room: Room) -> void:
 	_handle_attack(body.params, room)
 
 
-func _on_RoomArea2D_area_entered(area: Area2D, room: Room) -> void:
+func _on_RoomArea2D_area_entered(area: Area2D, room: BaseRoom) -> void:
 	if area.is_in_group("laser"):
 		_handle_attack(area.params, room)
 
 
 func _on_Room_modifier_changed(type: int, value: float) -> void:
 	match type:
-		Room.Type.HELM:
+		BaseRoom.Type.HELM:
 			_evasion = value
-		Room.Type.WEAPONS:
+		BaseRoom.Type.WEAPONS:
 			for controller in weapons.get_children():
 				controller.weapon.modifier = value
 
 
-func _on_Room_fog_changed(room: Room, has_fog: bool) -> void:
+func _on_Room_fog_changed(room: BaseRoom, has_fog: bool) -> void:
 	for hazard in hazards.get_children():
 		if room.has_point(tilemap.world_to_map(hazard.position)):
 			hazard.visible = not has_fog
@@ -225,14 +225,14 @@ func add_laser_tracker(color: Color) -> Node:
 	return laser_tracker
 
 
-func _has_fog(room: Room) -> bool:
+func _has_fog(room: BaseRoom) -> bool:
 	var room_has_fog := not has_sensors
 	if is_in_group("player"):
 		room_has_fog = room_has_fog and room.units.empty()
 	return room_has_fog
 
 
-func _handle_attack(params: Dictionary, room: Room) -> void:
+func _handle_attack(params: Dictionary, room: BaseRoom) -> void:
 	var room_has_fog := _has_fog(room)
 
 	if _rng.randf() < params.chance_fire:
